@@ -1,0 +1,10 @@
+/**
+ * Proplytic.ai Design Tokens
+ * Main file — import all token modules
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@import './colors.css';
+@import './typography.css';
+@import './spacing.css';

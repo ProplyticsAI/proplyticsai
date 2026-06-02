@@ -1,0 +1,53 @@
+/**
+ * Proplytic.ai Design Tokens
+ * Typografie — Font Families, Sizes, Weights, Line Heights
+ */
+
+:root {
+  /* ==========================================
+   * FONT FAMILIES
+   * ========================================== */
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* ==========================================
+   * FONT SIZES — Modular Scale (1.25 ratio)
+   * ========================================== */
+  --text-2xs: 0.625rem;   /* 10px */
+  --text-xs: 0.75rem;       /* 12px */
+  --text-sm: 0.875rem;      /* 14px */
+  --text-base: 1rem;        /* 16px */
+  --text-lg: 1.125rem;      /* 18px */
+  --text-xl: 1.25rem;       /* 20px */
+  --text-2xl: 1.5rem;       /* 24px */
+  --text-3xl: 1.875rem;     /* 30px */
+  --text-4xl: 2.25rem;      /* 36px */
+  --text-5xl: 3rem;         /* 48px */
+  --text-6xl: 3.75rem;      /* 60px */
+
+  /* ==========================================
+   * FONT WEIGHTS
+   * ========================================== */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* ==========================================
+   * LINE HEIGHTS
+   * ========================================== */
+  --leading-none: 1;       /* Überschriften */
+  --leading-tight: 1.2;     /* Subheadlines */
+  --leading-snug: 1.35;     /* Cards, Komponenten */
+  --leading-normal: 1.5;    /* Body Text */
+  --leading-relaxed: 1.7;   /* Lange Texte */
+
+  /* ==========================================
+   * LETTER SPACING
+   * ========================================== */
+  --tracking-tight: -0.02em;  /* Headlines */
+  --tracking-normal: 0;       /* Body */
+  --tracking-wide: 0.05em;   /* Labels, Caps */
+  --tracking-wider: 0.1em;    /* Buttons, Tags */
+}
