@@ -5,8 +5,17 @@
 - **Präzise** Immobilien-KI
 - **Beige** als Hauptfarbe (warm,vertrauenswürdig)
 - **Dunkelgrün + Dunkelblau** als Highlight-Akzente
-- **Outfit** als Font (modern, vielseitig)
+- **Cormorant Garamond** für Headlines (Serif, elegant)
+- **System-Sans** für Body
 - **Kein Dark Mode**
+
+## Logo
+
+| Datei | Verwendung |
+|-------|------------|
+| `brand/logo-lockup.svg` | Hauptschriftzug + Icon |
+| `brand/logo-pin.svg` | Icon allein (dunkel) |
+| `brand/logo-pin-light.svg` | Icon allein (hell/dunkel Kontext) |
 
 ## Farben
 
@@ -14,7 +23,7 @@
 |-------|-----|------------|
 | `--color-background` | `#F5F0E8` | Haupthintergrund (warm Beige) |
 | `--color-surface` | `#FDFBF7` | Karten, Panels (helleres Beige) |
-| `--color-foreground` | `#1C1C1C` | Haupttext |
+| `--color-foreground` | `#1A1A1A` | Haupttext |
 | `--color-muted` | `#7A7A7A` | Sekundärtext |
 | `--color-primary` | `#2D5A3D` | Dunkelgrün — Aktionen, Links |
 | `--color-secondary` | `#2C4A6E` | Dunkelblau — Highlights, Akzente |
@@ -25,11 +34,11 @@
 
 ## Typografie
 
-- **Font**: Outfit (Google Fonts)
-- **Fallback**: system-ui, sans-serif
+- **Headlines**: Cormorant Garamond (serif)
+- **Body**: System sans-serif
+- **Mono**: JetBrains Mono
 - **Scale**: 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 48 / 60px
-- **Line Height**: tight (1.1) · normal (1.5) · relaxed (1.7)
-- **Letter Spacing**: headlines -0.02em, body 0
+- **Headline Tracking**: -0.02em
 
 ## Spacing
 
@@ -45,7 +54,6 @@
 
 - Cards: `0 1px 3px rgba(0,0,0,0.05)`
 - Hover: `0 4px 12px rgba(0,0,0,0.08)`
-- Kein Glow by default
 
 ## Anti-Patterns
 
@@ -58,7 +66,7 @@
 
 ## Workflow
 
-1. Token ändern → NEU berechnen
+1. Token ändern → neu berechnen
 2. Komponente bauen → Review
 3. Review bestanden → Commit
 4. Chunking: max 3 Dateien pro PR
@@ -66,4 +74,5 @@
 ## Referenz
 
 Tokens: `tokens/`
+Brand: `brand/`
 Komponenten: `components/`

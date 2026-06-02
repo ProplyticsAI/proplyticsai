@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" fill="none">
+  <g transform="translate(4, 4)">
+    <path d="M16 28C16 28 6 20 6 13C6 7.477 10.477 3 16 3C21.523 3 26 7.477 26 13C26 20 16 28 16 28Z" fill="#2D5A3D"></path>
+    <g fill="#FFFFFF" opacity="0.9">
+      <rect x="11" y="13" width="3" height="5" rx="0.5"></rect>
+      <rect x="14.5" y="10" width="3" height="8" rx="0.5"></rect>
+      <rect x="18" y="12" width="3" height="6" rx="0.5"></rect>
+    </g>
+  </g>
+  <text x="42" y="28" font-family="&#39;Cormorant Garamond&#39;, Georgia, serif" font-weight="500" font-size="26" fill="#1A1A1A" letter-spacing="0.4">proplytics</text>
+</svg>
