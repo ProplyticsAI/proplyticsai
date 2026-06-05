@@ -25,6 +25,7 @@ const COMPONENT_FILES = [
   'components/badge.css',
   'components/button.css',
   'components/card.css',
+  'components/chart.css',
   'components/checkbox-radio.css',
   'components/dropdown.css',
   'components/input.css',

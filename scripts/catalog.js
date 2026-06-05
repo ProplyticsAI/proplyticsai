@@ -20,6 +20,7 @@ const META = {
   'badge':          { label: 'Badge',            desc: 'subtle · solid · outline · dot · 6 Farben',     group: 'Anzeige' },
   'button':         { label: 'Button',           desc: 'primary · secondary · ghost · outline · icon',  group: 'Aktion'  },
   'card':           { label: 'Card',             desc: 'default · flat · interactive · accent · stat',  group: 'Layout'  },
+  'chart':          { label: 'Chart',             desc: 'Line · MultiLine · Bar · Donut · Sparkline',    group: 'Daten'   },
   'checkbox-radio': { label: 'Checkbox & Radio', desc: 'checked · indeterminate · card-variante',       group: 'Formular'},
   'dropdown':       { label: 'Dropdown',         desc: 'Aktionen, Checkmarks, Gruppen, danger',         group: 'Aktion'  },
   'input':          { label: 'Input / FormField',desc: 'text · select · textarea · icon · addon',       group: 'Formular'},

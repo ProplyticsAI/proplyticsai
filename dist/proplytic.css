@@ -1,7 +1,7 @@
 /*!
  * Proplytic.ai Design System v0.1.0
- * Generiert: 2026-06-05 22:25
- * 20 Dateien gebündelt
+ * Generiert: 2026-06-05 22:40
+ * 21 Dateien gebündelt
  */
 
 
@@ -854,6 +854,241 @@
   background-color: var(--color-border);
   margin: 0 var(--space-6);
 }
+
+/* ── components/chart.css ── */
+
+/**
+ * Proplytic.ai — Charts
+ * Styles für SVG-basierte Diagramme (chart.js)
+ */
+
+/* ── Wrapper ────────────────────────────── */
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* ── Grid ───────────────────────────────── */
+
+.chart-grid-line {
+  stroke: var(--color-border);
+  stroke-width: 1;
+  fill: none;
+}
+
+.chart-grid-base {
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+}
+
+/* ── Achsen ─────────────────────────────── */
+
+.chart-axis-text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--color-muted);
+}
+
+/* ── Line ───────────────────────────────── */
+
+.chart-line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chart-area {
+  opacity: 0.08;
+}
+
+/* ── Datenpunkte ────────────────────────── */
+
+.chart-point {
+  fill: var(--color-surface);
+  stroke-width: 2;
+  r: 4;
+  opacity: 0;
+  transition: opacity var(--transition-fast), r var(--transition-fast);
+}
+
+.chart-point.is-active {
+  opacity: 1;
+}
+
+.chart-hitbox {
+  cursor: crosshair;
+}
+
+/* ── Balken ─────────────────────────────── */
+
+.chart-bar {
+  transition: opacity var(--transition-fast);
+  opacity: 0.9;
+  cursor: pointer;
+}
+
+.chart-bar.is-hover {
+  opacity: 1;
+  filter: brightness(1.1);
+}
+
+/* ── Donut ──────────────────────────────── */
+
+.chart-donut-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+}
+
+.chart-donut-svg {
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.chart-donut-segment {
+  transition: stroke-width var(--transition-fast);
+  cursor: pointer;
+}
+
+.chart-donut-center-value {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 400;
+  fill: var(--color-foreground);
+  letter-spacing: -0.02em;
+}
+
+.chart-donut-center-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  fill: var(--color-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.chart-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 160px;
+}
+
+/* ── Sparkline ──────────────────────────── */
+
+.chart-sparkline {
+  display: block;
+  vertical-align: middle;
+}
+
+/* ── Legende ────────────────────────────── */
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-3);
+}
+
+.chart-legend-single {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+}
+
+.chart-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.chart-legend-value {
+  margin-left: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-foreground);
+  font-weight: 500;
+}
+
+/* ── Tooltip ────────────────────────────── */
+
+.chart-tooltip {
+  position: absolute;
+  background-color: #1C1C1C;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: var(--z-toast);
+  opacity: 0;
+  transform: translateY(2px);
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.chart-tooltip.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chart-tooltip strong {
+  color: #fff;
+  display: block;
+  font-weight: 600;
+  margin-bottom: 1px;
+}
+
+.chart-tooltip span {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ── Eintrags-Animation ─────────────────── */
+
+@keyframes chart-grow-up {
+  from { transform: scaleY(0); transform-origin: bottom; }
+  to   { transform: scaleY(1); transform-origin: bottom; }
+}
+
+.chart-bars .chart-bar {
+  animation: chart-grow-up 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.chart-bars .chart-bar:nth-child(1) { animation-delay: 0ms; }
+.chart-bars .chart-bar:nth-child(2) { animation-delay: 40ms; }
+.chart-bars .chart-bar:nth-child(3) { animation-delay: 80ms; }
+.chart-bars .chart-bar:nth-child(4) { animation-delay: 120ms; }
+.chart-bars .chart-bar:nth-child(5) { animation-delay: 160ms; }
+.chart-bars .chart-bar:nth-child(6) { animation-delay: 200ms; }
+.chart-bars .chart-bar:nth-child(7) { animation-delay: 240ms; }
+.chart-bars .chart-bar:nth-child(8) { animation-delay: 280ms; }
 
 /* ── components/checkbox-radio.css ── */
 
