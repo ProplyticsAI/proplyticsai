@@ -40,6 +40,7 @@ const COMPONENT_FILES = [
 ];
 
 const LAYOUT_FILES = [
+  'layouts/bewertung.css',
   'layouts/dashboard.css',
   'layouts/detail.css',
 ];

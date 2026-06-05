@@ -35,6 +35,7 @@ const META = {
 };
 
 const LAYOUT_META = {
+  'bewertung': { label: 'Bewertungsengine', desc: 'KI-Marktwert · Faktoren-Analyse · Vergleichsobjekte' },
   'dashboard': { label: 'Dashboard',        desc: 'Sidebar · Header · KPI-Grid · Aktivitäts-Feed' },
   'detail':    { label: 'Objekt-Detailseite', desc: 'Hero · KPI-Strip · Tabs · Analyse-Panel'     },
 };
