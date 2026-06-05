@@ -1,0 +1,199 @@
+/**
+ * Proplytic.ai — Switch (Toggle)
+ * Größen: sm · md (Standard) · lg
+ */
+
+/* ── Base ───────────────────────────────── */
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ── Track ──────────────────────────────── */
+
+.switch-track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: var(--color-border-strong);
+  border: 1.5px solid transparent;
+  flex-shrink: 0;
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-fast);
+}
+
+/* Thumb */
+.switch-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform var(--transition-base);
+}
+
+/* Checked */
+.switch input:checked ~ .switch-track {
+  background-color: var(--color-primary);
+}
+
+.switch input:checked ~ .switch-track::after {
+  transform: translateX(16px);
+}
+
+/* Focus */
+.switch input:focus-visible ~ .switch-track {
+  box-shadow: 0 0 0 3px var(--color-primary-muted);
+}
+
+/* Hover */
+.switch:hover .switch-track {
+  border-color: var(--color-border-strong);
+}
+
+.switch input:checked ~ .switch-track:hover,
+.switch:hover input:checked ~ .switch-track {
+  background-color: var(--color-primary-hover);
+}
+
+/* Disabled */
+.switch input:disabled ~ .switch-track {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.switch:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* ── Label ──────────────────────────────── */
+
+.switch-label {
+  font-size: var(--text-sm);
+  color: var(--color-foreground);
+  line-height: var(--leading-snug);
+}
+
+.switch-desc {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  margin-top: 1px;
+}
+
+/* ── Größen ─────────────────────────────── */
+
+.switch-sm .switch-track {
+  width: 28px;
+  height: 16px;
+  border-radius: 8px;
+}
+
+.switch-sm .switch-track::after {
+  width: 10px;
+  height: 10px;
+}
+
+.switch-sm input:checked ~ .switch-track::after {
+  transform: translateX(12px);
+}
+
+.switch-sm .switch-label {
+  font-size: var(--text-xs);
+}
+
+.switch-lg .switch-track {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+}
+
+.switch-lg .switch-track::after {
+  width: 16px;
+  height: 16px;
+}
+
+.switch-lg input:checked ~ .switch-track::after {
+  transform: translateX(20px);
+}
+
+.switch-lg .switch-label {
+  font-size: var(--text-base);
+}
+
+/* ── Status-Text ────────────────────────── */
+
+.switch-status {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  min-width: 28px;
+}
+
+.switch input:checked ~ .switch-status-on,
+.switch-status-off {
+  display: inline;
+}
+
+.switch-status-on {
+  display: none;
+  color: var(--color-primary);
+}
+
+.switch input:checked ~ * .switch-status-on {
+  display: inline;
+}
+
+/* ── Gruppe ─────────────────────────────── */
+
+.switch-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.switch-group-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  gap: var(--space-4);
+}
+
+.switch-group-item-info {
+  flex: 1;
+}
+
+.switch-group-item-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-foreground);
+}
+
+.switch-group-item-desc {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  margin-top: 2px;
+}
