@@ -1,0 +1,15 @@
+{
+  "name": "proplytic-design-system",
+  "version": "0.1.0",
+  "description": "Proplytic.ai Design System — Tokens, Komponenten, Layouts",
+  "private": true,
+  "scripts": {
+    "build":         "node scripts/build.js",
+    "tokens":        "node scripts/export-tokens.js",
+    "catalog":       "node scripts/catalog.js",
+    "build:all":     "node scripts/build.js && node scripts/export-tokens.js && node scripts/catalog.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
