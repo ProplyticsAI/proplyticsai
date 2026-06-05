@@ -981,6 +981,7 @@ function runAnalysis(mode) {
     populateResult(mode);
     btnExp.removeAttribute('disabled');
     btnSave.removeAttribute('disabled');
+    btnExp.onclick = openPdfReport;
   }, mode === 'quick' ? 1200 : 1600);
 }
 
@@ -1262,6 +1263,42 @@ exposeApplyBtn.addEventListener('click', () => {
 
 // Init
 switchMode('quick');
+
+/* ─────────────────────────────────────
+   PDF Export
+───────────────────────────────────── */
+function openPdfReport() {
+  const street = document.getElementById('r-address').textContent.split(',')[0] || 'Objekt';
+  const city   = document.getElementById('r-address').textContent.split(',').slice(1).join(',').trim() || '';
+  const isQuick = currentMode === 'quick';
+
+  const type = isQuick
+    ? document.getElementById('wq-type').value
+    : document.getElementById('f-type').value;
+  const size = isQuick
+    ? document.getElementById('wq-size').value
+    : document.getElementById('f-size').value;
+  const year = isQuick
+    ? document.getElementById('wq-year').value
+    : document.getElementById('f-year').value;
+
+  const modeLabels = { quick: 'Schnellanalyse', expose: 'Exposé-Import', full: 'Vollanalyse' };
+
+  const reportData = {
+    street,
+    city,
+    value:      document.getElementById('r-value').textContent,
+    range:      document.getElementById('r-range').textContent,
+    confidence: isQuick ? 74 : 87,
+    mode:       modeLabels[currentMode] || 'Vollanalyse',
+    type, size, year,
+    sqm:        document.getElementById('r-sqm').textContent,
+    addrShort:  document.getElementById('r-address').textContent,
+  };
+
+  try { sessionStorage.setItem('bewertung-report', JSON.stringify(reportData)); } catch (e) {}
+  window.open('bewertung-pdf.html', '_blank');
+}
 
 /* ─────────────────────────────────────
    IS24 Import
