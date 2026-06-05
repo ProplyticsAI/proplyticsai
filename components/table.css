@@ -1,0 +1,248 @@
+/**
+ * Proplytic.ai — Table
+ * Varianten: default · striped · bordered
+ * Features: sortierbar, fixe Kopfzeile, kompakt
+ */
+
+/* ── Wrapper ────────────────────────────── */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.table-wrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 3px;
+}
+
+/* ── Table ──────────────────────────────── */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+/* ── Head ───────────────────────────────── */
+
+.table thead th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-muted);
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.table thead th:first-child {
+  border-radius: var(--radius-lg) 0 0 0;
+  padding-left: var(--space-5);
+}
+
+.table thead th:last-child {
+  border-radius: 0 var(--radius-lg) 0 0;
+  padding-right: var(--space-5);
+}
+
+/* Sortierbar */
+
+.th-sortable {
+  cursor: pointer;
+  position: relative;
+  padding-right: var(--space-6) !important;
+}
+
+.th-sortable:hover {
+  color: var(--color-foreground);
+}
+
+.th-sort-icon {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.4;
+  transition: opacity var(--transition-fast);
+}
+
+.th-sortable:hover .th-sort-icon,
+.th-sort-asc .th-sort-icon,
+.th-sort-desc .th-sort-icon {
+  opacity: 1;
+  color: var(--color-primary);
+}
+
+/* ── Body ───────────────────────────────── */
+
+.table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-fast);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.table tbody td {
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-foreground);
+  vertical-align: middle;
+}
+
+.table tbody td:first-child {
+  padding-left: var(--space-5);
+}
+
+.table tbody td:last-child {
+  padding-right: var(--space-5);
+}
+
+/* ── Varianten ──────────────────────────── */
+
+.table-striped tbody tr:nth-child(even) {
+  background-color: var(--color-background);
+}
+
+.table-striped tbody tr:nth-child(even):hover {
+  background-color: var(--color-surface-hover);
+}
+
+.table-bordered td,
+.table-bordered th {
+  border-right: 1px solid var(--color-border);
+}
+
+.table-bordered td:last-child,
+.table-bordered th:last-child {
+  border-right: none;
+}
+
+/* ── Kompakt ─────────────────────────────── */
+
+.table-compact thead th {
+  padding: var(--space-2) var(--space-3);
+}
+
+.table-compact tbody td {
+  padding: var(--space-2) var(--space-3);
+}
+
+.table-compact thead th:first-child,
+.table-compact tbody td:first-child {
+  padding-left: var(--space-4);
+}
+
+.table-compact thead th:last-child,
+.table-compact tbody td:last-child {
+  padding-right: var(--space-4);
+}
+
+/* ── Hilfsklassen ────────────────────────── */
+
+.td-num {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.td-muted {
+  color: var(--color-muted);
+}
+
+.td-strong {
+  font-weight: var(--font-medium);
+}
+
+.td-nowrap {
+  white-space: nowrap;
+}
+
+/* ── Fußzeile ───────────────────────────── */
+
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  gap: var(--space-4);
+}
+
+.table-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: none;
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.page-btn:hover {
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  border-color: var(--color-border);
+}
+
+.page-btn.active {
+  background-color: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── Leere Tabelle ──────────────────────── */
+
+.table-empty {
+  text-align: center;
+  padding: var(--space-12) var(--space-6);
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
