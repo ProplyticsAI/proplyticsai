@@ -108,7 +108,14 @@
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
             <path d="M9 2L4 9h4l-1 5 5-7H8l1-5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          Schnellanalyse
+          Schnell
+        </button>
+        <button class="mode-btn expose" id="mode-expose">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M4 2h6l4 4v9a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M10 2v4h4M6 9h4M6 12h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Exposé
         </button>
         <button class="mode-btn" id="mode-full">
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
@@ -118,6 +125,134 @@
           Vollanalyse
         </button>
       </div>
+
+      <!-- ════════════════════════════════ -->
+      <!-- EXPOSÉ EXTRACTION               -->
+      <!-- ════════════════════════════════ -->
+      <div class="expose-panel" id="expose-panel" style="display:none">
+
+        <!-- Drop zone -->
+        <div class="expose-drop" id="expose-drop">
+          <input type="file" id="expose-file-input" accept=".pdf,.doc,.docx" style="display:none">
+          <div class="expose-drop-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M5 3h8l4 4v11a1 1 0 01-1 1H5a1 1 0 01-1-1V4a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M13 3v4h4M7 11h6M7 14h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div id="expose-drop-idle">
+            <div class="expose-drop-title" id="expose-drop-title">PDF oder Word-Exposé ablegen</div>
+            <div class="expose-drop-sub">oder</div>
+            <button class="expose-file-btn" id="expose-file-btn">Datei auswählen</button>
+          </div>
+          <div id="expose-drop-selected" style="display:none">
+            <div class="expose-file-name" id="expose-file-name"></div>
+            <button class="expose-remove-btn" id="expose-remove-btn">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 2l8 8M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Demo divider -->
+        <div class="expose-divider">Demo-Exposés</div>
+
+        <!-- Demo chips -->
+        <div class="expose-demos">
+          <button class="expose-demo-btn" data-demo="0">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 2h4.5L9 4.5V9H2V2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            Büro München
+          </button>
+          <button class="expose-demo-btn" data-demo="2">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 2h4.5L9 4.5V9H2V2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            Büro Berlin
+          </button>
+          <button class="expose-demo-btn" data-demo="5">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 2h4.5L9 4.5V9H2V2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            Wohnung München
+          </button>
+          <button class="expose-demo-btn" data-demo="1">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 2h4.5L9 4.5V9H2V2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            Einzelhandel HH
+          </button>
+        </div>
+
+        <!-- Extract CTA -->
+        <button class="expose-extract-btn" id="expose-extract-btn" disabled>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Eckdaten extrahieren
+        </button>
+
+        <!-- Progress -->
+        <div class="expose-progress" id="expose-progress" style="display:none">
+          <div class="expose-progress-title">Analyse läuft</div>
+          <div class="expose-step" id="ep-1">
+            <div class="expose-step-dot">
+              <span class="expose-step-num">1</span>
+              <span class="expose-step-spinner"></span>
+              <svg class="expose-step-check" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            Dokument laden
+          </div>
+          <div class="expose-step" id="ep-2">
+            <div class="expose-step-dot">
+              <span class="expose-step-num">2</span>
+              <span class="expose-step-spinner"></span>
+              <svg class="expose-step-check" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            Textstruktur erkennen
+          </div>
+          <div class="expose-step" id="ep-3">
+            <div class="expose-step-dot">
+              <span class="expose-step-num">3</span>
+              <span class="expose-step-spinner"></span>
+              <svg class="expose-step-check" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            Felder extrahieren
+          </div>
+          <div class="expose-step" id="ep-4">
+            <div class="expose-step-dot">
+              <span class="expose-step-num">4</span>
+              <span class="expose-step-spinner"></span>
+              <svg class="expose-step-check" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            Werte validieren
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="expose-results" id="expose-results" style="display:none">
+          <div class="expose-results-header">
+            <div class="expose-results-title">Extrahierte Eckdaten</div>
+            <div class="expose-results-meta" id="expose-results-meta">8 Felder · Ø 87 %</div>
+          </div>
+          <div class="expose-field-list" id="expose-field-list"></div>
+          <button class="expose-apply-btn" id="expose-apply-btn">
+            Zur Bewertung übernehmen →
+          </button>
+        </div>
+
+      </div><!-- /expose-panel -->
 
       <!-- ════════════════════════════════ -->
       <!-- SCHNELLANALYSE WIZARD           -->
@@ -689,10 +824,12 @@ let chartsRendered = false;
 /* ─────────────────────────────────────
    DOM refs
 ───────────────────────────────────── */
-const btnModeQuick = document.getElementById('mode-quick');
-const btnModeFull  = document.getElementById('mode-full');
-const wizard       = document.getElementById('wizard');
-const fullForm     = document.getElementById('full-form');
+const btnModeQuick  = document.getElementById('mode-quick');
+const btnModeExpose = document.getElementById('mode-expose');
+const btnModeFull   = document.getElementById('mode-full');
+const wizard        = document.getElementById('wizard');
+const exposePanel   = document.getElementById('expose-panel');
+const fullForm      = document.getElementById('full-form');
 
 const wizBack    = document.getElementById('wiz-back');
 const wizNext    = document.getElementById('wiz-next');
@@ -710,16 +847,20 @@ const stResult = document.getElementById('state-result');
 /* ─────────────────────────────────────
    Mode toggle
 ───────────────────────────────────── */
-btnModeQuick.addEventListener('click', () => switchMode('quick'));
-btnModeFull.addEventListener('click',  () => switchMode('full'));
+btnModeQuick.addEventListener('click',  () => switchMode('quick'));
+btnModeExpose.addEventListener('click', () => switchMode('expose'));
+btnModeFull.addEventListener('click',   () => switchMode('full'));
 
 function switchMode(mode) {
   currentMode = mode;
   btnModeQuick.classList.toggle('is-active', mode === 'quick');
   btnModeQuick.classList.toggle('quick',     mode === 'quick');
+  btnModeExpose.classList.toggle('is-active', mode === 'expose');
+  btnModeExpose.classList.toggle('expose',    mode === 'expose');
   btnModeFull.classList.toggle('is-active',  mode === 'full');
-  wizard.style.display   = mode === 'quick' ? '' : 'none';
-  fullForm.style.display = mode === 'full'  ? '' : 'none';
+  wizard.style.display      = mode === 'quick'  ? '' : 'none';
+  exposePanel.style.display = mode === 'expose' ? '' : 'none';
+  fullForm.style.display    = mode === 'full'   ? '' : 'none';
   if (mode === 'quick') goToStep(1);
 }
 
@@ -909,6 +1050,215 @@ function animateConfidence(pct) {
   arc.style.strokeDasharray = `${filled.toFixed(1)} ${gap.toFixed(1)}`;
   text.textContent = pct + ' %';
 }
+
+/* ─────────────────────────────────────
+   Exposé Extraction
+───────────────────────────────────── */
+
+const exposeFileInput  = document.getElementById('expose-file-input');
+const exposeFileBtn    = document.getElementById('expose-file-btn');
+const exposeRemoveBtn  = document.getElementById('expose-remove-btn');
+const exposeDrop       = document.getElementById('expose-drop');
+const exposeDropIdle   = document.getElementById('expose-drop-idle');
+const exposeDropSel    = document.getElementById('expose-drop-selected');
+const exposeFileName   = document.getElementById('expose-file-name');
+const exposeExtractBtn = document.getElementById('expose-extract-btn');
+const exposeProgress   = document.getElementById('expose-progress');
+const exposeResults    = document.getElementById('expose-results');
+const exposeFieldList  = document.getElementById('expose-field-list');
+const exposeApplyBtn   = document.getElementById('expose-apply-btn');
+const exposeDemoBtns   = document.querySelectorAll('.expose-demo-btn');
+
+let selectedExposeDemo = null; // index into IS24_MOCK
+let extractedData      = null;
+
+// Confidence levels per field
+function getExposeFields(data) {
+  return [
+    { key: 'Adresse',      val: data.street,              conf: 3 },
+    { key: 'PLZ / Stadt',  val: data.zip + ' ' + data.city, conf: 3 },
+    { key: 'Nutzungsart',  val: data.type,                conf: 3 },
+    { key: 'Fläche',       val: data.size + ' m²',        conf: 3 },
+    { key: 'Zimmer',       val: data.rooms !== '—' ? data.rooms + ' Zimmer' : 'Nicht angegeben', conf: data.rooms !== '—' ? 2 : 1 },
+    { key: 'Baujahr',      val: data.year,                conf: 2 },
+    { key: 'Zustand',      val: data.condition,           conf: 2 },
+    { key: 'Ausstattung',  val: data.features.length ? data.features.slice(0,3).join(', ') + (data.features.length > 3 ? ' +' + (data.features.length - 3) : '') : 'Keine Angabe', conf: data.features.length ? 2 : 1 },
+    { key: 'Angebotspreis',val: data.price ? data.price + ' €' : 'auf Anfrage', conf: data.price ? 2 : 1 },
+  ];
+}
+
+// Demo chip selection
+exposeDemoBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    exposeDemoBtns.forEach(b => b.classList.remove('is-selected'));
+    btn.classList.add('is-selected');
+    selectedExposeDemo = parseInt(btn.dataset.demo, 10);
+    // Reset file selection
+    setExposeFile(null);
+    exposeExtractBtn.disabled = false;
+    // Reset any previous results
+    resetExposeResults();
+  });
+});
+
+// File handling
+exposeFileBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  exposeFileInput.click();
+});
+
+exposeFileInput.addEventListener('change', () => {
+  const f = exposeFileInput.files[0];
+  if (f) setExposeFile(f);
+});
+
+exposeDrop.addEventListener('click', () => {
+  if (!exposeDrop.classList.contains('has-file')) exposeFileInput.click();
+});
+
+exposeDrop.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  exposeDrop.classList.add('is-dragover');
+});
+
+exposeDrop.addEventListener('dragleave', () => {
+  exposeDrop.classList.remove('is-dragover');
+});
+
+exposeDrop.addEventListener('drop', (e) => {
+  e.preventDefault();
+  exposeDrop.classList.remove('is-dragover');
+  const f = e.dataTransfer.files[0];
+  if (f && (f.name.endsWith('.pdf') || f.name.endsWith('.doc') || f.name.endsWith('.docx'))) {
+    setExposeFile(f);
+  }
+});
+
+exposeRemoveBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  setExposeFile(null);
+  exposeFileInput.value = '';
+  if (!selectedExposeDemo && selectedExposeDemo !== 0) {
+    exposeExtractBtn.disabled = true;
+  }
+});
+
+function setExposeFile(file) {
+  if (file) {
+    exposeDropIdle.style.display = 'none';
+    exposeDropSel.style.display  = '';
+    exposeFileName.textContent   = file.name;
+    exposeDrop.classList.add('has-file');
+    // File upload takes precedence over demo selection
+    exposeDemoBtns.forEach(b => b.classList.remove('is-selected'));
+    selectedExposeDemo = null;
+    exposeExtractBtn.disabled = false;
+    resetExposeResults();
+  } else {
+    exposeDropIdle.style.display = '';
+    exposeDropSel.style.display  = 'none';
+    exposeDrop.classList.remove('has-file');
+  }
+}
+
+function resetExposeResults() {
+  exposeProgress.style.display = 'none';
+  exposeResults.style.display  = 'none';
+  exposeFieldList.innerHTML    = '';
+  // Reset steps
+  ['ep-1','ep-2','ep-3','ep-4'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('is-active', 'is-done');
+  });
+}
+
+// Extract
+exposeExtractBtn.addEventListener('click', runExposeExtraction);
+
+function runExposeExtraction() {
+  // Pick data source: file → use hash of filename or last demo, demo → direct
+  let demoIdx = selectedExposeDemo;
+  if (demoIdx === null) {
+    // File uploaded: derive mock from filename length
+    const name = exposeFileInput.files[0]?.name || 'expose.pdf';
+    demoIdx = name.length % IS24_MOCK.length;
+  }
+  extractedData = IS24_MOCK[demoIdx];
+
+  // Hide CTA, show progress
+  exposeExtractBtn.disabled = true;
+  resetExposeResults();
+  exposeProgress.style.display = '';
+
+  const steps  = ['ep-1','ep-2','ep-3','ep-4'];
+  const delays = [0, 600, 1200, 1800];
+  const durations = [550, 550, 600, 500];
+
+  steps.forEach((id, i) => {
+    const el = document.getElementById(id);
+    // Start active after delay
+    setTimeout(() => {
+      el.classList.add('is-active');
+    }, delays[i]);
+    // Mark done after delay + duration
+    setTimeout(() => {
+      el.classList.remove('is-active');
+      el.classList.add('is-done');
+    }, delays[i] + durations[i]);
+  });
+
+  // Show results after all steps
+  setTimeout(() => {
+    exposeProgress.style.display = 'none';
+    showExposeResults(extractedData);
+    exposeExtractBtn.disabled = false;
+  }, 2600);
+}
+
+function showExposeResults(data) {
+  const fields = getExposeFields(data);
+
+  // Update meta
+  const avgConf = Math.round(fields.reduce((s, f) => s + f.conf, 0) / fields.length * 33.3);
+  document.getElementById('expose-results-meta').textContent =
+    fields.length + ' Felder · Ø ' + avgConf + ' %';
+
+  // Render rows with staggered animation
+  exposeFieldList.innerHTML = fields.map((f, i) =>
+    `<div class="expose-field-row" style="animation-delay:${i * 60}ms">
+      <span class="expose-field-key">${f.key}</span>
+      <span class="expose-field-val">${f.val}</span>
+      <span class="expose-conf" data-level="${f.conf}">
+        <span class="expose-conf-dot"></span>
+        <span class="expose-conf-dot"></span>
+        <span class="expose-conf-dot"></span>
+      </span>
+    </div>`
+  ).join('');
+
+  exposeResults.style.display = '';
+}
+
+// Apply extracted data to form
+exposeApplyBtn.addEventListener('click', () => {
+  if (!extractedData) return;
+  applyImportData(extractedData);
+
+  // Show import success chips
+  document.getElementById('import-input-row').style.display = 'none';
+  const chips = [
+    extractedData.type,
+    extractedData.size + ' m²',
+    extractedData.city,
+    'Bj. ' + extractedData.year,
+    extractedData.condition,
+  ];
+  document.getElementById('import-chips').innerHTML =
+    chips.map(c => `<span class="import-chip">${c}</span>`).join('');
+  document.getElementById('import-success').classList.add('is-visible');
+
+  switchMode('full');
+});
 
 // Init
 switchMode('quick');
