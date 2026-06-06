@@ -22,6 +22,12 @@
     <span class="training-header-title">Training-Dashboard</span>
     <div class="training-header-meta">
       <span class="training-version-badge">Modell v0.4.2</span>
+      <button class="training-header-btn-ghost" onclick="exportFeedback()">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+          <path d="M3 10v3h10v-3M8 3v7M5 8l3 2 3-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        CSV exportieren
+      </button>
       <a href="bewertung.html" class="training-header-btn">
         <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
           <path d="M8 3v8M5 8l3 3 3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="rotate(180 8 8)"/>
@@ -71,6 +77,70 @@
         <div class="training-kpi-label">Genauigkeit ±10 %</div>
         <div class="training-kpi-value">91,2 %</div>
         <div class="training-kpi-delta up">↑ 0,8 pp seit letztem Update</div>
+      </div>
+    </div>
+
+    <!-- ── ML-Pipeline ──────────────────────── -->
+    <div class="ml-pipeline-card">
+      <div class="ml-pipeline-header">
+        <div>
+          <div class="ml-pipeline-title">ML-Pipeline</div>
+          <div class="ml-pipeline-subtitle">Vom Nutzerfeedback zum verbesserten Modell — 5 Schritte</div>
+        </div>
+        <span class="ml-pipeline-badge">scikit-learn · FastAPI</span>
+      </div>
+      <div class="ml-pipeline-steps">
+
+        <div class="ml-step">
+          <div class="ml-step-num">1</div>
+          <div class="ml-step-body">
+            <div class="ml-step-label">Bewertung &amp; Feedback</div>
+            <div class="ml-step-desc">Nutzerin führt Bewertung durch, gibt tatsächlichen Verkaufspreis ein → wird in <code>localStorage</code> gespeichert</div>
+          </div>
+        </div>
+
+        <div class="ml-step-arrow">→</div>
+
+        <div class="ml-step">
+          <div class="ml-step-num">2</div>
+          <div class="ml-step-body">
+            <div class="ml-step-label">Export</div>
+            <div class="ml-step-desc">Oben auf <strong>CSV exportieren</strong> klicken → lädt <code>feedback.json</code> herunter</div>
+          </div>
+        </div>
+
+        <div class="ml-step-arrow">→</div>
+
+        <div class="ml-step">
+          <div class="ml-step-num">3</div>
+          <div class="ml-step-body">
+            <div class="ml-step-label">Konvertieren</div>
+            <pre class="ml-step-code">python3 ml/export_feedback.py \
+  --input feedback.json</pre>
+          </div>
+        </div>
+
+        <div class="ml-step-arrow">→</div>
+
+        <div class="ml-step">
+          <div class="ml-step-num">4</div>
+          <div class="ml-step-body">
+            <div class="ml-step-label">Trainieren</div>
+            <pre class="ml-step-code">python3 ml/train.py --merge</pre>
+          </div>
+        </div>
+
+        <div class="ml-step-arrow">→</div>
+
+        <div class="ml-step">
+          <div class="ml-step-num">5</div>
+          <div class="ml-step-body">
+            <div class="ml-step-label">API starten</div>
+            <pre class="ml-step-code">uvicorn ml.predict:app \
+  --port 8000</pre>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -373,6 +443,28 @@ recent.forEach(item => {
   `;
   tbody.appendChild(tr);
 });
+
+/* ─────────────────────────────────────
+   CSV / JSON Export
+───────────────────────────────────── */
+function exportFeedback() {
+  const raw  = localStorage.getItem('proplytic-feedback');
+  const data = raw ? JSON.parse(raw) : [];
+  if (!data.length) {
+    alert('Noch keine Feedback-Daten vorhanden.\nFühre zuerst eine Bewertung durch und gib den tatsächlichen Preis ein.');
+    return;
+  }
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `proplytic-feedback-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
 </script>
 
 </body>
