@@ -44,6 +44,7 @@ const LAYOUT_FILES = [
   'layouts/bewertung-pdf.css',
   'layouts/dashboard.css',
   'layouts/detail.css',
+  'layouts/training.css',
 ];
 
 // Google Fonts @import separat ans Dokument-Ende stellen
