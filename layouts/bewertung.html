@@ -802,19 +802,19 @@
           <div class="feedback-state feedback-state-vote" id="fb-state-vote">
             <div class="feedback-title">War die Bewertung hilfreich?</div>
             <div class="feedback-vote-row">
-              <button class="feedback-vote-btn" id="fb-vote-up" data-sentiment="up">
+              <button class="feedback-vote-btn" id="fb-vote-up" data-sentiment="up" disabled>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M6 14V8H3L8 2l5 6h-3v6H6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 Trifft zu
               </button>
-              <button class="feedback-vote-btn" id="fb-vote-approx" data-sentiment="approx">
+              <button class="feedback-vote-btn" id="fb-vote-approx" data-sentiment="approx" disabled>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M3 7q2-3 5-3t5 3M3 9q2 3 5 3t5-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 Ungefähr
               </button>
-              <button class="feedback-vote-btn" id="fb-vote-down" data-sentiment="down">
+              <button class="feedback-vote-btn" id="fb-vote-down" data-sentiment="down" disabled>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M10 2v6h3L8 14 3 8h3V2h4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -1100,6 +1100,9 @@ async function runAnalysis(mode) {
   btnExp.removeAttribute('disabled');
   btnSave.removeAttribute('disabled');
   btnExp.onclick = openPdfReport;
+  // Unlock feedback widget only after a real analysis has run
+  document.getElementById('fb-submit').removeAttribute('disabled');
+  document.querySelectorAll('.feedback-vote-btn').forEach(b => b.removeAttribute('disabled'));
 }
 
 function populateResult(mode, apiData = null) {
@@ -1666,7 +1669,8 @@ importClear.addEventListener('click', () => {
       const numericValue= parseInt(valueText.replace(/[^0-9]/g, ''), 10) || 0;
       const numericActual = fbActual.value ? parseInt(fbActual.value, 10) : null;
       const correctionText = fbCorrection.value.trim() || null;
-      const conf = isQuickMode ? 74 : 87;
+      const confText = document.getElementById('conf-text')?.textContent || '';
+      const conf = parseInt(confText) || (isQuickMode ? 74 : 87);
 
       const entry = {
         id:         Date.now().toString(36),
