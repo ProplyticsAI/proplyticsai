@@ -1,6 +1,6 @@
 /*!
  * Proplytic.ai Design System v0.1.0
- * Generiert: 2026-06-06 09:34
+ * Generiert: 2026-06-06 10:51
  * 24 Dateien gebündelt
  */
 
@@ -4806,6 +4806,23 @@ select.input {
   font-weight: var(--font-semibold);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  margin-left: var(--space-2);
+  vertical-align: middle;
+}
+
+/* Live API badge */
+.result-api-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  background: var(--color-teal-muted, rgba(58,167,181,0.14));
+  color: var(--color-teal, #3AA7B5);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs, 10px);
+  font-weight: var(--font-semibold);
+  letter-spacing: 0.04em;
   margin-left: var(--space-2);
   vertical-align: middle;
 }

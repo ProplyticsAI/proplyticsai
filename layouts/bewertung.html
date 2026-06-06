@@ -632,6 +632,9 @@
               <span class="result-mode-badge" id="r-mode-badge" style="display:none">
                 ⚡ Schnellanalyse
               </span>
+              <span class="result-api-badge" id="r-api-badge" style="display:none">
+                Live API
+              </span>
             </div>
             <div class="result-address" id="r-address">—</div>
             <div class="result-value" id="r-value">1.285.000 €</div>
@@ -799,19 +802,19 @@
           <div class="feedback-state feedback-state-vote" id="fb-state-vote">
             <div class="feedback-title">War die Bewertung hilfreich?</div>
             <div class="feedback-vote-row">
-              <button class="feedback-vote-btn" id="fb-vote-up" data-sentiment="up">
+              <button class="feedback-vote-btn" id="fb-vote-up" data-sentiment="up" disabled>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M6 14V8H3L8 2l5 6h-3v6H6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 Trifft zu
               </button>
-              <button class="feedback-vote-btn" id="fb-vote-approx" data-sentiment="approx">
+              <button class="feedback-vote-btn" id="fb-vote-approx" data-sentiment="approx" disabled>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M3 7q2-3 5-3t5 3M3 9q2 3 5 3t5-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 Ungefähr
               </button>
-              <button class="feedback-vote-btn" id="fb-vote-down" data-sentiment="down">
+              <button class="feedback-vote-btn" id="fb-vote-down" data-sentiment="down" disabled>
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M10 2v6h3L8 14 3 8h3V2h4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -1021,10 +1024,43 @@ function setResultStates(empty, skel, result) {
   stResult.className = 'result-content' + (result ? ' is-visible' : '');
 }
 
-function runAnalysis(mode) {
+/* ─────────────────────────────────────
+   API Payload Builder
+───────────────────────────────────── */
+const FEATURE_LABEL_MAP = {
+  'Aufzug': 'aufzug', 'Tiefgarage': 'tiefgarage', 'Balkon': 'balkon',
+  'Keller': 'keller', 'Einbauküche': 'einbaukueche', 'Parkett': 'parkett', 'Garten': 'garten',
+};
+
+function collectApiPayload(mode) {
+  const q = mode === 'quick';
+  const p = q ? 'wq' : 'f';
+
+  const typ    = document.getElementById(`${p}-type`)?.value        || 'Eigentumswohnung';
+  const size   = parseFloat(document.getElementById(`${p}-size`)?.value)  || 80;
+  const year   = parseInt(document.getElementById(`${p}-year`)?.value)    || 2000;
+  const city   = document.getElementById(`${p}-city`)?.value        || 'München';
+  const cond   = document.getElementById(`${p}-condition`)?.value   || 'Gepflegt';
+  const zimmer = Math.max(1, Math.round(size / 28));
+
+  const features = { balkon: false, aufzug: false, tiefgarage: false, keller: false, einbaukueche: false, parkett: false, garten: false };
+  if (!q) {
+    document.querySelectorAll('#full-form .feature-checkbox input[type="checkbox"]').forEach(cb => {
+      const lbl = cb.closest('.feature-checkbox')?.querySelector('.feature-label')?.textContent.trim();
+      const key = FEATURE_LABEL_MAP[lbl];
+      if (key) features[key] = cb.checked;
+    });
+  }
+
+  return { typ, wohnflaeche: size, zimmer, baujahr: year, zustand: cond, stadt: city, ...features };
+}
+
+/* ─────────────────────────────────────
+   Analysis (tries Live API, falls back to demo)
+───────────────────────────────────── */
+async function runAnalysis(mode) {
   chartsRendered = false;
 
-  // Show spinner on wizard next btn for quick mode
   if (mode === 'quick') {
     wizNextLbl.style.display = 'none';
     wizSpinner.style.display = 'block';
@@ -1033,56 +1069,77 @@ function runAnalysis(mode) {
 
   setResultStates(false, true, false);
 
-  setTimeout(() => {
-    // Reset button states
-    if (mode === 'quick') {
-      wizNextLbl.style.display = '';
-      wizSpinner.style.display = 'none';
-      wizNext.classList.remove('is-loading');
-    } else {
-      btnAnalyse.classList.remove('is-loading');
-    }
+  // Try live API (3 s timeout — silently fall back to demo on failure)
+  let apiData = null;
+  try {
+    const ctrl = new AbortController();
+    const tid  = setTimeout(() => ctrl.abort(), 3000);
+    const res  = await fetch('http://localhost:8000/predict', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(collectApiPayload(mode)),
+      signal:  ctrl.signal,
+    });
+    clearTimeout(tid);
+    if (res.ok) apiData = await res.json();
+  } catch (_) { /* API not running — use demo data */ }
 
-    setResultStates(false, false, true);
-    populateResult(mode);
-    btnExp.removeAttribute('disabled');
-    btnSave.removeAttribute('disabled');
-    btnExp.onclick = openPdfReport;
-  }, mode === 'quick' ? 1200 : 1600);
+  // Minimum UX delay
+  await new Promise(r => setTimeout(r, mode === 'quick' ? 900 : 1200));
+
+  if (mode === 'quick') {
+    wizNextLbl.style.display = '';
+    wizSpinner.style.display = 'none';
+    wizNext.classList.remove('is-loading');
+  } else {
+    btnAnalyse.classList.remove('is-loading');
+  }
+
+  setResultStates(false, false, true);
+  populateResult(mode, apiData);
+  btnExp.removeAttribute('disabled');
+  btnSave.removeAttribute('disabled');
+  btnExp.onclick = openPdfReport;
+  // Unlock feedback widget only after a real analysis has run
+  document.getElementById('fb-submit').removeAttribute('disabled');
+  document.querySelectorAll('.feedback-vote-btn').forEach(b => b.removeAttribute('disabled'));
 }
 
-function populateResult(mode) {
+function populateResult(mode, apiData = null) {
   const isQuick = mode === 'quick';
 
-  // Mode badge
+  // Mode + API badges
   document.getElementById('r-mode-badge').style.display = isQuick ? '' : 'none';
+  document.getElementById('r-api-badge').style.display  = apiData ? '' : 'none';
 
   // Address
-  let street, zip, city;
-  if (isQuick) {
-    street = document.getElementById('wq-street').value.trim() || 'Unbekannte Straße';
-    zip    = document.getElementById('wq-zip').value.trim();
-    city   = document.getElementById('wq-city').value || '';
-  } else {
-    street = document.getElementById('f-street').value.trim() || 'Unbekannte Straße';
-    zip    = document.getElementById('f-zip').value.trim();
-    city   = document.getElementById('f-city').value || '';
-  }
+  const pfx    = isQuick ? 'wq' : 'f';
+  const street = document.getElementById(`${pfx}-street`)?.value.trim() || 'Unbekannte Straße';
+  const zip    = document.getElementById(`${pfx}-zip`)?.value.trim() || '';
+  const city   = document.getElementById(`${pfx}-city`)?.value || '';
   document.getElementById('r-address').textContent = [street, [zip, city].filter(Boolean).join(' ')].filter(Boolean).join(', ');
 
   // Value tags
-  const type = isQuick ? document.getElementById('wq-type').value : document.getElementById('f-type').value;
-  const size = isQuick ? document.getElementById('wq-size').value : document.getElementById('f-size').value;
-  const year = isQuick ? document.getElementById('wq-year').value : document.getElementById('f-year').value;
+  const type = document.getElementById(`${pfx}-type`)?.value || '';
+  const size = document.getElementById(`${pfx}-size`)?.value || '';
+  const year = document.getElementById(`${pfx}-year`)?.value || '';
   document.getElementById('r-tags').innerHTML = `
     <span class="result-tag green">${type}${size ? ' · ' + size + ' m²' : ''}</span>
     <span class="result-tag blue">${city || 'Standort'}</span>
     ${year ? `<span class="result-tag warm">Baujahr ${year}</span>` : ''}
   `;
 
-  // Confidence: lower for quick mode
-  const conf = isQuick ? 74 : 87;
-  animateConfidence(conf);
+  // Price + confidence — live API or demo fallback
+  if (apiData) {
+    const fmt = n => n.toLocaleString('de-DE');
+    document.getElementById('r-value').textContent = fmt(apiData.predicted_price) + ' €';
+    document.getElementById('r-range').textContent = fmt(apiData.range_low) + ' – ' + fmt(apiData.range_high) + ' €';
+    animateConfidence(Math.round(apiData.confidence * 100));
+  } else {
+    document.getElementById('r-value').textContent = isQuick ? '895.000 €' : '1.285.000 €';
+    document.getElementById('r-range').textContent = isQuick ? '820.000 – 970.000 €' : '1.180.000 – 1.390.000 €';
+    animateConfidence(isQuick ? 74 : 87);
+  }
 
   // Charts (clear containers first)
   const trendEl = document.getElementById('chart-trend');
@@ -1612,7 +1669,8 @@ importClear.addEventListener('click', () => {
       const numericValue= parseInt(valueText.replace(/[^0-9]/g, ''), 10) || 0;
       const numericActual = fbActual.value ? parseInt(fbActual.value, 10) : null;
       const correctionText = fbCorrection.value.trim() || null;
-      const conf = isQuickMode ? 74 : 87;
+      const confText = document.getElementById('conf-text')?.textContent || '';
+      const conf = parseInt(confText) || (isQuickMode ? 74 : 87);
 
       const entry = {
         id:         Date.now().toString(36),
