@@ -1,29 +1,50 @@
-# Proplytic.ai Design System
+# proplytic.ai
 
-Design tokens und Komponenten-Standards für Proplytic.ai — Immobilienanalyse mit sicherer, anonymer KI.
+KI-gestützte Immobilienbewertung nach ImmoWertV 2024.
 
-## Struktur
+## Repo-Struktur
 
 ```
 proplytic-ai/
-├── tokens/        # Design Tokens (CSS Variablen, JSON)
-├── components/    # Komponenten-Muster (HTML/CSS Prototypen)
-├── layouts/      # Layout-Templates
-└── scripts/       # Build/Export Scripts
+├── pages/          # Next.js App (7 Seiten)
+├── components/     # React-Komponenten (brand, primitives, layout)
+├── public/         # Statische Assets (Logo, Gebäude-Render)
+├── styles/         # Globale CSS
+├── tokens/         # Design Tokens (CSS Variablen, JSON)
+├── layouts/        # HTML/CSS Layout-Templates
+├── ml/             # ML-Pipeline (Training, Prediction, Feedback)
+├── brand/          # SVG Logos
+├── dist/           # Build-Ausgabe (proplytic.css, tokens.json)
+└── scripts/        # Build/Export Scripts
 ```
 
-## Markenkerne
+## Next.js App starten
 
-- **Präzise** — Immobilienanalytik, keine Spielereien
-- **Modern** — Outfit Font, klare Geometrie
-- **Vertrauenswürdig** — Beige statt kalt Weiß, sanfte Akzente
+```bash
+npm install
+npm run dev   # http://localhost:3000
+```
 
-## Tokens
+## Design-System bauen
 
-Alle Design-Entscheidungen zentral in `tokens/`. Keine Hardcoded-Werte in Komponenten.
+```bash
+npm run design:build
+npm run design:tokens
+npm run design:catalog
+```
 
-## Workflow
+## Seiten
 
-- **Coding**: Claude Code
-- **Review**: Code Review vor Commit
-- **Chunking**: Kleine, fokussierte Änderungen
+| Route | Beschreibung |
+|-------|-------------|
+| `/` | Landing Page |
+| `/login` | Anmelden |
+| `/register` | Registrieren |
+| `/dashboard` | Portfolio-Übersicht |
+| `/analyse` | Kern-Bewertungstool |
+| `/comparison` | Objekt-Vergleich |
+| `/valuations` | Alle Bewertungen |
+
+## Design
+
+**Ledger/Nebel Theme** — Slate-Blau `#2E4150`, Teal `#3AA7B5`, DM Sans + Geist.

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>proplytic.ai — Redesign (Ledger)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Space+Grotesk:wght@400;500;600;700&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="proplytic-brand.jsx"></script>
+<script type="text/babel" src="proplytic-core.jsx"></script>
+<script type="text/babel" src="proplytic-app.jsx"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": "nebel",
+  "dark": false
+}/*EDITMODE-END*/;
+
+// Logo / Marken-Board
+function LogoBoard({ t }) {
+  const palette = [
+    ['Fläche', t.page], ['Karte', t.surface], ['Tinte', t.ink],
+    ['Schiefer', t.accent], ['Teal', t.highlight], ['Positiv', t.pos],
+  ];
+  return (
+    <div style={{ width: 720, height: 540, background: t.page, color: t.ink, fontFamily: t.sans, padding: 40, display: 'flex', flexDirection: 'column', gap: 14, position: 'relative', overflow: 'hidden' }}>
+      <ContourBg t={t} />
+      <div style={{ position: 'relative' }}>
+        <Cap t={t} color={t.highlight}>Markenzeichen — proplytic.ai</Cap>
+      </div>
+      {/* primary lockup with rendered building */}
+      <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: '1.15fr 1fr', gap: 16, height: 210 }}>
+        <div style={{ background: t.surface, border: `1px solid ${t.line}`, borderRadius: t.radiusLg, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', boxShadow: t.shadow }}>
+          <BuildingArt t={t} maxWidth={250} />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ flex: 1, background: t.surface, border: `1px solid ${t.line}`, borderRadius: t.radiusLg, display: 'grid', placeItems: 'center' }}>
+            <Logo t={t} size={38} />
+          </div>
+          <div style={{ flex: 1, background: t.ink, borderRadius: t.radiusLg, display: 'grid', placeItems: 'center' }}>
+            <Logo t={t} size={32} color={t.page} />
+          </div>
+        </div>
+      </div>
+      {/* marks + palette */}
+      <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: '1.15fr 1fr', gap: 16, height: 150 }}>
+        <div style={{ background: t.surface, border: `1px solid ${t.line}`, borderRadius: t.radiusLg, padding: 18, display: 'flex', alignItems: 'center', gap: 20, justifyContent: 'center' }}>
+          <BuildingTile t={t} size={56} />
+          <BuildingTile t={t} size={36} />
+          <Mark t={t} size={46} />
+          <Mark t={t} size={30} />
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {palette.map(([n, c]) => (
+            <div key={n} style={{ flex: 1 }}>
+              <div style={{ height: 84, borderRadius: t.radius, background: c, border: `1px solid ${t.line}` }} />
+              <div style={{ fontFamily: t.mono, fontSize: 8.5, letterSpacing: '.06em', textTransform: 'uppercase', color: t.faint, marginTop: 6 }}>{n}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const PAGES = [
+  ['logo', 'Marke & Logo', 'Wortmarke proplytic.ai + gerendertes Gebäude', (t) => <LogoBoard t={t} />, 720, 540],
+  ['landing', 'Landingpage', 'Marketing-Startseite — Hero, Funktionen, Bericht, Vertrauen', (t) => <LandingPage t={t} />, PAGE_W, 3780],
+  ['login', 'Anmelden', 'Login — Markenpanel + Formular', (t) => <LoginPage t={t} />, PAGE_W, 860],
+  ['register', 'Registrieren', 'Kontoerstellung', (t) => <RegisterPage t={t} />, PAGE_W, 860],
+  ['dashboard', 'Dashboard', 'Portal — Kennzahlen, Charts, letzte Bewertungen', (t) => <DashboardPage t={t} />, PAGE_W, 1040],
+  ['analyse', 'Analyse', 'Kern-Bewertungstool — Modi, Assistent, Ergebnisse, Karte', (t) => <AnalysePage t={t} />, PAGE_W, 1040],
+  ['comparison', 'Vergleich', 'Bis zu 4 Objekte vergleichen — Radar + Tabelle', (t) => <ComparisonPage t={t} />, PAGE_W, 1080],
+  ['valuations', 'Bewertungen', 'Portfolio-Liste — Filter + Karten', (t) => <ValuationsPage t={t} />, PAGE_W, 1040],
+];
+
+function App() {
+  const [tw, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const t = tw.dark ? THEMES.atlas : makeLedger(tw.palette);
+  const vlabel = tw.dark ? 'Atlas · dunkel' : 'Hell · ' + ((LEDGER_VARIANTS[tw.palette] || {}).vlabel || '');
+  return (
+    <React.Fragment>
+      <DesignCanvas>
+        {PAGES.map(([id, title, sub, render, w, h]) => (
+          <DCSection key={id} id={id} title={title} subtitle={sub}>
+            <DCArtboard id={id + '-main'} label={vlabel + ' · Teal-Highlight'} width={w} height={h}>
+              {render(t)}
+            </DCArtboard>
+          </DCSection>
+        ))}
+      </DesignCanvas>
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Palette — heller Neutralton" />
+        <TweakRadio label="Neutralton" value={tw.palette}
+          options={[{ value: 'klar', label: 'Klar' }, { value: 'nebel', label: 'Nebel' }, { value: 'porzellan', label: 'Porzellan' }]}
+          onChange={(v) => setTweak('palette', v)} />
+        <TweakSection label="Modus" />
+        <TweakToggle label="Dunkles Theme (Atlas)" value={tw.dark} onChange={(v) => setTweak('dark', v)} />
+      </TweaksPanel>
+    </React.Fragment>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

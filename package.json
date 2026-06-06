@@ -1,13 +1,21 @@
 {
-  "name": "proplytic-design-system",
+  "name": "proplytic-ai",
   "version": "0.1.0",
-  "description": "Proplytic.ai Design System — Tokens, Komponenten, Layouts",
+  "description": "proplytic.ai — KI-gestützte Immobilienbewertung",
   "private": true,
   "scripts": {
-    "build":         "node scripts/build.js",
-    "tokens":        "node scripts/export-tokens.js",
-    "catalog":       "node scripts/catalog.js",
-    "build:all":     "node scripts/build.js && node scripts/export-tokens.js && node scripts/catalog.js"
+    "dev":            "next dev",
+    "build":          "next build",
+    "start":          "next start",
+    "design:build":   "node scripts/build.js",
+    "design:tokens":  "node scripts/export-tokens.js",
+    "design:catalog": "node scripts/catalog.js",
+    "design:all":     "node scripts/build.js && node scripts/export-tokens.js && node scripts/catalog.js"
+  },
+  "dependencies": {
+    "next": "14.2.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "engines": {
     "node": ">=18"

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Proplytics — Redesign Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="brand.jsx"></script>
+<script type="text/babel" src="pages-core.jsx"></script>
+<script type="text/babel" src="pages-app.jsx"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel">
+const { ledger, atlas } = THEMES;
+
+// Logo / brand showcase board
+function LogoBoard({ t }) {
+  return (
+    <div style={{ width: 720, height: 540, background: t.page, color: t.ink, fontFamily: t.sans, padding: 44, display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+      <ContourBg t={t} />
+      <div style={{ position: 'relative' }}>
+        <Cap t={t} color={t.accent}>{t.key === 'ledger' ? '§ Markenzeichen — Ledger' : 'Markenzeichen — Atlas'}</Cap>
+        {/* primary lockup */}
+        <div style={{ marginTop: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 150, background: t.surface, border: `1px solid ${t.line}`, borderRadius: t.radiusLg }}>
+          <Logo t={t} size={56} />
+        </div>
+        {/* mark sizes + reversed */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 16 }}>
+          <div style={{ background: t.surface, border: `1px solid ${t.line}`, borderRadius: t.radiusLg, padding: 22, display: 'flex', alignItems: 'flex-end', gap: 20, justifyContent: 'center' }}>
+            <Mark t={t} size={56} /><Mark t={t} size={38} /><Mark t={t} size={24} />
+          </div>
+          <div style={{ background: t.mode === 'dark' ? t.sunken : t.ink, borderRadius: t.radiusLg, padding: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
+            <Mark t={t} size={40} />
+            <span style={{ fontFamily: t.display, fontWeight: 600, fontSize: 30, letterSpacing: '-0.015em', color: t.mode === 'dark' ? t.ink : t.page }}>Proplytics</span>
+          </div>
+        </div>
+        {/* palette */}
+        <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
+          {[['Page', t.page], ['Surface', t.surface], ['Ink', t.ink], ['Accent', t.accent], ['Positive', t.pos], ['Data', t.data]].map(([n, c]) => (
+            <div key={n} style={{ flex: 1 }}>
+              <div style={{ height: 44, borderRadius: t.radius, background: c, border: `1px solid ${t.line}` }} />
+              <div style={{ fontFamily: t.mono, fontSize: 9.5, letterSpacing: '.08em', textTransform: 'uppercase', color: t.faint, marginTop: 7 }}>{n}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const PAGES = [
+  ['logo', 'Brand & Logo', 'New mark — bars resolving into a gabled house', (t) => <LogoBoard t={t} />, 720, 540],
+  ['landing', 'Landing page', 'Marketing home — hero, features, report, trust', (t) => <LandingPage t={t} />, PAGE_W, 3780],
+  ['login', 'Sign in', 'Auth — split brand panel + form', (t) => <LoginPage t={t} />, PAGE_W, 860],
+  ['register', 'Register', 'Account creation', (t) => <RegisterPage t={t} />, PAGE_W, 860],
+  ['dashboard', 'Dashboard', 'Portal home — stats, charts, recent valuations', (t) => <DashboardPage t={t} />, PAGE_W, 1040],
+  ['analyse', 'Analyse', 'Core valuation tool — modes, assistant, results, map', (t) => <AnalysePage t={t} />, PAGE_W, 1040],
+  ['comparison', 'Comparison', 'Compare up to 4 objects — radar + table', (t) => <ComparisonPage t={t} />, PAGE_W, 1080],
+  ['valuations', 'Valuations', 'Portfolio list — filters + cards', (t) => <ValuationsPage t={t} />, PAGE_W, 1040],
+];
+
+function App() {
+  return (
+    <DesignCanvas>
+      {PAGES.map(([id, title, sub, render, w, h]) => (
+        <DCSection key={id} id={id} title={title} subtitle={sub}>
+          <DCArtboard id={id + '-ledger'} label="Ledger · light editorial" width={w} height={h}>
+            {render(ledger)}
+          </DCArtboard>
+          <DCArtboard id={id + '-atlas'} label="Atlas · dark cartographic" width={w} height={h}>
+            {render(atlas)}
+          </DCArtboard>
+        </DCSection>
+      ))}
+    </DesignCanvas>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>proplytic.ai — Kontor (verfeinert)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..600;1,6..96,400..600&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #F5F3EF; }
+  * { box-sizing: border-box; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="landing-shared.jsx"></script>
+<script type="text/babel" src="kontor-report.jsx"></script>
+<script type="text/babel" src="map-panel.jsx"></script>
+<script type="text/babel" src="direction-kontor-pro.jsx"></script>
+<script type="text/babel">
+  const FONTS = {
+    'Geist': "'Geist', system-ui, sans-serif",
+    'IBM Plex Sans': "'IBM Plex Sans', system-ui, sans-serif",
+    'Archivo': "'Archivo', system-ui, sans-serif",
+    'Hanken Grotesk': "'Hanken Grotesk', system-ui, sans-serif",
+  };
+
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "bodyFont": "Geist",
+    "accent": "#3050C8",
+    "blueUse": "dezent",
+    "monoLabels": true
+  }/*EDITMODE-END*/;
+
+  function App() {
+    const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+    return (
+      <React.Fragment>
+        <KontorPro
+          fontBody={FONTS[t.bodyFont] || FONTS.Geist}
+          accent={t.accent}
+          more={t.blueUse === 'mehr'}
+          mono={t.monoLabels}
+        />
+        <TweaksPanel>
+          <TweakSection label="Typografie" />
+          <TweakSelect label="Body-Schrift" value={t.bodyFont}
+            options={['Geist', 'IBM Plex Sans', 'Archivo', 'Hanken Grotesk']}
+            onChange={(v) => setTweak('bodyFont', v)} />
+          <TweakToggle label="Mono-Labels (technisch)" value={t.monoLabels}
+            onChange={(v) => setTweak('monoLabels', v)} />
+          <TweakSection label="Akzentfarbe" />
+          <TweakColor label="Akzent" value={t.accent}
+            options={['#3050C8', '#1E2F7A', '#2563EB', '#2D5A3D']}
+            onChange={(v) => setTweak('accent', v)} />
+          <TweakRadio label="Blau-Einsatz" value={t.blueUse} options={['dezent', 'mehr']}
+            onChange={(v) => setTweak('blueUse', v)} />
+        </TweaksPanel>
+      </React.Fragment>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
