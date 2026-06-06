@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chart — Proplytic.ai Design System</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="chart.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--color-background);
+      color: var(--color-foreground);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      padding: var(--space-16) var(--space-10);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: var(--text-5xl);
+      font-weight: var(--font-normal);
+      letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--space-2);
+    }
+    .page-subtitle {
+      font-size: var(--text-base);
+      color: var(--color-muted);
+      margin-bottom: var(--space-12);
+    }
+    .section {
+      margin-bottom: var(--space-16);
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-normal);
+      letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--space-2);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .section-desc {
+      font-size: var(--text-sm);
+      color: var(--color-muted);
+      margin-bottom: var(--space-6);
+    }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+    .chart-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-6);
+    }
+    @media (max-width: 900px) {
+      .chart-grid, .chart-grid-3 { grid-template-columns: 1fr; }
+    }
+    .chart-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-sm);
+    }
+    .chart-card-title {
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      color: var(--color-foreground);
+      margin-bottom: var(--space-1);
+    }
+    .chart-card-subtitle {
+      font-size: var(--text-xs);
+      color: var(--color-muted);
+      margin-bottom: var(--space-4);
+    }
+
+    /* Stat row with sparklines */
+    .stat-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .stat-table th {
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      color: var(--color-muted);
+      text-align: left;
+      padding: var(--space-2) var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .stat-table td {
+      font-size: var(--text-sm);
+      padding: var(--space-3) var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+      vertical-align: middle;
+    }
+    .stat-table tr:last-child td { border-bottom: none; }
+    .stat-table td:nth-child(3),
+    .stat-table td:nth-child(4) {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+    }
+    .stat-table td.up   { color: var(--color-success); }
+    .stat-table td.down { color: var(--color-error);   }
+    .stat-name {
+      font-weight: var(--font-medium);
+    }
+    .stat-loc {
+      font-size: var(--text-xs);
+      color: var(--color-muted);
+    }
+
+    footer {
+      margin-top: var(--space-16);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--color-border);
+      font-size: var(--text-xs);
+      color: var(--color-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">Charts</h1>
+  <p class="page-subtitle">SVG-basierte Diagramme für Immobilien-Analytics — kein externes Framework</p>
+
+  <!-- ── Line Chart ─────────────────────────────────── -->
+  <section class="section">
+    <h2 class="section-title">Line Chart</h2>
+    <p class="section-desc">Preisentwicklung über Quartale — Hover für Tooltip.</p>
+    <div class="chart-grid">
+
+      <div class="chart-card">
+        <div class="chart-card-title">Preisindex München (€/m²)</div>
+        <div class="chart-card-subtitle">Q1 2022 – Q4 2023 · Bestandswohnungen</div>
+        <div id="line-munich"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-title">Nettomietrendite (%)</div>
+        <div class="chart-card-subtitle">Q1 2022 – Q4 2023 · Büro-Portfolio</div>
+        <div id="line-yield"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Multi-Line Chart ───────────────────────────── -->
+  <section class="section">
+    <h2 class="section-title">Multi-Line Chart</h2>
+    <p class="section-desc">Mehrere Reihen im Vergleich — farbkodiert mit Legende.</p>
+    <div class="chart-card">
+      <div class="chart-card-title">Preisvergleich nach Stadt (€/m²)</div>
+      <div class="chart-card-subtitle">Q1 2022 – Q4 2023 · München · Hamburg · Berlin</div>
+      <div id="multiline-cities"></div>
+    </div>
+  </section>
+
+  <!-- ── Bar Charts ─────────────────────────────────── -->
+  <section class="section">
+    <h2 class="section-title">Bar Chart</h2>
+    <p class="section-desc">Vergleichende Balken mit Eintritts-Animation.</p>
+    <div class="chart-grid">
+
+      <div class="chart-card">
+        <div class="chart-card-title">Nettomietrendite nach Objekt (%)</div>
+        <div class="chart-card-subtitle">Portfolio-Überblick · 8 Objekte</div>
+        <div id="bar-yield"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-title">Leerstandsquote nach Standort (%)</div>
+        <div class="chart-card-subtitle">Aktuelle Periode · 6 Städte</div>
+        <div id="bar-vacancy"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Donut Charts ───────────────────────────────── -->
+  <section class="section">
+    <h2 class="section-title">Donut Chart</h2>
+    <p class="section-desc">Anteil-Darstellung mit interaktivem Hover und Legende.</p>
+    <div class="chart-grid">
+
+      <div class="chart-card">
+        <div class="chart-card-title">Portfolio-Zusammensetzung</div>
+        <div class="chart-card-subtitle">Nach Nutzungsart · Gesamt 142 Mio. €</div>
+        <div id="donut-portfolio"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-card-title">Mieterstruktur</div>
+        <div class="chart-card-subtitle">Nach Laufzeit · Anteil der Mietfläche</div>
+        <div id="donut-tenants"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Sparklines in Tabelle ─────────────────────── -->
+  <section class="section">
+    <h2 class="section-title">Sparklines</h2>
+    <p class="section-desc">Mini-Linien inline in Tabellen oder Stat-Karten.</p>
+    <div class="chart-card">
+      <div class="chart-card-title">Objekt-Übersicht</div>
+      <div class="chart-card-subtitle">KPIs der letzten 8 Quartale</div>
+      <table class="stat-table">
+        <thead>
+          <tr>
+            <th>Objekt</th>
+            <th>Trend</th>
+            <th>Aktuell</th>
+            <th>Δ YoY</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="stat-name">Maximilianstr. 12</div>
+              <div class="stat-loc">München · Büro</div>
+            </td>
+            <td><span id="spark-1"></span></td>
+            <td>8.450 €/m²</td>
+            <td class="up">+4,2 %</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="stat-name">Jungfernstieg 8</div>
+              <div class="stat-loc">Hamburg · Einzelhandel</div>
+            </td>
+            <td><span id="spark-2"></span></td>
+            <td>5.980 €/m²</td>
+            <td class="up">+1,8 %</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="stat-name">Friedrichstr. 120</div>
+              <div class="stat-loc">Berlin · Büro</div>
+            </td>
+            <td><span id="spark-3"></span></td>
+            <td>4.320 €/m²</td>
+            <td class="down">−0,6 %</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="stat-name">Königsallee 56</div>
+              <div class="stat-loc">Düsseldorf · Einzelhandel</div>
+            </td>
+            <td><span id="spark-4"></span></td>
+            <td>6.100 €/m²</td>
+            <td class="up">+2,9 %</td>
+          </tr>
+          <tr>
+            <td>
+              <div class="stat-name">Zeil 106</div>
+              <div class="stat-loc">Frankfurt · Logistik</div>
+            </td>
+            <td><span id="spark-5"></span></td>
+            <td>3.750 €/m²</td>
+            <td class="down">−1,4 %</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>Proplytic.ai Design System · Charts</span>
+    <span>chart.js · chart.css</span>
+  </footer>
+
+  <script src="chart.js"></script>
+  <script>
+    /* ── Line: München Preisindex ─────────────────── */
+    PropChart.Line(document.getElementById('line-munich'), {
+      labels: ['Q1 22','Q2 22','Q3 22','Q4 22','Q1 23','Q2 23','Q3 23','Q4 23'],
+      values: [8100, 8380, 8520, 8290, 8150, 8410, 8650, 8450],
+    }, {
+      unit:   '€/m²',
+      color:  'var(--color-primary)',
+      height: 200,
+      area:   true,
+    });
+
+    /* ── Line: Mietrendite ────────────────────────── */
+    PropChart.Line(document.getElementById('line-yield'), {
+      labels: ['Q1 22','Q2 22','Q3 22','Q4 22','Q1 23','Q2 23','Q3 23','Q4 23'],
+      values: [3.8, 3.6, 3.5, 3.7, 3.9, 4.1, 4.0, 3.8],
+    }, {
+      unit:   '%',
+      color:  'var(--color-secondary)',
+      height: 200,
+      area:   true,
+    });
+
+    /* ── MultiLine: Städtevergleich ───────────────── */
+    PropChart.MultiLine(document.getElementById('multiline-cities'), [
+      {
+        label: 'München',
+        values: [8100, 8380, 8520, 8290, 8150, 8410, 8650, 8450],
+        color: 'var(--color-chart-1)',
+      },
+      {
+        label: 'Hamburg',
+        values: [5800, 5950, 6100, 5980, 5870, 6020, 6180, 5980],
+        color: 'var(--color-chart-2)',
+      },
+      {
+        label: 'Berlin',
+        values: [4500, 4620, 4780, 4650, 4520, 4610, 4720, 4320],
+        color: 'var(--color-chart-3)',
+      },
+    ], {
+      labels: ['Q1 22','Q2 22','Q3 22','Q4 22','Q1 23','Q2 23','Q3 23','Q4 23'],
+      unit:   '€/m²',
+      height: 260,
+    });
+
+    /* ── Bar: Nettomietrendite ────────────────────── */
+    PropChart.Bar(document.getElementById('bar-yield'), {
+      labels: ['Max. 12','Jungfern.','Friedr.','Königsall.','Zeil 106','Kaiserstr.','Gärtner.','Schiller.'],
+      values: [4.2, 3.8, 3.1, 5.1, 4.7, 3.5, 4.9, 3.3],
+    }, {
+      unit:   '%',
+      color:  'var(--color-primary)',
+      height: 220,
+    });
+
+    /* ── Bar: Leerstand ──────────────────────────── */
+    PropChart.Bar(document.getElementById('bar-vacancy'), {
+      labels: ['München','Hamburg','Berlin','Frankfurt','Köln','Stuttgart'],
+      values: [2.1, 3.4, 5.8, 4.2, 6.1, 3.7],
+    }, {
+      unit:   '%',
+      color:  'var(--color-chart-4)',
+      height: 220,
+    });
+
+    /* ── Donut: Portfolio ────────────────────────── */
+    PropChart.Donut(document.getElementById('donut-portfolio'), [
+      { label: 'Büro',         value: 58, color: 'var(--color-chart-1)' },
+      { label: 'Wohnen',       value: 22, color: 'var(--color-chart-2)' },
+      { label: 'Logistik',     value: 12, color: 'var(--color-chart-3)' },
+      { label: 'Einzelhandel', value:  8, color: 'var(--color-chart-4)' },
+    ], {
+      centerValue: '142',
+      centerLabel: 'Mio. €',
+    });
+
+    /* ── Donut: Mieterstruktur ───────────────────── */
+    PropChart.Donut(document.getElementById('donut-tenants'), [
+      { label: '> 5 Jahre',  value: 41, color: 'var(--color-primary)'   },
+      { label: '3–5 Jahre',  value: 28, color: 'var(--color-secondary)' },
+      { label: '1–3 Jahre',  value: 22, color: 'var(--color-chart-3)'   },
+      { label: '< 1 Jahr',   value:  9, color: 'var(--color-warning)'   },
+    ], {
+      centerValue: '91 %',
+      centerLabel: 'Vermietung',
+    });
+
+    /* ── Sparklines ──────────────────────────────── */
+    PropChart.sparkline(document.getElementById('spark-1'),
+      [7800, 8050, 8200, 8100, 8000, 8300, 8400, 8450]);
+    PropChart.sparkline(document.getElementById('spark-2'),
+      [5600, 5750, 5900, 5800, 5750, 5900, 5950, 5980]);
+    PropChart.sparkline(document.getElementById('spark-3'),
+      [4600, 4700, 4800, 4600, 4500, 4550, 4400, 4320]);
+    PropChart.sparkline(document.getElementById('spark-4'),
+      [5700, 5800, 5900, 5950, 5880, 5950, 6050, 6100]);
+    PropChart.sparkline(document.getElementById('spark-5'),
+      [4100, 4000, 3950, 3900, 3850, 3800, 3780, 3750]);
+  </script>
+
+</body>
+</html>

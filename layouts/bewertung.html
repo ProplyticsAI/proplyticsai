@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bewertungsengine — Proplytic.ai</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="bewertung.css">
+  <link rel="stylesheet" href="../components/chart.css">
+</head>
+<body>
+
+<div class="bewertung-shell">
+
+  <!-- ── Header ──────────────────────────── -->
+  <header class="bewertung-header">
+    <a href="#" class="bewertung-header-logo">
+      <img src="../brand/logo-pin.svg" alt="" width="22" height="22">
+      Proplytic.ai
+    </a>
+    <span class="bewertung-header-sep">/</span>
+    <span class="bewertung-header-title">Bewertungsengine</span>
+    <div class="bewertung-header-actions">
+      <button class="bew-btn-ghost" id="btn-export" disabled>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M14 10v3a1 1 0 01-1 1H3a1 1 0 01-1-1v-3M8 10V2M5 5l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Exportieren
+      </button>
+      <button class="bew-btn-ghost" id="btn-save" disabled>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M12 14H4a1 1 0 01-1-1V3a1 1 0 011-1h6l3 3v8a1 1 0 01-1 1z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10 14v-4H6v4M6 2v3h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Speichern
+      </button>
+    </div>
+  </header>
+
+  <!-- ── Main ────────────────────────────── -->
+  <div class="bewertung-main">
+
+    <!-- ── Input Panel ──────────────────── -->
+    <aside class="bewertung-input">
+
+      <div>
+        <h1 class="input-panel-title">Objekt<br>bewerten</h1>
+        <p class="input-panel-subtitle">KI-gestützte Marktwertanalyse auf Basis von Vergleichsobjekten und Standortdaten.</p>
+      </div>
+
+      <!-- IS24 Import -->
+      <div class="import-strip" id="import-strip">
+        <div class="import-strip-head">
+          <div class="import-strip-logo">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M6 1L1 5v6h4V8h2v3h4V5L6 1z" fill="#fff"/>
+            </svg>
+          </div>
+          <span class="import-strip-name">ImmoScout24-Import</span>
+          <span class="import-strip-hint">Expose-Link einfügen</span>
+        </div>
+        <div class="import-strip-body">
+          <div class="import-input-row" id="import-input-row">
+            <input
+              class="import-url-input"
+              id="import-url"
+              type="url"
+              placeholder="https://www.immobilienscout24.de/expose/…"
+              autocomplete="off"
+            >
+            <button class="import-btn" id="import-btn">
+              <svg class="import-btn-icon" width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M8 3v8M5 8l3 3 3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="import-btn-spinner"></span>
+              Import
+            </button>
+          </div>
+          <div class="import-error" id="import-error">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8 5v3M8 10v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Kein gültiger ImmoScout24-Link. Bitte Expose-URL einfügen.
+          </div>
+          <div class="import-success" id="import-success">
+            <div class="import-success-bar">
+              <div class="import-success-icon">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class="import-success-label">Daten importiert</span>
+              <button class="import-clear-btn" id="import-clear" title="Zurücksetzen">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 2l8 8M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+            <div class="import-chips" id="import-chips"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mode toggle -->
+      <div class="mode-toggle">
+        <button class="mode-btn is-active quick" id="mode-quick">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M9 2L4 9h4l-1 5 5-7H8l1-5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Schnell
+        </button>
+        <button class="mode-btn expose" id="mode-expose">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M4 2h6l4 4v9a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M10 2v4h4M6 9h4M6 12h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Exposé
+        </button>
+        <button class="mode-btn" id="mode-full">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <rect x="2" y="2" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Vollanalyse
+        </button>
+      </div>
+
+      <!-- ════════════════════════════════ -->
+      <!-- EXPOSÉ EXTRACTION               -->
+      <!-- ════════════════════════════════ -->
+      <div class="expose-panel" id="expose-panel" style="display:none">
+
+        <!-- Drop zone -->
+        <div class="expose-drop" id="expose-drop">
+          <input type="file" id="expose-file-input" accept=".pdf,.doc,.docx" style="display:none">
+          <div class="expose-drop-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M5 3h8l4 4v11a1 1 0 01-1 1H5a1 1 0 01-1-1V4a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M13 3v4h4M7 11h6M7 14h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div id="expose-drop-idle">
+            <div class="expose-drop-title" id="expose-drop-title">PDF oder Word-Exposé ablegen</div>
+            <div class="expose-drop-sub">oder</div>
+            <button class="expose-file-btn" id="expose-file-btn">Datei auswählen</button>
+          </div>
+          <div id="expose-drop-selected" style="display:none">
+            <div class="expose-file-name" id="expose-file-name"></div>
+            <button class="expose-remove-btn" id="expose-remove-btn">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 2l8 8M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Demo divider -->
+        <div class="expose-divider">Demo-Exposés</div>
+
+        <!-- Demo chips -->
+        <div class="expose-demos">
+          <button class="expose-demo-btn" data-demo="0">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 2h4.5L9 4.5V9H2V2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            Büro München
+          </button>
+          <button class="expose-demo-btn" data-demo="2">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 2h4.5L9 4.5V9H2V2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            Büro Berlin
+          </button>
+          <button class="expose-demo-btn" data-demo="5">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 2h4.5L9 4.5V9H2V2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            Wohnung München
+          </button>
+          <button class="expose-demo-btn" data-demo="1">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M2 2h4.5L9 4.5V9H2V2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            Einzelhandel HH
+          </button>
+        </div>
+
+        <!-- Extract CTA -->
+        <button class="expose-extract-btn" id="expose-extract-btn" disabled>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5 8l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Eckdaten extrahieren
+        </button>
+
+        <!-- Progress -->
+        <div class="expose-progress" id="expose-progress" style="display:none">
+          <div class="expose-progress-title">Analyse läuft</div>
+          <div class="expose-step" id="ep-1">
+            <div class="expose-step-dot">
+              <span class="expose-step-num">1</span>
+              <span class="expose-step-spinner"></span>
+              <svg class="expose-step-check" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            Dokument laden
+          </div>
+          <div class="expose-step" id="ep-2">
+            <div class="expose-step-dot">
+              <span class="expose-step-num">2</span>
+              <span class="expose-step-spinner"></span>
+              <svg class="expose-step-check" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            Textstruktur erkennen
+          </div>
+          <div class="expose-step" id="ep-3">
+            <div class="expose-step-dot">
+              <span class="expose-step-num">3</span>
+              <span class="expose-step-spinner"></span>
+              <svg class="expose-step-check" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            Felder extrahieren
+          </div>
+          <div class="expose-step" id="ep-4">
+            <div class="expose-step-dot">
+              <span class="expose-step-num">4</span>
+              <span class="expose-step-spinner"></span>
+              <svg class="expose-step-check" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            Werte validieren
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div class="expose-results" id="expose-results" style="display:none">
+          <div class="expose-results-header">
+            <div class="expose-results-title">Extrahierte Eckdaten</div>
+            <div class="expose-results-meta" id="expose-results-meta">8 Felder · Ø 87 %</div>
+          </div>
+          <div class="expose-field-list" id="expose-field-list"></div>
+          <button class="expose-apply-btn" id="expose-apply-btn">
+            Zur Bewertung übernehmen →
+          </button>
+        </div>
+
+      </div><!-- /expose-panel -->
+
+      <!-- ════════════════════════════════ -->
+      <!-- SCHNELLANALYSE WIZARD           -->
+      <!-- ════════════════════════════════ -->
+      <div id="wizard">
+
+        <!-- Step track -->
+        <div class="wiz-track">
+          <div class="wiz-step">
+            <div class="wiz-dot is-active" id="wdot-1">1</div>
+            <span class="wiz-label">Lage</span>
+          </div>
+          <div class="wiz-connector" id="wcon-1"></div>
+          <div class="wiz-step">
+            <div class="wiz-dot" id="wdot-2">2</div>
+            <span class="wiz-label">Objekt</span>
+          </div>
+          <div class="wiz-connector" id="wcon-2"></div>
+          <div class="wiz-step">
+            <div class="wiz-dot" id="wdot-3">3</div>
+            <span class="wiz-label">Prüfen</span>
+          </div>
+        </div>
+
+        <!-- Step panels -->
+        <div class="wiz-panels">
+
+          <!-- Step 1: Lage -->
+          <div class="wiz-panel is-active" id="wpanel-1">
+            <div class="wiz-panel-title">Wo befindet sich das Objekt?</div>
+            <div class="input-grid full">
+              <div class="form-field">
+                <label class="form-label">Straße &amp; Hausnummer</label>
+                <input class="form-input" id="wq-street" type="text" placeholder="z.B. Maximilianstraße 12" autocomplete="off">
+              </div>
+            </div>
+            <div class="input-grid">
+              <div class="form-field">
+                <label class="form-label">PLZ</label>
+                <input class="form-input" id="wq-zip" type="text" placeholder="80539" maxlength="5">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Stadt</label>
+                <div class="form-select-wrapper">
+                  <select class="form-select" id="wq-city">
+                    <option value="">— wählen —</option>
+                    <option>München</option>
+                    <option>Hamburg</option>
+                    <option>Berlin</option>
+                    <option>Frankfurt</option>
+                    <option>Düsseldorf</option>
+                    <option>Stuttgart</option>
+                    <option>Köln</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Objekt -->
+          <div class="wiz-panel" id="wpanel-2">
+            <div class="wiz-panel-title">Was für ein Objekt?</div>
+            <div class="input-grid">
+              <div class="form-field">
+                <label class="form-label">Nutzungsart</label>
+                <div class="form-select-wrapper">
+                  <select class="form-select" id="wq-type">
+                    <option>Eigentumswohnung</option>
+                    <option>Einfamilienhaus</option>
+                    <option>Mehrfamilienhaus</option>
+                    <option>Büro</option>
+                    <option>Einzelhandel</option>
+                    <option>Logistik</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Fläche (m²)</label>
+                <input class="form-input" id="wq-size" type="number" placeholder="120" min="20" max="5000">
+              </div>
+            </div>
+            <div class="input-grid">
+              <div class="form-field">
+                <label class="form-label">Baujahr</label>
+                <input class="form-input" id="wq-year" type="number" placeholder="2000" min="1850" max="2025">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Zustand</label>
+                <div class="form-select-wrapper">
+                  <select class="form-select" id="wq-condition">
+                    <option>Renovierungsbedarf</option>
+                    <option>Gepflegt</option>
+                    <option selected>Gut</option>
+                    <option>Sehr gut</option>
+                    <option>Neuwertig</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Prüfen & Starten -->
+          <div class="wiz-panel" id="wpanel-3">
+            <div class="wiz-panel-title">Angaben prüfen</div>
+            <div class="wiz-summary" id="wiz-summary">
+              <div class="wiz-summary-row">
+                <span class="wiz-summary-key">Adresse</span>
+                <span class="wiz-summary-val" id="ws-address">—</span>
+              </div>
+              <div class="wiz-summary-row">
+                <span class="wiz-summary-key">Stadt</span>
+                <span class="wiz-summary-val" id="ws-city">—</span>
+              </div>
+              <div class="wiz-summary-row">
+                <span class="wiz-summary-key">Nutzungsart</span>
+                <span class="wiz-summary-val" id="ws-type">—</span>
+              </div>
+              <div class="wiz-summary-row">
+                <span class="wiz-summary-key">Fläche</span>
+                <span class="wiz-summary-val" id="ws-size">—</span>
+              </div>
+              <div class="wiz-summary-row">
+                <span class="wiz-summary-key">Baujahr</span>
+                <span class="wiz-summary-val" id="ws-year">—</span>
+              </div>
+              <div class="wiz-summary-row" style="border-bottom:none">
+                <span class="wiz-summary-key">Zustand</span>
+                <span class="wiz-summary-val" id="ws-condition">—</span>
+              </div>
+            </div>
+            <div class="wiz-quick-hint">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 7v4M8 5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              Schnellanalyse liefert eine erste Einschätzung. Für vollständige Faktor-Analyse und höhere Konfidenz → Vollanalyse nutzen.
+            </div>
+          </div>
+
+        </div><!-- /wiz-panels -->
+
+        <!-- Navigation (steps 1 + 2) -->
+        <div class="wiz-nav" id="wiz-nav">
+          <button class="wiz-back-btn" id="wiz-back" disabled>← Zurück</button>
+          <button class="wiz-next-btn" id="wiz-next">
+            <span id="wiz-next-label">Weiter →</span>
+            <span class="analyse-btn-spinner" id="wiz-spinner" style="display:none;width:14px;height:14px;border-width:2px;"></span>
+          </button>
+        </div>
+
+      </div><!-- /wizard -->
+
+      <!-- ════════════════════════════════ -->
+      <!-- VOLLANALYSE FORM                -->
+      <!-- ════════════════════════════════ -->
+      <div id="full-form" style="display:none">
+
+        <!-- Lage -->
+        <div class="input-section">
+          <div class="input-section-header">
+            <div class="input-section-icon green">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 2C5.24 2 3 4.24 3 7c0 3.5 5 9 5 9s5-5.5 5-9c0-2.76-2.24-5-5-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="input-section-title">Lage</span>
+            <span class="input-section-step">01</span>
+          </div>
+          <div class="input-grid full">
+            <div class="form-field">
+              <label class="form-label">Straße &amp; Hausnummer</label>
+              <input class="form-input" id="f-street" type="text" placeholder="z.B. Maximilianstraße 12" value="Maximilianstraße 12">
+            </div>
+          </div>
+          <div class="input-grid">
+            <div class="form-field">
+              <label class="form-label">PLZ</label>
+              <input class="form-input" id="f-zip" type="text" placeholder="80539" value="80539" maxlength="5">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Stadt</label>
+              <div class="form-select-wrapper">
+                <select class="form-select" id="f-city">
+                  <option>München</option>
+                  <option>Hamburg</option>
+                  <option>Berlin</option>
+                  <option>Frankfurt</option>
+                  <option>Düsseldorf</option>
+                  <option>Stuttgart</option>
+                  <option>Köln</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Objekt -->
+        <div class="input-section">
+          <div class="input-section-header">
+            <div class="input-section-icon blue">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2 14V7l6-5 6 5v7H2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M6 14v-4h4v4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="input-section-title">Objekt</span>
+            <span class="input-section-step">02</span>
+          </div>
+          <div class="input-grid">
+            <div class="form-field">
+              <label class="form-label">Nutzungsart</label>
+              <div class="form-select-wrapper">
+                <select class="form-select" id="f-type">
+                  <option>Eigentumswohnung</option>
+                  <option>Einfamilienhaus</option>
+                  <option>Mehrfamilienhaus</option>
+                  <option selected>Büro</option>
+                  <option>Einzelhandel</option>
+                  <option>Logistik</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Wohnfläche (m²)</label>
+              <input class="form-input" id="f-size" type="number" placeholder="120" value="152" min="20" max="5000">
+            </div>
+          </div>
+          <div class="input-grid">
+            <div class="form-field">
+              <label class="form-label">Baujahr</label>
+              <input class="form-input" id="f-year" type="number" placeholder="1990" value="1998" min="1850" max="2025">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Stockwerk</label>
+              <div class="form-select-wrapper">
+                <select class="form-select" id="f-floor">
+                  <option>EG</option>
+                  <option>1. OG</option>
+                  <option selected>2. OG</option>
+                  <option>3. OG</option>
+                  <option>4. OG+</option>
+                  <option>Dachgeschoss</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="input-grid">
+            <div class="form-field">
+              <label class="form-label">Zustand</label>
+              <div class="form-select-wrapper">
+                <select class="form-select" id="f-condition">
+                  <option>Renovierungsbedarf</option>
+                  <option>Gepflegt</option>
+                  <option selected>Gut</option>
+                  <option>Sehr gut</option>
+                  <option>Neuwertig / KfW</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Letzte Sanierung</label>
+              <div class="form-select-wrapper">
+                <select class="form-select" id="f-reno">
+                  <option>Keine</option>
+                  <option>Vor &gt; 10 Jahren</option>
+                  <option selected>2015–2020</option>
+                  <option>2021–2024</option>
+                  <option>2025</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ausstattung -->
+        <div class="input-section">
+          <div class="input-section-header">
+            <div class="input-section-icon warm">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M2 5h12M5 2v3M11 2v3M3 8h2M7 8h2M11 8h2M3 11h2M7 11h2M11 11h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <rect x="2" y="5" width="12" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <span class="input-section-title">Ausstattung</span>
+            <span class="input-section-step">03</span>
+          </div>
+          <div class="feature-grid">
+            <label class="feature-checkbox"><input type="checkbox" checked>
+              <span class="feature-check-box"><svg class="feature-check-mark" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="feature-label">Aufzug</span>
+            </label>
+            <label class="feature-checkbox"><input type="checkbox" checked>
+              <span class="feature-check-box"><svg class="feature-check-mark" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="feature-label">Tiefgarage</span>
+            </label>
+            <label class="feature-checkbox"><input type="checkbox">
+              <span class="feature-check-box"><svg class="feature-check-mark" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="feature-label">Dachterrasse</span>
+            </label>
+            <label class="feature-checkbox"><input type="checkbox" checked>
+              <span class="feature-check-box"><svg class="feature-check-mark" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="feature-label">Klimaanlage</span>
+            </label>
+            <label class="feature-checkbox"><input type="checkbox" checked>
+              <span class="feature-check-box"><svg class="feature-check-mark" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="feature-label">Glasfaser</span>
+            </label>
+            <label class="feature-checkbox"><input type="checkbox">
+              <span class="feature-check-box"><svg class="feature-check-mark" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="feature-label">Photovoltaik</span>
+            </label>
+            <label class="feature-checkbox"><input type="checkbox" checked>
+              <span class="feature-check-box"><svg class="feature-check-mark" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="feature-label">Zertifiziert DGNB</span>
+            </label>
+            <label class="feature-checkbox"><input type="checkbox">
+              <span class="feature-check-box"><svg class="feature-check-mark" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="feature-label">Ladestation E-Auto</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Vollanalyse CTA -->
+        <button class="analyse-btn" id="btn-analyse">
+          <svg class="analyse-btn-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M5.5 8l2 2 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="analyse-btn-spinner"></span>
+          Analyse starten
+        </button>
+
+      </div><!-- /full-form -->
+
+    </aside>
+
+    <!-- ── Results Panel ─────────────────── -->
+    <main class="bewertung-results" id="results-panel">
+
+      <!-- Empty state -->
+      <div class="result-empty" id="state-empty">
+        <div class="result-empty-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="4" y="4" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M9 14h10M9 9h6M9 19h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h2 class="result-empty-title">Bewertung anfordern</h2>
+        <p class="result-empty-desc">Füllen Sie die Objektdaten aus und starten Sie die Analyse — die KI berechnet den Marktwert in Sekunden.</p>
+      </div>
+
+      <!-- Skeleton -->
+      <div class="result-skeleton" id="state-skeleton">
+        <div class="skel skel-hero"></div>
+        <div class="skel-strip">
+          <div class="skel skel-kpi"></div>
+          <div class="skel skel-kpi"></div>
+          <div class="skel skel-kpi"></div>
+        </div>
+        <div class="skel skel-card"></div>
+        <div class="skel-chart-row">
+          <div class="skel skel-chart"></div>
+          <div class="skel skel-chart"></div>
+        </div>
+        <div class="skel skel-card"></div>
+      </div>
+
+      <!-- Result content -->
+      <div class="result-content" id="state-result">
+
+        <!-- Hero -->
+        <div class="result-hero">
+          <div class="result-hero-left">
+            <div class="result-eyebrow">
+              Geschätzter Marktwert
+              <span class="result-mode-badge" id="r-mode-badge" style="display:none">
+                ⚡ Schnellanalyse
+              </span>
+            </div>
+            <div class="result-address" id="r-address">—</div>
+            <div class="result-value" id="r-value">1.285.000 €</div>
+            <div class="result-range">Bandbreite: <strong id="r-range">1.180.000 – 1.390.000 €</strong></div>
+            <div class="result-tags" id="r-tags">
+              <span class="result-tag green">Büro · 152 m²</span>
+              <span class="result-tag blue">München · Innenstadt</span>
+              <span class="result-tag warm">Baujahr 1998</span>
+            </div>
+          </div>
+
+          <!-- Confidence Gauge -->
+          <div class="confidence-gauge">
+            <svg class="confidence-gauge-svg" width="100" height="100" viewBox="0 0 100 100">
+              <circle class="confidence-track"
+                cx="50" cy="50" r="36"
+                stroke-dasharray="169.6 56.5"
+                stroke-dashoffset="-14.1"
+                transform="rotate(135 50 50)"/>
+              <circle class="confidence-fill" id="conf-arc"
+                cx="50" cy="50" r="36"
+                stroke-dasharray="0 226.2"
+                stroke-dashoffset="-14.1"
+                transform="rotate(135 50 50)"/>
+              <text class="confidence-value" x="50" y="54" text-anchor="middle" id="conf-text">—</text>
+            </svg>
+            <div class="confidence-label">KI-Konfidenz</div>
+          </div>
+        </div>
+
+        <!-- KPI Strip -->
+        <div class="result-kpi-strip">
+          <div class="result-kpi">
+            <div class="result-kpi-label">Preis je m²</div>
+            <div class="result-kpi-value" id="r-sqm">8.454 €</div>
+            <div class="result-kpi-delta up">+4,2 % ggü. Vorjahr</div>
+          </div>
+          <div class="result-kpi">
+            <div class="result-kpi-label">Marktvergleich</div>
+            <div class="result-kpi-value">+3,1 %</div>
+            <div class="result-kpi-delta neutral">über Lagedurchschnitt</div>
+          </div>
+          <div class="result-kpi">
+            <div class="result-kpi-label">Lage-Score</div>
+            <div class="result-kpi-value" id="r-score">9,1 / 10</div>
+            <div class="result-kpi-delta up" id="r-score-label">1A-Lage</div>
+          </div>
+        </div>
+
+        <!-- Factor Analysis -->
+        <div class="factor-card" id="r-factors">
+          <div class="factor-card-title">Wertfaktoren-Analyse</div>
+          <div class="factor-card-subtitle">Einfluss der Merkmale auf den Marktwert — absolut und relativ</div>
+          <div class="factor-list">
+            <div class="factor-item">
+              <span class="factor-label">Mikrolage (1A)</span>
+              <div class="factor-bar-track"><div class="factor-bar-fill" style="--factor-pct:88%;--factor-color:var(--color-primary)"></div></div>
+              <span class="factor-value pos">+12,4 %</span>
+            </div>
+            <div class="factor-item">
+              <span class="factor-label">Sanierungsstand</span>
+              <div class="factor-bar-track"><div class="factor-bar-fill" style="--factor-pct:72%;--factor-color:var(--color-primary)"></div></div>
+              <span class="factor-value pos">+8,1 %</span>
+            </div>
+            <div class="factor-item">
+              <span class="factor-label">DGNB-Zertifizierung</span>
+              <div class="factor-bar-track"><div class="factor-bar-fill" style="--factor-pct:56%;--factor-color:var(--color-primary)"></div></div>
+              <span class="factor-value pos">+5,8 %</span>
+            </div>
+            <div class="factor-item">
+              <span class="factor-label">Aufzug &amp; Tiefgarage</span>
+              <div class="factor-bar-track"><div class="factor-bar-fill" style="--factor-pct:44%;--factor-color:var(--color-secondary)"></div></div>
+              <span class="factor-value pos">+3,6 %</span>
+            </div>
+            <div class="factor-item">
+              <span class="factor-label">Klimaanlage</span>
+              <div class="factor-bar-track"><div class="factor-bar-fill" style="--factor-pct:28%;--factor-color:var(--color-secondary)"></div></div>
+              <span class="factor-value pos">+2,1 %</span>
+            </div>
+            <div class="factor-item">
+              <span class="factor-label">Baujahr (1998)</span>
+              <div class="factor-bar-track"><div class="factor-bar-fill" style="--factor-pct:22%;--factor-color:var(--color-warning)"></div></div>
+              <span class="factor-value neg">−3,2 %</span>
+            </div>
+            <div class="factor-item">
+              <span class="factor-label">Kein Dachgeschoss</span>
+              <div class="factor-bar-track"><div class="factor-bar-fill" style="--factor-pct:12%;--factor-color:var(--color-error)"></div></div>
+              <span class="factor-value neg">−1,4 %</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-section">
+          <div class="chart-section-title">Marktdaten &amp; Preisvergleich</div>
+          <div class="chart-section-subtitle">Preisentwicklung am Standort und Vergleich mit ähnlichen Objekten</div>
+          <div class="chart-row">
+            <div>
+              <div style="font-size:var(--text-xs);font-weight:var(--font-semibold);color:var(--color-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:var(--space-2)">Preistrend (€/m²)</div>
+              <div id="chart-trend"></div>
+            </div>
+            <div>
+              <div style="font-size:var(--text-xs);font-weight:var(--font-semibold);color:var(--color-muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:var(--space-2)">Vergleichsobjekte (€/m²)</div>
+              <div id="chart-comp"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparables -->
+        <div class="comparables-card">
+          <div class="comparables-title">Vergleichsobjekte</div>
+          <div class="comparables-subtitle">Ähnliche Transaktionen der letzten 24 Monate im Umkreis 500 m</div>
+          <div class="comparable-list">
+            <div class="comparable-item">
+              <div>
+                <div class="comparable-address">Maximilianstraße 24</div>
+                <div class="comparable-meta">Büro · 138 m² · 3. OG · Gut · Verkauf Jan. 2025</div>
+              </div>
+              <div><div class="comparable-price">1.240.000 €</div><div class="comparable-sqm">8.985 €/m²</div></div>
+              <span class="comparable-badge higher">+6,4 %</span>
+            </div>
+            <div class="comparable-item">
+              <div>
+                <div class="comparable-address">Maximilianstraße 8</div>
+                <div class="comparable-meta">Büro · 165 m² · 2. OG · Sehr gut · Verkauf Okt. 2024</div>
+              </div>
+              <div><div class="comparable-price">1.410.000 €</div><div class="comparable-sqm">8.545 €/m²</div></div>
+              <span class="comparable-badge match">+1,1 %</span>
+            </div>
+            <div class="comparable-item">
+              <div>
+                <div class="comparable-address">Odeonsplatz 3</div>
+                <div class="comparable-meta">Büro · 148 m² · 1. OG · Gut · Verkauf Aug. 2024</div>
+              </div>
+              <div><div class="comparable-price">1.220.000 €</div><div class="comparable-sqm">8.243 €/m²</div></div>
+              <span class="comparable-badge lower">−2,5 %</span>
+            </div>
+            <div class="comparable-item">
+              <div>
+                <div class="comparable-address">Brienner Str. 46</div>
+                <div class="comparable-meta">Büro · 172 m² · EG · Renovierungsbedarf · Verkauf Mai 2024</div>
+              </div>
+              <div><div class="comparable-price">1.140.000 €</div><div class="comparable-sqm">6.628 €/m²</div></div>
+              <span class="comparable-badge lower">−21,4 %</span>
+            </div>
+            <div class="comparable-item">
+              <div>
+                <div class="comparable-address">Theatinerstr. 11</div>
+                <div class="comparable-meta">Büro · 144 m² · 2. OG · Neuwertig · Verkauf März 2024</div>
+              </div>
+              <div><div class="comparable-price">1.350.000 €</div><div class="comparable-sqm">9.375 €/m²</div></div>
+              <span class="comparable-badge higher">+10,9 %</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-disclaimer">
+          <strong>Hinweis:</strong> Diese Bewertung ist ein KI-gestützter Schätzwert auf Basis von Marktdaten und Vergleichsobjekten. Sie ersetzt keine zertifizierte Verkehrswertermittlung nach § 194 BauGB. Proplytic.ai übernimmt keine Haftung für Entscheidungen, die allein auf dieser Analyse beruhen.
+        </div>
+
+        <!-- ── Feedback Widget ──────────────── -->
+        <div class="feedback-widget" id="feedback-widget">
+
+          <!-- State A: Voting -->
+          <div class="feedback-state feedback-state-vote" id="fb-state-vote">
+            <div class="feedback-title">War die Bewertung hilfreich?</div>
+            <div class="feedback-vote-row">
+              <button class="feedback-vote-btn" id="fb-vote-up" data-sentiment="up">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M6 14V8H3L8 2l5 6h-3v6H6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Trifft zu
+              </button>
+              <button class="feedback-vote-btn" id="fb-vote-approx" data-sentiment="approx">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 7q2-3 5-3t5 3M3 9q2 3 5 3t5-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Ungefähr
+              </button>
+              <button class="feedback-vote-btn" id="fb-vote-down" data-sentiment="down">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M10 2v6h3L8 14 3 8h3V2h4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Nicht korrekt
+              </button>
+            </div>
+
+            <div class="feedback-optional-row" id="fb-optional-row" style="display:none">
+              <div class="feedback-optional-inner">
+                <div class="feedback-field">
+                  <label class="feedback-field-label">Tatsächlicher Verkaufspreis</label>
+                  <input class="feedback-field-input" id="fb-actual" type="number" placeholder="z.B. 1350000" min="0">
+                </div>
+                <div class="feedback-field">
+                  <label class="feedback-field-label">Korrektur einreichen</label>
+                  <input class="feedback-field-input" id="fb-correction" type="text" placeholder="Optional: Anmerkung zur Abweichung">
+                </div>
+              </div>
+            </div>
+
+            <button class="feedback-submit-btn" id="fb-submit" disabled>
+              <svg class="fb-submit-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M13 3L7 9M13 3H8M13 3v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="fb-submit-spinner"></span>
+              Feedback senden
+            </button>
+          </div>
+
+          <!-- State C: Success -->
+          <div class="feedback-state feedback-state-success" id="fb-state-success" style="display:none">
+            <div class="feedback-success-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="8" fill="var(--color-primary)"/>
+                <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="feedback-success-body">
+              <div class="feedback-success-title">Danke! Dieser Datenpunkt verbessert das Modell.</div>
+              <div class="feedback-success-meta">1 von 847 Validierungen heute · Modell-Update: So., 08. Jun 2026</div>
+              <a class="feedback-success-link" href="training.html">Training-Dashboard ansehen →</a>
+            </div>
+          </div>
+
+        </div><!-- /feedback-widget -->
+
+      </div><!-- /result-content -->
+
+    </main>
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<style>
+  .bew-btn-ghost {
+    display: inline-flex; align-items: center; gap: var(--space-2);
+    height: 32px; padding: 0 var(--space-3);
+    background: none; border: 1px solid var(--color-border);
+    border-radius: var(--radius-md); color: var(--color-muted);
+    font-family: var(--font-sans); font-size: var(--text-xs);
+    font-weight: var(--font-medium); cursor: pointer;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+  }
+  .bew-btn-ghost:not([disabled]):hover { border-color: var(--color-border-strong); color: var(--color-foreground); }
+  .bew-btn-ghost[disabled] { opacity: 0.45; cursor: default; }
+</style>
+
+<script src="../components/chart.js"></script>
+<script>
+/* ─────────────────────────────────────
+   State
+───────────────────────────────────── */
+let currentMode = 'quick'; // 'quick' | 'full'
+let currentStep = 1;       // 1 | 2 | 3
+let chartsRendered = false;
+
+/* ─────────────────────────────────────
+   DOM refs
+───────────────────────────────────── */
+const btnModeQuick  = document.getElementById('mode-quick');
+const btnModeExpose = document.getElementById('mode-expose');
+const btnModeFull   = document.getElementById('mode-full');
+const wizard        = document.getElementById('wizard');
+const exposePanel   = document.getElementById('expose-panel');
+const fullForm      = document.getElementById('full-form');
+
+const wizBack    = document.getElementById('wiz-back');
+const wizNext    = document.getElementById('wiz-next');
+const wizNextLbl = document.getElementById('wiz-next-label');
+const wizSpinner = document.getElementById('wiz-spinner');
+
+const btnAnalyse = document.getElementById('btn-analyse');
+const btnExp     = document.getElementById('btn-export');
+const btnSave    = document.getElementById('btn-save');
+
+const stEmpty  = document.getElementById('state-empty');
+const stSkel   = document.getElementById('state-skeleton');
+const stResult = document.getElementById('state-result');
+
+/* ─────────────────────────────────────
+   Mode toggle
+───────────────────────────────────── */
+btnModeQuick.addEventListener('click',  () => switchMode('quick'));
+btnModeExpose.addEventListener('click', () => switchMode('expose'));
+btnModeFull.addEventListener('click',   () => switchMode('full'));
+
+function switchMode(mode) {
+  currentMode = mode;
+  btnModeQuick.classList.toggle('is-active', mode === 'quick');
+  btnModeQuick.classList.toggle('quick',     mode === 'quick');
+  btnModeExpose.classList.toggle('is-active', mode === 'expose');
+  btnModeExpose.classList.toggle('expose',    mode === 'expose');
+  btnModeFull.classList.toggle('is-active',  mode === 'full');
+  wizard.style.display      = mode === 'quick'  ? '' : 'none';
+  exposePanel.style.display = mode === 'expose' ? '' : 'none';
+  fullForm.style.display    = mode === 'full'   ? '' : 'none';
+  if (mode === 'quick') goToStep(1);
+}
+
+/* ─────────────────────────────────────
+   Wizard step logic
+───────────────────────────────────── */
+function goToStep(n) {
+  currentStep = n;
+
+  // Panels
+  [1,2,3].forEach(i => {
+    document.getElementById(`wpanel-${i}`).classList.toggle('is-active', i === n);
+  });
+
+  // Dots
+  [1,2,3].forEach(i => {
+    const dot = document.getElementById(`wdot-${i}`);
+    dot.classList.remove('is-active', 'is-done');
+    if (i < n)      dot.classList.add('is-done');
+    else if (i === n) dot.classList.add('is-active');
+    // done: show check icon
+    dot.innerHTML = i < n
+      ? '<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : String(i);
+  });
+
+  // Connectors
+  [1,2].forEach(i => {
+    document.getElementById(`wcon-${i}`).classList.toggle('is-done', i < n);
+  });
+
+  // Back button
+  wizBack.disabled = n === 1;
+
+  // Next button label
+  if (n === 2) {
+    wizNextLbl.textContent = 'Weiter →';
+  } else if (n === 3) {
+    wizNextLbl.textContent = 'Analyse starten';
+  } else {
+    wizNextLbl.textContent = 'Weiter →';
+  }
+
+  // Populate summary on step 3
+  if (n === 3) populateSummary();
+}
+
+function populateSummary() {
+  const street = document.getElementById('wq-street').value.trim() || '—';
+  const zip    = document.getElementById('wq-zip').value.trim();
+  const city   = document.getElementById('wq-city').value;
+  const type   = document.getElementById('wq-type').value;
+  const size   = document.getElementById('wq-size').value;
+  const year   = document.getElementById('wq-year').value;
+  const cond   = document.getElementById('wq-condition').value;
+
+  document.getElementById('ws-address').textContent   = street || '—';
+  document.getElementById('ws-city').textContent      = [zip, city].filter(Boolean).join(' ') || '—';
+  document.getElementById('ws-type').textContent      = type;
+  document.getElementById('ws-size').textContent      = size ? size + ' m²' : '—';
+  document.getElementById('ws-year').textContent      = year || '—';
+  document.getElementById('ws-condition').textContent = cond;
+}
+
+wizBack.addEventListener('click', () => {
+  if (currentStep > 1) goToStep(currentStep - 1);
+});
+
+wizNext.addEventListener('click', () => {
+  if (currentStep < 3) {
+    goToStep(currentStep + 1);
+  } else {
+    // Launch quick analysis
+    runAnalysis('quick');
+  }
+});
+
+/* ─────────────────────────────────────
+   Vollanalyse button
+───────────────────────────────────── */
+btnAnalyse.addEventListener('click', () => {
+  btnAnalyse.classList.add('is-loading');
+  runAnalysis('full');
+});
+
+/* ─────────────────────────────────────
+   Run analysis
+───────────────────────────────────── */
+function setResultStates(empty, skel, result) {
+  stEmpty.style.display = empty  ? '' : 'none';
+  stSkel.className  = 'result-skeleton' + (skel   ? ' is-visible' : '');
+  stResult.className = 'result-content' + (result ? ' is-visible' : '');
+}
+
+function runAnalysis(mode) {
+  chartsRendered = false;
+
+  // Show spinner on wizard next btn for quick mode
+  if (mode === 'quick') {
+    wizNextLbl.style.display = 'none';
+    wizSpinner.style.display = 'block';
+    wizNext.classList.add('is-loading');
+  }
+
+  setResultStates(false, true, false);
+
+  setTimeout(() => {
+    // Reset button states
+    if (mode === 'quick') {
+      wizNextLbl.style.display = '';
+      wizSpinner.style.display = 'none';
+      wizNext.classList.remove('is-loading');
+    } else {
+      btnAnalyse.classList.remove('is-loading');
+    }
+
+    setResultStates(false, false, true);
+    populateResult(mode);
+    btnExp.removeAttribute('disabled');
+    btnSave.removeAttribute('disabled');
+    btnExp.onclick = openPdfReport;
+  }, mode === 'quick' ? 1200 : 1600);
+}
+
+function populateResult(mode) {
+  const isQuick = mode === 'quick';
+
+  // Mode badge
+  document.getElementById('r-mode-badge').style.display = isQuick ? '' : 'none';
+
+  // Address
+  let street, zip, city;
+  if (isQuick) {
+    street = document.getElementById('wq-street').value.trim() || 'Unbekannte Straße';
+    zip    = document.getElementById('wq-zip').value.trim();
+    city   = document.getElementById('wq-city').value || '';
+  } else {
+    street = document.getElementById('f-street').value.trim() || 'Unbekannte Straße';
+    zip    = document.getElementById('f-zip').value.trim();
+    city   = document.getElementById('f-city').value || '';
+  }
+  document.getElementById('r-address').textContent = [street, [zip, city].filter(Boolean).join(' ')].filter(Boolean).join(', ');
+
+  // Value tags
+  const type = isQuick ? document.getElementById('wq-type').value : document.getElementById('f-type').value;
+  const size = isQuick ? document.getElementById('wq-size').value : document.getElementById('f-size').value;
+  const year = isQuick ? document.getElementById('wq-year').value : document.getElementById('f-year').value;
+  document.getElementById('r-tags').innerHTML = `
+    <span class="result-tag green">${type}${size ? ' · ' + size + ' m²' : ''}</span>
+    <span class="result-tag blue">${city || 'Standort'}</span>
+    ${year ? `<span class="result-tag warm">Baujahr ${year}</span>` : ''}
+  `;
+
+  // Confidence: lower for quick mode
+  const conf = isQuick ? 74 : 87;
+  animateConfidence(conf);
+
+  // Charts (clear containers first)
+  const trendEl = document.getElementById('chart-trend');
+  const compEl  = document.getElementById('chart-comp');
+  trendEl.innerHTML = '';
+  compEl.innerHTML  = '';
+
+  PropChart.Line(trendEl, {
+    labels: ['Q1 22','Q2 22','Q3 22','Q4 22','Q1 23','Q2 23','Q3 23','Q4 23'],
+    values: [7800, 8050, 8200, 8100, 8000, 8300, 8420, 8454],
+  }, { unit: '€/m²', color: 'var(--color-primary)', height: 160, area: true });
+
+  PropChart.Bar(compEl, {
+    labels: ['Max. 24','Max. 8','Odeons.','Brienner','Theatiner','Dieses Obj.'],
+    values: [8985, 8545, 8243, 6628, 9375, 8454],
+  }, { unit: '€/m²', color: 'var(--color-secondary)', height: 160 });
+
+  // Show/hide factor card for quick mode (simplified)
+  document.getElementById('r-factors').style.opacity = isQuick ? '0.55' : '1';
+  document.querySelector('.factor-card-subtitle').textContent = isQuick
+    ? 'Vereinfacht — für vollständige Analyse Vollanalyse wählen'
+    : 'Einfluss der Merkmale auf den Marktwert — absolut und relativ';
+}
+
+function animateConfidence(pct) {
+  const arc   = document.getElementById('conf-arc');
+  const text  = document.getElementById('conf-text');
+  const r     = 36;
+  const circ  = 2 * Math.PI * r;
+  const filled = circ * 0.75 * (pct / 100);
+  const gap    = circ - filled;
+  arc.style.strokeDasharray = `${filled.toFixed(1)} ${gap.toFixed(1)}`;
+  text.textContent = pct + ' %';
+}
+
+/* ─────────────────────────────────────
+   Exposé Extraction
+───────────────────────────────────── */
+
+const exposeFileInput  = document.getElementById('expose-file-input');
+const exposeFileBtn    = document.getElementById('expose-file-btn');
+const exposeRemoveBtn  = document.getElementById('expose-remove-btn');
+const exposeDrop       = document.getElementById('expose-drop');
+const exposeDropIdle   = document.getElementById('expose-drop-idle');
+const exposeDropSel    = document.getElementById('expose-drop-selected');
+const exposeFileName   = document.getElementById('expose-file-name');
+const exposeExtractBtn = document.getElementById('expose-extract-btn');
+const exposeProgress   = document.getElementById('expose-progress');
+const exposeResults    = document.getElementById('expose-results');
+const exposeFieldList  = document.getElementById('expose-field-list');
+const exposeApplyBtn   = document.getElementById('expose-apply-btn');
+const exposeDemoBtns   = document.querySelectorAll('.expose-demo-btn');
+
+let selectedExposeDemo = null; // index into IS24_MOCK
+let extractedData      = null;
+
+// Confidence levels per field
+function getExposeFields(data) {
+  return [
+    { key: 'Adresse',      val: data.street,              conf: 3 },
+    { key: 'PLZ / Stadt',  val: data.zip + ' ' + data.city, conf: 3 },
+    { key: 'Nutzungsart',  val: data.type,                conf: 3 },
+    { key: 'Fläche',       val: data.size + ' m²',        conf: 3 },
+    { key: 'Zimmer',       val: data.rooms !== '—' ? data.rooms + ' Zimmer' : 'Nicht angegeben', conf: data.rooms !== '—' ? 2 : 1 },
+    { key: 'Baujahr',      val: data.year,                conf: 2 },
+    { key: 'Zustand',      val: data.condition,           conf: 2 },
+    { key: 'Ausstattung',  val: data.features.length ? data.features.slice(0,3).join(', ') + (data.features.length > 3 ? ' +' + (data.features.length - 3) : '') : 'Keine Angabe', conf: data.features.length ? 2 : 1 },
+    { key: 'Angebotspreis',val: data.price ? data.price + ' €' : 'auf Anfrage', conf: data.price ? 2 : 1 },
+  ];
+}
+
+// Demo chip selection
+exposeDemoBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    exposeDemoBtns.forEach(b => b.classList.remove('is-selected'));
+    btn.classList.add('is-selected');
+    selectedExposeDemo = parseInt(btn.dataset.demo, 10);
+    // Reset file selection
+    setExposeFile(null);
+    exposeExtractBtn.disabled = false;
+    // Reset any previous results
+    resetExposeResults();
+  });
+});
+
+// File handling
+exposeFileBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  exposeFileInput.click();
+});
+
+exposeFileInput.addEventListener('change', () => {
+  const f = exposeFileInput.files[0];
+  if (f) setExposeFile(f);
+});
+
+exposeDrop.addEventListener('click', () => {
+  if (!exposeDrop.classList.contains('has-file')) exposeFileInput.click();
+});
+
+exposeDrop.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  exposeDrop.classList.add('is-dragover');
+});
+
+exposeDrop.addEventListener('dragleave', () => {
+  exposeDrop.classList.remove('is-dragover');
+});
+
+exposeDrop.addEventListener('drop', (e) => {
+  e.preventDefault();
+  exposeDrop.classList.remove('is-dragover');
+  const f = e.dataTransfer.files[0];
+  if (f && (f.name.endsWith('.pdf') || f.name.endsWith('.doc') || f.name.endsWith('.docx'))) {
+    setExposeFile(f);
+  }
+});
+
+exposeRemoveBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  setExposeFile(null);
+  exposeFileInput.value = '';
+  if (!selectedExposeDemo && selectedExposeDemo !== 0) {
+    exposeExtractBtn.disabled = true;
+  }
+});
+
+function setExposeFile(file) {
+  if (file) {
+    exposeDropIdle.style.display = 'none';
+    exposeDropSel.style.display  = '';
+    exposeFileName.textContent   = file.name;
+    exposeDrop.classList.add('has-file');
+    // File upload takes precedence over demo selection
+    exposeDemoBtns.forEach(b => b.classList.remove('is-selected'));
+    selectedExposeDemo = null;
+    exposeExtractBtn.disabled = false;
+    resetExposeResults();
+  } else {
+    exposeDropIdle.style.display = '';
+    exposeDropSel.style.display  = 'none';
+    exposeDrop.classList.remove('has-file');
+  }
+}
+
+function resetExposeResults() {
+  exposeProgress.style.display = 'none';
+  exposeResults.style.display  = 'none';
+  exposeFieldList.innerHTML    = '';
+  // Reset steps
+  ['ep-1','ep-2','ep-3','ep-4'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('is-active', 'is-done');
+  });
+}
+
+// Extract
+exposeExtractBtn.addEventListener('click', runExposeExtraction);
+
+function runExposeExtraction() {
+  // Pick data source: file → use hash of filename or last demo, demo → direct
+  let demoIdx = selectedExposeDemo;
+  if (demoIdx === null) {
+    // File uploaded: derive mock from filename length
+    const name = exposeFileInput.files[0]?.name || 'expose.pdf';
+    demoIdx = name.length % IS24_MOCK.length;
+  }
+  extractedData = IS24_MOCK[demoIdx];
+
+  // Hide CTA, show progress
+  exposeExtractBtn.disabled = true;
+  resetExposeResults();
+  exposeProgress.style.display = '';
+
+  const steps  = ['ep-1','ep-2','ep-3','ep-4'];
+  const delays = [0, 600, 1200, 1800];
+  const durations = [550, 550, 600, 500];
+
+  steps.forEach((id, i) => {
+    const el = document.getElementById(id);
+    // Start active after delay
+    setTimeout(() => {
+      el.classList.add('is-active');
+    }, delays[i]);
+    // Mark done after delay + duration
+    setTimeout(() => {
+      el.classList.remove('is-active');
+      el.classList.add('is-done');
+    }, delays[i] + durations[i]);
+  });
+
+  // Show results after all steps
+  setTimeout(() => {
+    exposeProgress.style.display = 'none';
+    showExposeResults(extractedData);
+    exposeExtractBtn.disabled = false;
+  }, 2600);
+}
+
+function showExposeResults(data) {
+  const fields = getExposeFields(data);
+
+  // Update meta
+  const avgConf = Math.round(fields.reduce((s, f) => s + f.conf, 0) / fields.length * 33.3);
+  document.getElementById('expose-results-meta').textContent =
+    fields.length + ' Felder · Ø ' + avgConf + ' %';
+
+  // Render rows with staggered animation
+  exposeFieldList.innerHTML = fields.map((f, i) =>
+    `<div class="expose-field-row" style="animation-delay:${i * 60}ms">
+      <span class="expose-field-key">${f.key}</span>
+      <span class="expose-field-val">${f.val}</span>
+      <span class="expose-conf" data-level="${f.conf}">
+        <span class="expose-conf-dot"></span>
+        <span class="expose-conf-dot"></span>
+        <span class="expose-conf-dot"></span>
+      </span>
+    </div>`
+  ).join('');
+
+  exposeResults.style.display = '';
+}
+
+// Apply extracted data to form
+exposeApplyBtn.addEventListener('click', () => {
+  if (!extractedData) return;
+  applyImportData(extractedData);
+
+  // Show import success chips
+  document.getElementById('import-input-row').style.display = 'none';
+  const chips = [
+    extractedData.type,
+    extractedData.size + ' m²',
+    extractedData.city,
+    'Bj. ' + extractedData.year,
+    extractedData.condition,
+  ];
+  document.getElementById('import-chips').innerHTML =
+    chips.map(c => `<span class="import-chip">${c}</span>`).join('');
+  document.getElementById('import-success').classList.add('is-visible');
+
+  switchMode('full');
+});
+
+// Init
+switchMode('quick');
+
+/* ─────────────────────────────────────
+   PDF Export
+───────────────────────────────────── */
+function openPdfReport() {
+  const street = document.getElementById('r-address').textContent.split(',')[0] || 'Objekt';
+  const city   = document.getElementById('r-address').textContent.split(',').slice(1).join(',').trim() || '';
+  const isQuick = currentMode === 'quick';
+
+  const type = isQuick
+    ? document.getElementById('wq-type').value
+    : document.getElementById('f-type').value;
+  const size = isQuick
+    ? document.getElementById('wq-size').value
+    : document.getElementById('f-size').value;
+  const year = isQuick
+    ? document.getElementById('wq-year').value
+    : document.getElementById('f-year').value;
+
+  const modeLabels = { quick: 'Schnellanalyse', expose: 'Exposé-Import', full: 'Vollanalyse' };
+
+  const reportData = {
+    street,
+    city,
+    value:      document.getElementById('r-value').textContent,
+    range:      document.getElementById('r-range').textContent,
+    confidence: isQuick ? 74 : 87,
+    mode:       modeLabels[currentMode] || 'Vollanalyse',
+    type, size, year,
+    sqm:        document.getElementById('r-sqm').textContent,
+    addrShort:  document.getElementById('r-address').textContent,
+  };
+
+  try { sessionStorage.setItem('bewertung-report', JSON.stringify(reportData)); } catch (e) {}
+  window.open('bewertung-pdf.html', '_blank');
+}
+
+/* ─────────────────────────────────────
+   IS24 Import
+───────────────────────────────────── */
+
+// Mock dataset — keyed by last digit of expose ID
+const IS24_MOCK = [
+  {
+    street: 'Maximilianstraße 12', zip: '80539', city: 'München',
+    type: 'Büro', size: '152', year: '1998', condition: 'Gut',
+    floor: '2. OG', price: '1.285.000',
+    features: ['Aufzug', 'Tiefgarage', 'Klimaanlage', 'Glasfaser', 'Zertifiziert DGNB'],
+    rooms: '6', livingSpace: '152',
+  },
+  {
+    street: 'Jungfernstieg 8', zip: '20354', city: 'Hamburg',
+    type: 'Einzelhandel', size: '210', year: '2005', condition: 'Sehr gut',
+    floor: '1. OG', price: '1.680.000',
+    features: ['Aufzug', 'Klimaanlage', 'Glasfaser'],
+    rooms: '—', livingSpace: '210',
+  },
+  {
+    street: 'Friedrichstraße 120', zip: '10117', city: 'Berlin',
+    type: 'Büro', size: '188', year: '2012', condition: 'Neuwertig',
+    floor: '3. OG', price: '2.050.000',
+    features: ['Aufzug', 'Tiefgarage', 'Klimaanlage', 'Glasfaser', 'Ladestation E-Auto'],
+    rooms: '8', livingSpace: '188',
+  },
+  {
+    street: 'Königsallee 56', zip: '40212', city: 'Düsseldorf',
+    type: 'Einzelhandel', size: '320', year: '1975', condition: 'Gepflegt',
+    floor: 'EG', price: '3.200.000',
+    features: ['Aufzug', 'Klimaanlage'],
+    rooms: '—', livingSpace: '320',
+  },
+  {
+    street: 'Zeil 106', zip: '60313', city: 'Frankfurt',
+    type: 'Logistik', size: '850', year: '2018', condition: 'Sehr gut',
+    floor: 'EG', price: '4.250.000',
+    features: ['Tiefgarage', 'Glasfaser', 'Ladestation E-Auto'],
+    rooms: '—', livingSpace: '850',
+  },
+  {
+    street: 'Kaufingerstraße 4', zip: '80331', city: 'München',
+    type: 'Eigentumswohnung', size: '94', year: '1968', condition: 'Gut',
+    floor: 'Dachgeschoss', price: '895.000',
+    features: ['Aufzug'],
+    rooms: '4', livingSpace: '94',
+  },
+  {
+    street: 'HafenCity, Am Sandtorkai 24', zip: '20457', city: 'Hamburg',
+    type: 'Eigentumswohnung', size: '118', year: '2020', condition: 'Neuwertig',
+    floor: '4. OG+', price: '1.150.000',
+    features: ['Aufzug', 'Tiefgarage', 'Glasfaser', 'Ladestation E-Auto'],
+    rooms: '4', livingSpace: '118',
+  },
+  {
+    street: 'Sendlinger Str. 68', zip: '80331', city: 'München',
+    type: 'Mehrfamilienhaus', size: '420', year: '1955', condition: 'Renovierungsbedarf',
+    floor: 'EG', price: '3.600.000',
+    features: [],
+    rooms: '14', livingSpace: '420',
+  },
+  {
+    street: 'Kurfürstendamm 195', zip: '10707', city: 'Berlin',
+    type: 'Büro', size: '245', year: '1992', condition: 'Gut',
+    floor: '2. OG', price: '1.960.000',
+    features: ['Aufzug', 'Klimaanlage', 'Glasfaser'],
+    rooms: '10', livingSpace: '245',
+  },
+  {
+    street: 'Theresienstraße 30', zip: '80333', city: 'München',
+    type: 'Eigentumswohnung', size: '72', year: '2008', condition: 'Sehr gut',
+    floor: '1. OG', price: '720.000',
+    features: ['Aufzug', 'Tiefgarage'],
+    rooms: '3', livingSpace: '72',
+  },
+];
+
+const FEATURE_IDS = {
+  'Aufzug':             0,
+  'Tiefgarage':         1,
+  'Dachterrasse':       2,
+  'Klimaanlage':        3,
+  'Glasfaser':          4,
+  'Photovoltaik':       5,
+  'Zertifiziert DGNB':  6,
+  'Ladestation E-Auto': 7,
+};
+
+function parseIS24Url(url) {
+  url = url.trim();
+  const m = url.match(/immobilienscout24\.de\/expose\/(\d+)/i);
+  if (!m) return null;
+  return m[1];
+}
+
+function applyImportData(data) {
+  // Fill wizard (quick) fields
+  document.getElementById('wq-street').value = data.street;
+  document.getElementById('wq-zip').value    = data.zip;
+  const cityEl = document.getElementById('wq-city');
+  [...cityEl.options].forEach(o => { if (o.value === data.city) o.selected = true; });
+  document.getElementById('wq-type').value = data.type;
+  document.getElementById('wq-size').value = data.size;
+  document.getElementById('wq-year').value = data.year;
+  const condElQ = document.getElementById('wq-condition');
+  [...condElQ.options].forEach(o => { o.selected = o.text.includes(data.condition); });
+
+  // Fill full form fields
+  document.getElementById('f-street').value = data.street;
+  document.getElementById('f-zip').value    = data.zip;
+  const fCity = document.getElementById('f-city');
+  [...fCity.options].forEach(o => { if (o.value === data.city) o.selected = true; });
+  const fType = document.getElementById('f-type');
+  [...fType.options].forEach(o => { o.selected = o.text === data.type; });
+  document.getElementById('f-size').value = data.size;
+  document.getElementById('f-year').value = data.year;
+  const fCond = document.getElementById('f-condition');
+  [...fCond.options].forEach(o => { o.selected = o.text.includes(data.condition); });
+  const fFloor = document.getElementById('f-floor');
+  [...fFloor.options].forEach(o => { o.selected = o.text === data.floor; });
+
+  // Feature checkboxes
+  const featureBoxes = document.querySelectorAll('#full-form .feature-checkbox input[type="checkbox"]');
+  featureBoxes.forEach((cb, i) => {
+    const label = cb.closest('.feature-checkbox').querySelector('.feature-label').textContent.trim();
+    cb.checked = data.features.includes(label);
+  });
+
+  // Show success chips
+  const chips = [
+    data.type,
+    data.size + ' m²',
+    data.city,
+    'Bj. ' + data.year,
+    data.condition,
+    data.price ? data.price + ' €' : null,
+  ].filter(Boolean);
+
+  document.getElementById('import-chips').innerHTML = chips
+    .map(c => `<span class="import-chip">${c}</span>`)
+    .join('');
+}
+
+const importUrlInput = document.getElementById('import-url');
+const importBtn      = document.getElementById('import-btn');
+const importError    = document.getElementById('import-error');
+const importSuccess  = document.getElementById('import-success');
+const importClear    = document.getElementById('import-clear');
+const importInputRow = document.getElementById('import-input-row');
+
+function resetImportState() {
+  importError.classList.remove('is-visible');
+  importSuccess.classList.remove('is-visible');
+  importUrlInput.classList.remove('is-error');
+  importInputRow.style.display = '';
+}
+
+function doImport() {
+  const url = importUrlInput.value.trim();
+  resetImportState();
+
+  const exposeId = parseIS24Url(url);
+  if (!exposeId) {
+    importUrlInput.classList.add('is-error');
+    importError.classList.add('is-visible');
+    return;
+  }
+
+  // Loading
+  importBtn.classList.add('is-loading');
+  importBtn.disabled = true;
+
+  const lastDigit = parseInt(exposeId.slice(-1), 10);
+  const data      = IS24_MOCK[lastDigit];
+
+  setTimeout(() => {
+    importBtn.classList.remove('is-loading');
+    importBtn.disabled = false;
+
+    applyImportData(data);
+
+    // Hide input row, show success
+    importInputRow.style.display = 'none';
+    importSuccess.classList.add('is-visible');
+
+    // Switch to Vollanalyse so all imported fields are visible
+    switchMode('full');
+  }, 1200);
+}
+
+importBtn.addEventListener('click', doImport);
+importUrlInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') doImport();
+});
+
+importClear.addEventListener('click', () => {
+  resetImportState();
+  importUrlInput.value = '';
+  importInputRow.style.display = '';
+});
+
+/* ─────────────────────────────────────
+   Feedback Widget
+───────────────────────────────────── */
+(function () {
+  let fbSentiment = null;
+
+  const fbVoteBtns    = document.querySelectorAll('.feedback-vote-btn');
+  const fbOptionalRow = document.getElementById('fb-optional-row');
+  const fbSubmit      = document.getElementById('fb-submit');
+  const fbStateVote   = document.getElementById('fb-state-vote');
+  const fbStateSuccess= document.getElementById('fb-state-success');
+  const fbActual      = document.getElementById('fb-actual');
+  const fbCorrection  = document.getElementById('fb-correction');
+
+  fbVoteBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      fbVoteBtns.forEach(b => b.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+      fbSentiment = btn.dataset.sentiment;
+      fbOptionalRow.style.display = '';
+      fbSubmit.disabled = false;
+    });
+  });
+
+  fbSubmit.addEventListener('click', () => {
+    if (!fbSentiment) return;
+
+    // State B: loading
+    fbSubmit.classList.add('is-loading');
+    fbSubmit.disabled = true;
+
+    setTimeout(() => {
+      // Collect data
+      const addressEl   = document.getElementById('r-address');
+      const isQuickMode = currentMode === 'quick';
+      const type  = isQuickMode ? document.getElementById('wq-type').value  : document.getElementById('f-type').value;
+      const size  = isQuickMode ? document.getElementById('wq-size').value  : document.getElementById('f-size').value;
+      const year  = isQuickMode ? document.getElementById('wq-year').value  : document.getElementById('f-year').value;
+      const city  = isQuickMode ? document.getElementById('wq-city').value  : document.getElementById('f-city').value;
+
+      const valueText   = document.getElementById('r-value').textContent || '';
+      const numericValue= parseInt(valueText.replace(/[^0-9]/g, ''), 10) || 0;
+      const numericActual = fbActual.value ? parseInt(fbActual.value, 10) : null;
+      const correctionText = fbCorrection.value.trim() || null;
+      const conf = isQuickMode ? 74 : 87;
+
+      const entry = {
+        id:         Date.now().toString(36),
+        ts:         new Date().toISOString(),
+        address:    addressEl ? addressEl.textContent.trim() : '',
+        type,
+        size:       size ? parseInt(size, 10) : null,
+        year:       year ? parseInt(year, 10) : null,
+        city,
+        predicted:  numericValue,
+        actual:     numericActual,
+        correction: correctionText,
+        sentiment:  fbSentiment,
+        mode:       currentMode,
+        conf,
+      };
+
+      // Write to localStorage
+      try {
+        const raw  = localStorage.getItem('proplytic-feedback');
+        const arr  = raw ? JSON.parse(raw) : [];
+        arr.push(entry);
+        localStorage.setItem('proplytic-feedback', JSON.stringify(arr));
+      } catch (e) { /* storage full / private mode */ }
+
+      // State C: success
+      fbSubmit.classList.remove('is-loading');
+      fbStateVote.style.display    = 'none';
+      fbStateSuccess.style.display = '';
+    }, 600);
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -32,6 +32,16 @@
 | `--color-warning` | `#C4883A` | Warnung (warm orange) |
 | `--color-error` | `#B84A3C` | Fehler (gedecktes rot) |
 
+### Tech-Palette (Slate · Teal · Tinte)
+
+| Token | Hex | Verwendung |
+|-------|-----|------------|
+| `--color-ink` | `#1B2733` | Tinte — Text auf hellen Tech-Flächen |
+| `--color-slate` | `#2E4150` | Blaugrau — Sekundäre Oberflächen, Panels |
+| `--color-slate-hover` | `#243444` | Slate Hover |
+| `--color-teal` | `#3AA7B5` | Teal-Akzent — Highlights, CTAs |
+| `--color-teal-hover` | `#2E8F9C` | Teal Hover |
+
 ## Typografie
 
 - **Headlines**: Cormorant Garamond (serif)

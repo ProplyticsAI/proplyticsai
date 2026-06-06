@@ -59,6 +59,19 @@
   --color-chart-5: #B84A3C;         /* Rot */
 
   /* ==========================================
+   * TECH-PALETTE (Slate · Teal · Tinte)
+   * ========================================== */
+  --color-slate: #2E4150;               /* Blaugrau — Sekundäre Oberflächen */
+  --color-slate-hover: #243444;         /* Slate Hover */
+  --color-slate-muted: rgba(46, 65, 80, 0.12);
+
+  --color-teal: #3AA7B5;                /* Teal-Akzent — Highlights, CTAs */
+  --color-teal-hover: #2E8F9C;          /* Teal Hover */
+  --color-teal-muted: rgba(58, 167, 181, 0.14);
+
+  --color-ink: #1B2733;                 /* Tinte — Text auf hellen Tech-Flächen */
+
+  /* ==========================================
    * OVERLAYS
    * ========================================== */
   --color-overlay: rgba(28, 28, 28, 0.4);
