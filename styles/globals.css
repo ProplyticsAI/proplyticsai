@@ -1,0 +1,5 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: #E8EDF2; }
+button { font-family: inherit; }
+a { text-decoration: none; color: inherit; }
