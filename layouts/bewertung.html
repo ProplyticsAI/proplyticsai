@@ -44,7 +44,7 @@
     <aside class="bewertung-input">
 
       <div>
-        <h1 class="input-panel-title">Objekt<br>bewerten</h1>
+        <h1 class="input-panel-title">Objekt<br><span>bewerten</span></h1>
         <p class="input-panel-subtitle">KI-gestützte Marktwertanalyse auf Basis von Vergleichsobjekten und Standortdaten.</p>
       </div>
 
@@ -595,14 +595,34 @@
 
       <!-- Empty state -->
       <div class="result-empty" id="state-empty">
-        <div class="result-empty-icon">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-            <rect x="4" y="4" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M9 14h10M9 9h6M9 19h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
+        <div class="result-empty-inner">
+          <div class="result-empty-hero">
+            <div class="result-empty-eyebrow">Geschätzter Marktwert</div>
+            <div class="result-empty-value">—.——— €</div>
+            <div class="result-empty-range">Bandbreite erscheint nach der Analyse</div>
+          </div>
+          <div class="result-empty-features">
+            <div class="result-empty-feature">
+              <span class="result-empty-dot"></span>KI-Marktwert in unter 2 Sekunden
+            </div>
+            <div class="result-empty-feature">
+              <span class="result-empty-dot"></span>7 Einflussfaktoren mit Gewichtung
+            </div>
+            <div class="result-empty-feature">
+              <span class="result-empty-dot"></span>Vergleichsobjekte in der Nähe
+            </div>
+            <div class="result-empty-feature">
+              <span class="result-empty-dot"></span>PDF-Bericht exportieren
+            </div>
+          </div>
+          <div class="result-empty-hint">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <path d="M10 8H3M6 5l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13 3v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+            </svg>
+            Objektdaten links eingeben und Analyse starten
+          </div>
         </div>
-        <h2 class="result-empty-title">Bewertung anfordern</h2>
-        <p class="result-empty-desc">Füllen Sie die Objektdaten aus und starten Sie die Analyse — die KI berechnet den Marktwert in Sekunden.</p>
       </div>
 
       <!-- Skeleton -->
@@ -1147,15 +1167,21 @@ function populateResult(mode, apiData = null) {
   trendEl.innerHTML = '';
   compEl.innerHTML  = '';
 
-  PropChart.Line(trendEl, {
-    labels: ['Q1 22','Q2 22','Q3 22','Q4 22','Q1 23','Q2 23','Q3 23','Q4 23'],
-    values: [7800, 8050, 8200, 8100, 8000, 8300, 8420, 8454],
-  }, { unit: '€/m²', color: 'var(--color-primary)', height: 160, area: true });
+  new PropChart.Line(trendEl, [
+    { label: 'Q1 22', value: 7800 }, { label: 'Q2 22', value: 8050 },
+    { label: 'Q3 22', value: 8200 }, { label: 'Q4 22', value: 8100 },
+    { label: 'Q1 23', value: 8000 }, { label: 'Q2 23', value: 8300 },
+    { label: 'Q3 23', value: 8420 }, { label: 'Q4 23', value: 8454 },
+  ], { unit: '€/m²', color: 'var(--color-primary)', area: true });
 
-  PropChart.Bar(compEl, {
-    labels: ['Max. 24','Max. 8','Odeons.','Brienner','Theatiner','Dieses Obj.'],
-    values: [8985, 8545, 8243, 6628, 9375, 8454],
-  }, { unit: '€/m²', color: 'var(--color-secondary)', height: 160 });
+  new PropChart.Bar(compEl, [
+    { label: 'Max. 24',     value: 8985 },
+    { label: 'Max. 8',      value: 8545 },
+    { label: 'Odeons.',     value: 8243 },
+    { label: 'Brienner',    value: 6628 },
+    { label: 'Theatiner',   value: 9375 },
+    { label: 'Dieses Obj.', value: 8454 },
+  ], { unit: '€/m²', color: 'var(--color-secondary)' });
 
   // Show/hide factor card for quick mode (simplified)
   document.getElementById('r-factors').style.opacity = isQuick ? '0.55' : '1';

@@ -58,22 +58,22 @@
 
     <!-- ── KPI Bar ─────────────────────────── -->
     <div class="training-kpi-bar">
-      <div class="training-kpi">
+      <div class="training-kpi training-kpi--green">
         <div class="training-kpi-label">Datenpunkte gesamt</div>
         <div class="training-kpi-value" id="kpi-total">847</div>
         <div class="training-kpi-delta up">+12 diese Woche</div>
       </div>
-      <div class="training-kpi">
+      <div class="training-kpi training-kpi--blue">
         <div class="training-kpi-label">Validierungsquote</div>
         <div class="training-kpi-value" id="kpi-val-rate">73,6 %</div>
         <div class="training-kpi-delta neutral">623 von 847 bestätigt</div>
       </div>
-      <div class="training-kpi">
+      <div class="training-kpi training-kpi--orange">
         <div class="training-kpi-label">MAE Mittl. Fehler</div>
         <div class="training-kpi-value">42.800 €</div>
         <div class="training-kpi-delta up">↓ 3,2 % ggü. Vormonat</div>
       </div>
-      <div class="training-kpi">
+      <div class="training-kpi training-kpi--green">
         <div class="training-kpi-label">Genauigkeit ±10 %</div>
         <div class="training-kpi-value">91,2 %</div>
         <div class="training-kpi-delta up">↑ 0,8 pp seit letztem Update</div>
@@ -301,45 +301,44 @@ document.getElementById('kpi-val-rate').textContent = valRate + ' %';
 ───────────────────────────────────── */
 
 // Abweichungsverteilung
-PropChart.Bar(document.getElementById('chart-delta'), {
-  labels: ['< −15 %', '−15–−10 %', '−10–−5 %', '−5–0 %', '0–5 %', '5–10 %', '10–15 %', '> +15 %'],
-  values: [12, 28, 67, 184, 231, 198, 89, 38],
-}, {
-  unit:   'Objekte',
-  color:  'var(--color-primary)',
-  height: 200,
-});
+new PropChart.Bar(document.getElementById('chart-delta'), [
+  { label: '< −15 %',    value: 12  },
+  { label: '−15–−10 %',  value: 28  },
+  { label: '−10–−5 %',   value: 67  },
+  { label: '−5–0 %',     value: 184 },
+  { label: '0–5 %',      value: 231 },
+  { label: '5–10 %',     value: 198 },
+  { label: '10–15 %',    value: 89  },
+  { label: '> +15 %',    value: 38  },
+], { unit: 'Objekte', color: 'var(--color-primary)' });
 
 // Stadtabdeckung
-PropChart.Bar(document.getElementById('chart-cities'), {
-  labels: ['München', 'Berlin', 'Hamburg', 'Frankfurt', 'Düsseldorf', 'Köln', 'Stuttgart'],
-  values: [312, 187, 154, 98, 56, 28, 12],
-}, {
-  unit:  'Objekte',
-  color: 'var(--color-secondary)',
-  height: 200,
-});
+new PropChart.Bar(document.getElementById('chart-cities'), [
+  { label: 'München',    value: 312 },
+  { label: 'Berlin',     value: 187 },
+  { label: 'Hamburg',    value: 154 },
+  { label: 'Frankfurt',  value: 98  },
+  { label: 'Düsseldorf', value: 56  },
+  { label: 'Köln',       value: 28  },
+  { label: 'Stuttgart',  value: 12  },
+], { unit: 'Objekte', color: 'var(--color-secondary)' });
 
 // Feedback-Stimmung Donut
-PropChart.Donut(document.getElementById('chart-sentiment'), [
-  { label: 'Trifft zu',       value: 68, color: 'var(--color-primary)'   },
-  { label: 'Ungefähr',        value: 19, color: 'var(--color-secondary)' },
-  { label: 'Nicht korrekt',   value: 13, color: 'var(--color-error)'     },
-], {
-  centerValue: '87 %',
-  centerLabel: 'positiv',
-});
+new PropChart.Donut(document.getElementById('chart-sentiment'), [
+  { label: 'Trifft zu',     value: 68, color: 'var(--color-primary)'   },
+  { label: 'Ungefähr',      value: 19, color: 'var(--color-secondary)' },
+  { label: 'Nicht korrekt', value: 13, color: 'var(--color-error)'     },
+], { center: '87 %', centerLabel: 'positiv' });
 
 // Feedback-Verlauf
-PropChart.Line(document.getElementById('chart-trend'), {
-  labels: ['KW 18','KW 19','KW 20','KW 21','KW 22','KW 23','KW 24','KW 25','KW 26','KW 27','KW 28','KW 29'],
-  values: [42, 38, 55, 61, 48, 72, 83, 91, 68, 75, 88, 74],
-}, {
-  unit:   'Einträge',
-  color:  'var(--color-primary)',
-  height: 180,
-  area:   true,
-});
+new PropChart.Line(document.getElementById('chart-trend'), [
+  { label: 'KW 18', value: 42 }, { label: 'KW 19', value: 38 },
+  { label: 'KW 20', value: 55 }, { label: 'KW 21', value: 61 },
+  { label: 'KW 22', value: 48 }, { label: 'KW 23', value: 72 },
+  { label: 'KW 24', value: 83 }, { label: 'KW 25', value: 91 },
+  { label: 'KW 26', value: 68 }, { label: 'KW 27', value: 75 },
+  { label: 'KW 28', value: 88 }, { label: 'KW 29', value: 74 },
+], { unit: 'Einträge', color: 'var(--color-primary)', area: true });
 
 // Animate accuracy meter
 setTimeout(() => {
