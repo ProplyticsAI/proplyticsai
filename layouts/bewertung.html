@@ -792,6 +792,72 @@
           <strong>Hinweis:</strong> Diese Bewertung ist ein KI-gestützter Schätzwert auf Basis von Marktdaten und Vergleichsobjekten. Sie ersetzt keine zertifizierte Verkehrswertermittlung nach § 194 BauGB. Proplytic.ai übernimmt keine Haftung für Entscheidungen, die allein auf dieser Analyse beruhen.
         </div>
 
+        <!-- ── Feedback Widget ──────────────── -->
+        <div class="feedback-widget" id="feedback-widget">
+
+          <!-- State A: Voting -->
+          <div class="feedback-state feedback-state-vote" id="fb-state-vote">
+            <div class="feedback-title">War die Bewertung hilfreich?</div>
+            <div class="feedback-vote-row">
+              <button class="feedback-vote-btn" id="fb-vote-up" data-sentiment="up">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M6 14V8H3L8 2l5 6h-3v6H6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Trifft zu
+              </button>
+              <button class="feedback-vote-btn" id="fb-vote-approx" data-sentiment="approx">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 7q2-3 5-3t5 3M3 9q2 3 5 3t5-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Ungefähr
+              </button>
+              <button class="feedback-vote-btn" id="fb-vote-down" data-sentiment="down">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M10 2v6h3L8 14 3 8h3V2h4z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Nicht korrekt
+              </button>
+            </div>
+
+            <div class="feedback-optional-row" id="fb-optional-row" style="display:none">
+              <div class="feedback-optional-inner">
+                <div class="feedback-field">
+                  <label class="feedback-field-label">Tatsächlicher Verkaufspreis</label>
+                  <input class="feedback-field-input" id="fb-actual" type="number" placeholder="z.B. 1350000" min="0">
+                </div>
+                <div class="feedback-field">
+                  <label class="feedback-field-label">Korrektur einreichen</label>
+                  <input class="feedback-field-input" id="fb-correction" type="text" placeholder="Optional: Anmerkung zur Abweichung">
+                </div>
+              </div>
+            </div>
+
+            <button class="feedback-submit-btn" id="fb-submit" disabled>
+              <svg class="fb-submit-icon" width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M13 3L7 9M13 3H8M13 3v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="fb-submit-spinner"></span>
+              Feedback senden
+            </button>
+          </div>
+
+          <!-- State C: Success -->
+          <div class="feedback-state feedback-state-success" id="fb-state-success" style="display:none">
+            <div class="feedback-success-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <circle cx="9" cy="9" r="8" fill="var(--color-primary)"/>
+                <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="feedback-success-body">
+              <div class="feedback-success-title">Danke! Dieser Datenpunkt verbessert das Modell.</div>
+              <div class="feedback-success-meta">1 von 847 Validierungen heute · Modell-Update: So., 08. Jun 2026</div>
+              <a class="feedback-success-link" href="training.html">Training-Dashboard ansehen →</a>
+            </div>
+          </div>
+
+        </div><!-- /feedback-widget -->
+
       </div><!-- /result-content -->
 
     </main>
@@ -1501,6 +1567,84 @@ importClear.addEventListener('click', () => {
   importUrlInput.value = '';
   importInputRow.style.display = '';
 });
+
+/* ─────────────────────────────────────
+   Feedback Widget
+───────────────────────────────────── */
+(function () {
+  let fbSentiment = null;
+
+  const fbVoteBtns    = document.querySelectorAll('.feedback-vote-btn');
+  const fbOptionalRow = document.getElementById('fb-optional-row');
+  const fbSubmit      = document.getElementById('fb-submit');
+  const fbStateVote   = document.getElementById('fb-state-vote');
+  const fbStateSuccess= document.getElementById('fb-state-success');
+  const fbActual      = document.getElementById('fb-actual');
+  const fbCorrection  = document.getElementById('fb-correction');
+
+  fbVoteBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      fbVoteBtns.forEach(b => b.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+      fbSentiment = btn.dataset.sentiment;
+      fbOptionalRow.style.display = '';
+      fbSubmit.disabled = false;
+    });
+  });
+
+  fbSubmit.addEventListener('click', () => {
+    if (!fbSentiment) return;
+
+    // State B: loading
+    fbSubmit.classList.add('is-loading');
+    fbSubmit.disabled = true;
+
+    setTimeout(() => {
+      // Collect data
+      const addressEl   = document.getElementById('r-address');
+      const isQuickMode = currentMode === 'quick';
+      const type  = isQuickMode ? document.getElementById('wq-type').value  : document.getElementById('f-type').value;
+      const size  = isQuickMode ? document.getElementById('wq-size').value  : document.getElementById('f-size').value;
+      const year  = isQuickMode ? document.getElementById('wq-year').value  : document.getElementById('f-year').value;
+      const city  = isQuickMode ? document.getElementById('wq-city').value  : document.getElementById('f-city').value;
+
+      const valueText   = document.getElementById('r-value').textContent || '';
+      const numericValue= parseInt(valueText.replace(/[^0-9]/g, ''), 10) || 0;
+      const numericActual = fbActual.value ? parseInt(fbActual.value, 10) : null;
+      const correctionText = fbCorrection.value.trim() || null;
+      const conf = isQuickMode ? 74 : 87;
+
+      const entry = {
+        id:         Date.now().toString(36),
+        ts:         new Date().toISOString(),
+        address:    addressEl ? addressEl.textContent.trim() : '',
+        type,
+        size:       size ? parseInt(size, 10) : null,
+        year:       year ? parseInt(year, 10) : null,
+        city,
+        predicted:  numericValue,
+        actual:     numericActual,
+        correction: correctionText,
+        sentiment:  fbSentiment,
+        mode:       currentMode,
+        conf,
+      };
+
+      // Write to localStorage
+      try {
+        const raw  = localStorage.getItem('proplytic-feedback');
+        const arr  = raw ? JSON.parse(raw) : [];
+        arr.push(entry);
+        localStorage.setItem('proplytic-feedback', JSON.stringify(arr));
+      } catch (e) { /* storage full / private mode */ }
+
+      // State C: success
+      fbSubmit.classList.remove('is-loading');
+      fbStateVote.style.display    = 'none';
+      fbStateSuccess.style.display = '';
+    }, 600);
+  });
+})();
 </script>
 
 </body>
