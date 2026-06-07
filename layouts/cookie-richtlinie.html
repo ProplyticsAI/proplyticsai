@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookie-Richtlinie — Proplytic.ai</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="../components/cookie-consent.css">
+  <link rel="stylesheet" href="./legal.css">
+</head>
+<body>
+
+<div class="legal-page">
+
+  <header class="legal-header">
+    <a class="legal-logo" href="./dashboard.html">
+      <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="28">
+    </a>
+    <a class="legal-back-link" href="./dashboard.html">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M9.5 3.5L5 8l4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Zur Startseite
+    </a>
+  </header>
+
+  <p class="legal-eyebrow">Rechtliches</p>
+  <h1 class="legal-title">Cookie-Richtlinie</h1>
+  <p class="legal-updated">Informationen zu Cookies und vergleichbaren Technologien gemäß § 25 TTDSG, Art. 13 DSGVO</p>
+
+  <div class="legal-content">
+
+    <h2>1. Was sind Cookies?</h2>
+    <p>
+      Cookies sind kleine Textdateien, die beim Besuch unserer Plattform auf Ihrem
+      Endgerät gespeichert werden. Sie ermöglichen es uns u. a., Sie wiederzuerkennen,
+      Einstellungen zu speichern und die Nutzung unserer Plattform zu analysieren.
+      Vergleichbare Technologien (z. B. Local Storage, Tracking-Pixel) werden in dieser
+      Richtlinie ebenfalls als „Cookies" bezeichnet.
+    </p>
+
+    <h2>2. Welche Kategorien von Cookies setzen wir ein?</h2>
+    <table>
+      <tr><th>Kategorie</th><th>Zweck</th><th>Einwilligung erforderlich?</th></tr>
+      <tr>
+        <td>Notwendige Cookies</td>
+        <td>Login/Session-Verwaltung, Sicherheit, Lastverteilung, Speicherung Ihrer Cookie-Einstellungen</td>
+        <td>Nein — erforderlich für den Betrieb (§ 25 Abs. 2 Nr. 2 TTDSG)</td>
+      </tr>
+      <tr>
+        <td>Funktionale Cookies</td>
+        <td>Speicherung von Komfort-Einstellungen (z. B. zuletzt gewählter Bewertungsmodus, Spracheinstellung)</td>
+        <td>Ja</td>
+      </tr>
+      <tr>
+        <td>Analyse-Cookies</td>
+        <td>Anonymisierte/pseudonymisierte Nutzungsstatistiken zur Verbesserung der Plattform</td>
+        <td>Ja</td>
+      </tr>
+    </table>
+    <p>
+      Eine aktuelle Liste der konkret eingesetzten Cookies/Anbieter mit Speicherdauer
+      finden Sie <span class="legal-todo">Platzhalter</span> [Cookie-Tabelle/Consent-Tool-Export verlinken].
+    </p>
+
+    <h2>3. Ihre Einwilligung verwalten</h2>
+    <p>
+      Beim ersten Besuch unserer Plattform werden Sie über ein Cookie-Banner um Ihre
+      Einwilligung zu nicht notwendigen Cookies gebeten. Sie können Ihre Auswahl
+      jederzeit über den Link „Cookie-Einstellungen" (i. d. R. im Footer der Plattform)
+      ändern oder widerrufen — mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO).
+    </p>
+    <p>
+      Zusätzlich können Sie Cookies in Ihren Browser-Einstellungen jederzeit löschen
+      oder deren Speicherung grundsätzlich verhindern; dies kann jedoch dazu führen,
+      dass einzelne Funktionen der Plattform nicht mehr vollumfänglich nutzbar sind.
+    </p>
+
+    <h2>4. Weitere Informationen</h2>
+    <p>
+      Allgemeine Informationen zur Verarbeitung personenbezogener Daten finden Sie in
+      unserer <a href="./datenschutz.html">Datenschutzerklärung</a>.
+    </p>
+
+    <div class="legal-notice">
+      <strong>Hinweis:</strong> Diese Cookie-Richtlinie ist eine strukturelle Vorlage und
+      enthält Platzhalter (markiert mit <span class="legal-todo">Platzhalter</span>), die
+      vor Veröffentlichung um die konkret eingesetzten Cookies/Dienste, deren Anbieter,
+      Zweck und Speicherdauer ergänzt werden müssen — idealerweise generiert über ein
+      Consent-Management-Tool. Sie ersetzt keine Rechtsberatung.
+    </div>
+
+  </div>
+
+  <nav class="legal-footer" aria-label="Rechtliche Seiten">
+    <a href="./impressum.html">Impressum</a>
+    <a href="./datenschutz.html">Datenschutzerklärung</a>
+    <a href="./agb.html">AGB</a>
+    <a href="./widerruf.html">Widerrufsbelehrung</a>
+    <a href="#" id="cookie-settings-link">Cookie-Einstellungen</a>
+  </nav>
+
+</div>
+
+<script src="../components/cookie-consent.js"></script>
+<script>
+  CookieConsent.init({ policyHref: './cookie-richtlinie.html' });
+  document.getElementById('cookie-settings-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    CookieConsent.openSettings();
+  });
+</script>
+
+</body>
+</html>
