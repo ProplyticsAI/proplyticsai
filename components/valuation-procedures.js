@@ -98,7 +98,9 @@ const ValuationProcedures = (() => {
   function ertragswert(inputs) {
     const jahr = inputs.bewertungsjahr || new Date().getFullYear();
     const typ  = inputs.gebaeudetyp;
-    const p    = LIEGENSCHAFTSZINS[typ]    ?? 0.045;
+    // `liegenschaftszinssatzOverride` erlaubt es z. B. der Monte-Carlo-Simulation,
+    // diesen tabellarisch abgeleiteten Wert pro Durchlauf zu variieren.
+    const p    = inputs.liegenschaftszinssatzOverride ?? (LIEGENSCHAFTSZINS[typ] ?? 0.045);
     const gnd  = GESAMTNUTZUNGSDAUER[typ]  ?? 80;
 
     const alter = wirtschaftlichesAlter(inputs.baujahr, inputs.modernisierung, jahr);
@@ -204,7 +206,10 @@ const ValuationProcedures = (() => {
 
     const bgf        = inputs.flaeche * BGF_FAKTOR;
     const rhkBasis   = RHK_BASIS_2010[inputs.standard] ?? RHK_BASIS_2010.mittel;
-    const rhkAktuell = rhkBasis * BAUPREISINDEX_FAKTOR;
+    // `baupreisindexOverride` / `sachwertfaktorOverride` erlauben es z. B. der
+    // Monte-Carlo-Simulation, diese marktabhängigen Werte pro Durchlauf zu variieren.
+    const baupreisindex = inputs.baupreisindexOverride ?? BAUPREISINDEX_FAKTOR;
+    const rhkAktuell = rhkBasis * baupreisindex;
     const herstellungskosten = bgf * rhkAktuell;
 
     const alterswertminderungQuote = Math.min(0.7, alter / gnd);
@@ -215,7 +220,7 @@ const ValuationProcedures = (() => {
     const aussenanlagenwert = gebaeudesachwert * 0.02;
     const vorlaeufigerSachwert = bodenwert + gebaeudesachwert + aussenanlagenwert;
 
-    const sachwertfaktor = SACHWERTFAKTOR[typ] ?? 1.0;
+    const sachwertfaktor = inputs.sachwertfaktorOverride ?? (SACHWERTFAKTOR[typ] ?? 1.0);
     const ergebnisRoh    = vorlaeufigerSachwert * sachwertfaktor;
     const ergebnis       = round1000(ergebnisRoh);
 
@@ -242,7 +247,7 @@ const ValuationProcedures = (() => {
           gruppe: 'Herstellungskosten (Regelherstellungskosten NHK 2010)',
           rows: [
             { label: 'Bruttogrundfläche (BGF)', formel: `${inputs.flaeche} m² Wohnfläche × Umrechnungsfaktor ${BGF_FAKTOR}`, wert: bgf, isArea: true },
-            { label: `Regelherstellungskosten (Standard: ${inputs.standard})`, formel: `${rhkBasis} €/m² × Baupreisindex ${BAUPREISINDEX_FAKTOR}`, wert: rhkAktuell, isRate: true },
+            { label: `Regelherstellungskosten (Standard: ${inputs.standard})`, formel: `${rhkBasis} €/m² × Baupreisindex ${baupreisindex.toFixed(2)}`, wert: rhkAktuell, isRate: true },
           ],
           summe: { label: 'Herstellungskosten = BGF × Regelherstellungskosten', wert: herstellungskosten },
         },

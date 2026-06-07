@@ -929,6 +929,7 @@
 
 <script src="../components/chart.js"></script>
 <script src="../components/valuation-procedures.js"></script>
+<script src="../components/monte-carlo.js"></script>
 <script>
 /* ─────────────────────────────────────
    State
@@ -1428,13 +1429,69 @@ function finishProcedureChat() {
     ? ValuationProcedures.ertragswert(inputs)
     : ValuationProcedures.sachwert(inputs);
 
-  procState.lastCalc = calc;
+  procState.lastCalc   = calc;
+  procState.lastInputs = inputs;
+  procState.lastMonteCarlo = null;
 
   setTimeout(() => {
     appendProcMessage('bot', `Ergebnis: ${ValuationProcedures.eur(calc.ergebnis)} nach dem ${verfahrenName}. Die vollständige Herleitung sehen Sie rechts im Ergebnisbereich.`);
     showProcedureResult(calc, true);
-    renderProcRestartComposer();
+    offerMonteCarloSimulation();
   }, 650);
+}
+
+/* ── Monte-Carlo-Risikosimulation (Phase 1: Szenario-Lab) ──
+   Bietet nach der deterministischen Verfahrensberechnung an, die mit Markt-
+   unsicherheit behafteten Parameter (Bodenrichtwert, Zinssatz/Sachwertfaktor,
+   Miete, Baupreisindex) über N Simulationsläufe zu variieren — und ersetzt so
+   eine pauschale ±-Spanne durch eine objektspezifische Risikoverteilung. */
+function offerMonteCarloSimulation() {
+  appendProcMessage('bot',
+    'Möchten Sie zusätzlich eine objektspezifische Risikoverteilung berechnen? ' +
+    'Dabei simuliert Proplytic 2.000 Marktszenarien, in denen Bodenrichtwert, Zinssatz/Marktanpassung ' +
+    'und weitere unsichere Größen gemäß realistischer Schwankungsbreiten variieren.');
+
+  procComposer.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'proc-chips';
+
+  const yesBtn = document.createElement('button');
+  yesBtn.type = 'button';
+  yesBtn.className = 'proc-chip';
+  yesBtn.innerHTML = '<span class="proc-chip-label">Ja, Risikoverteilung simulieren</span>' +
+    '<span class="proc-chip-sub">Monte-Carlo-Simulation · 2.000 Szenarien</span>';
+  yesBtn.addEventListener('click', runMonteCarloFlow);
+
+  const noBtn = document.createElement('button');
+  noBtn.type = 'button';
+  noBtn.className = 'proc-chip';
+  noBtn.innerHTML = '<span class="proc-chip-label">Nein, danke</span>';
+  noBtn.addEventListener('click', () => {
+    appendProcMessage('user', 'Nein, danke');
+    renderProcRestartComposer();
+  });
+
+  wrap.appendChild(yesBtn);
+  wrap.appendChild(noBtn);
+  procComposer.appendChild(wrap);
+}
+
+function runMonteCarloFlow() {
+  appendProcMessage('user', 'Ja, Risikoverteilung simulieren');
+  appendProcMessage('bot', 'Simuliere 2.000 Marktszenarien — einen Moment …');
+  procComposer.innerHTML = '';
+
+  setTimeout(() => {
+    const mc = MonteCarloSimulation.runSimulation(procState.verfahren, procState.lastInputs, 2000);
+    procState.lastMonteCarlo = mc;
+
+    appendProcMessage('bot',
+      `Fertig. Der wahrscheinliche Wertbereich (10.–90. Perzentil) liegt zwischen ` +
+      `${ValuationProcedures.eur(mc.percentiles.p10)} und ${ValuationProcedures.eur(mc.percentiles.p90)} ` +
+      `— Verteilung und Sensitivitätsanalyse sehen Sie rechts unter der Herleitung.`);
+    appendMonteCarloResult(mc);
+    renderProcRestartComposer();
+  }, 900);
 }
 
 function renderProcRestartComposer() {
@@ -1508,6 +1565,66 @@ function renderProcedureResultHTML(calc) {
       und Sachwertfaktoren wurden als marktübliche Orientierungswerte angesetzt — für eine rechtsverbindliche
       Bewertung sind die aktuellen Daten des örtlich zuständigen Gutachterausschusses heranzuziehen.
     </div>`;
+}
+
+function appendMonteCarloResult(mc) {
+  const section = document.createElement('div');
+  section.className = 'proc-mc-section';
+  section.innerHTML = renderMonteCarloHTML(procState.lastCalc, mc);
+  stProcedure.appendChild(section);
+  renderMonteCarloChart(mc);
+}
+
+function renderMonteCarloHTML(calc, mc) {
+  const eur = ValuationProcedures.eur;
+  const p = mc.percentiles;
+  const tornadoMax = Math.max(...mc.sensitivity.map(s => s.spread)) || 1;
+
+  const tornadoRows = mc.sensitivity.map(s => {
+    const widthPct = (s.spread / tornadoMax * 100).toFixed(1);
+    return `
+      <div class="proc-tornado-row">
+        <div class="proc-tornado-label">${s.label}</div>
+        <div class="proc-tornado-track">
+          <div class="proc-tornado-bar" style="width:${widthPct}%"></div>
+        </div>
+        <div class="proc-tornado-value">${eur(s.low)} – ${eur(s.high)}</div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="proc-mc-header">
+      <div class="proc-mc-eyebrow">Monte-Carlo-Risikosimulation <span class="proc-mc-badge">${mc.n.toLocaleString('de-DE')} Szenarien</span></div>
+      <div class="proc-mc-range">${eur(p.p10)} – ${eur(p.p90)}</div>
+      <div class="proc-mc-sub">Wahrscheinlicher Wertbereich (10.–90. Perzentil) — objektspezifische Risikoverteilung statt pauschaler ±-Bandbreite</div>
+    </div>
+    <div class="proc-result-kpis proc-mc-kpis">
+      <div class="proc-kpi"><span class="proc-kpi-label">P10</span><span class="proc-kpi-value">${eur(p.p10)}</span></div>
+      <div class="proc-kpi"><span class="proc-kpi-label">P50 · Median</span><span class="proc-kpi-value">${eur(p.p50)}</span></div>
+      <div class="proc-kpi"><span class="proc-kpi-label">P90</span><span class="proc-kpi-value">${eur(p.p90)}</span></div>
+      <div class="proc-kpi"><span class="proc-kpi-label">Streuung σ</span><span class="proc-kpi-value">${eur(mc.stdDev)}</span></div>
+    </div>
+    <div class="proc-mc-chart-wrap">
+      <div class="proc-mc-chart-title">Wertverteilung über ${mc.n.toLocaleString('de-DE')} simulierte Marktszenarien</div>
+      <div id="proc-mc-chart" class="proc-mc-chart"></div>
+    </div>
+    <div class="proc-mc-chart-wrap">
+      <div class="proc-mc-chart-title">Sensitivitätsanalyse — welcher Faktor treibt die Unsicherheit?</div>
+      <div class="proc-tornado">${tornadoRows}</div>
+    </div>
+    <div class="proc-result-disclaimer">
+      <strong>Methodik:</strong> Die Simulation variiert Bodenrichtwert, Liegenschaftszinssatz bzw. Sachwertfaktor
+      und weitere marktunsichere Eingangsgrößen ${mc.n.toLocaleString('de-DE')}-fach normalverteilt um ihren Basiswert
+      und führt jeden Lauf vollständig durch das gesetzlich vorgeschriebene Verfahren. Die resultierende
+      Wertverteilung ersetzt eine pauschale Fehlerspanne durch ein objektspezifisches Konfidenzintervall —
+      die Sensitivitätsanalyse zeigt, welche Eingangsgröße die Unsicherheit am stärksten treibt.
+    </div>`;
+}
+
+function renderMonteCarloChart(mc) {
+  const el = document.getElementById('proc-mc-chart');
+  if (!el) return;
+  new PropChart.Bar(el, MonteCarloSimulation.buildHistogram(mc.samples, 22), { unit: 'Szenarien', color: 'var(--color-teal)' });
 }
 
 /* ─────────────────────────────────────
