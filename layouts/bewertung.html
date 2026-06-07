@@ -44,7 +44,7 @@
     <aside class="bewertung-input">
 
       <div>
-        <h1 class="input-panel-title">Objekt<br>bewerten</h1>
+        <h1 class="input-panel-title">Objekt<br><span>bewerten</span></h1>
         <p class="input-panel-subtitle">KI-gestützte Marktwertanalyse auf Basis von Vergleichsobjekten und Standortdaten.</p>
       </div>
 
@@ -123,6 +123,13 @@
             <path d="M5 6h6M5 9h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
           Vollanalyse
+        </button>
+        <button class="mode-btn verfahren" id="mode-verfahren">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2v3M8 11v3M3 8H2M14 8h-1M4.5 4.5l-.7-.7M12.2 12.2l-.7-.7M4.5 11.5l-.7.7M12.2 3.8l-.7.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          Verfahren
         </button>
       </div>
 
@@ -253,6 +260,22 @@
         </div>
 
       </div><!-- /expose-panel -->
+
+      <!-- ════════════════════════════════ -->
+      <!-- VERFAHREN — CHAT-WIZARD         -->
+      <!-- (Ertragswert- & Sachwertverfahren -->
+      <!--  gem. ImmoWertV, dialoggeführt)  -->
+      <!-- ════════════════════════════════ -->
+      <div class="proc-panel" id="verfahren-panel" style="display:none">
+        <div class="proc-intro">
+          <div class="proc-intro-title">Geführte Verfahrensbewertung</div>
+          <p class="proc-intro-sub">Proplytic führt Sie per Dialog durch die gesetzlich vorgeschriebenen Bewertungsverfahren — inklusive vollständiger Herleitung nach ImmoWertV.</p>
+        </div>
+        <div class="proc-chat" id="proc-chat">
+          <div class="proc-chat-messages" id="proc-messages"></div>
+        </div>
+        <div class="proc-composer" id="proc-composer"></div>
+      </div><!-- /verfahren-panel -->
 
       <!-- ════════════════════════════════ -->
       <!-- SCHNELLANALYSE WIZARD           -->
@@ -595,14 +618,34 @@
 
       <!-- Empty state -->
       <div class="result-empty" id="state-empty">
-        <div class="result-empty-icon">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-            <rect x="4" y="4" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M9 14h10M9 9h6M9 19h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
+        <div class="result-empty-inner">
+          <div class="result-empty-hero">
+            <div class="result-empty-eyebrow">Geschätzter Marktwert</div>
+            <div class="result-empty-value">—.——— €</div>
+            <div class="result-empty-range">Bandbreite erscheint nach der Analyse</div>
+          </div>
+          <div class="result-empty-features">
+            <div class="result-empty-feature">
+              <span class="result-empty-dot"></span>KI-Marktwert in unter 2 Sekunden
+            </div>
+            <div class="result-empty-feature">
+              <span class="result-empty-dot"></span>7 Einflussfaktoren mit Gewichtung
+            </div>
+            <div class="result-empty-feature">
+              <span class="result-empty-dot"></span>Vergleichsobjekte in der Nähe
+            </div>
+            <div class="result-empty-feature">
+              <span class="result-empty-dot"></span>PDF-Bericht exportieren
+            </div>
+          </div>
+          <div class="result-empty-hint">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+              <path d="M10 8H3M6 5l-3 3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13 3v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+            </svg>
+            Objektdaten links eingeben und Analyse starten
+          </div>
         </div>
-        <h2 class="result-empty-title">Bewertung anfordern</h2>
-        <p class="result-empty-desc">Füllen Sie die Objektdaten aus und starten Sie die Analyse — die KI berechnet den Marktwert in Sekunden.</p>
       </div>
 
       <!-- Skeleton -->
@@ -620,6 +663,9 @@
         </div>
         <div class="skel skel-card"></div>
       </div>
+
+      <!-- Verfahrensbewertung — Herleitung (Ertragswert-/Sachwertverfahren) -->
+      <div class="proc-result" id="state-procedure" style="display:none"></div>
 
       <!-- Result content -->
       <div class="result-content" id="state-result">
@@ -882,6 +928,8 @@
 </style>
 
 <script src="../components/chart.js"></script>
+<script src="../components/valuation-procedures.js"></script>
+<script src="../components/monte-carlo.js"></script>
 <script>
 /* ─────────────────────────────────────
    State
@@ -893,12 +941,14 @@ let chartsRendered = false;
 /* ─────────────────────────────────────
    DOM refs
 ───────────────────────────────────── */
-const btnModeQuick  = document.getElementById('mode-quick');
-const btnModeExpose = document.getElementById('mode-expose');
-const btnModeFull   = document.getElementById('mode-full');
-const wizard        = document.getElementById('wizard');
-const exposePanel   = document.getElementById('expose-panel');
-const fullForm      = document.getElementById('full-form');
+const btnModeQuick    = document.getElementById('mode-quick');
+const btnModeExpose   = document.getElementById('mode-expose');
+const btnModeFull     = document.getElementById('mode-full');
+const btnModeVerfahren = document.getElementById('mode-verfahren');
+const wizard          = document.getElementById('wizard');
+const exposePanel     = document.getElementById('expose-panel');
+const fullForm        = document.getElementById('full-form');
+const verfahrenPanel  = document.getElementById('verfahren-panel');
 
 const wizBack    = document.getElementById('wiz-back');
 const wizNext    = document.getElementById('wiz-next');
@@ -909,16 +959,18 @@ const btnAnalyse = document.getElementById('btn-analyse');
 const btnExp     = document.getElementById('btn-export');
 const btnSave    = document.getElementById('btn-save');
 
-const stEmpty  = document.getElementById('state-empty');
-const stSkel   = document.getElementById('state-skeleton');
-const stResult = document.getElementById('state-result');
+const stEmpty     = document.getElementById('state-empty');
+const stSkel      = document.getElementById('state-skeleton');
+const stResult    = document.getElementById('state-result');
+const stProcedure = document.getElementById('state-procedure');
 
 /* ─────────────────────────────────────
    Mode toggle
 ───────────────────────────────────── */
-btnModeQuick.addEventListener('click',  () => switchMode('quick'));
-btnModeExpose.addEventListener('click', () => switchMode('expose'));
-btnModeFull.addEventListener('click',   () => switchMode('full'));
+btnModeQuick.addEventListener('click',     () => switchMode('quick'));
+btnModeExpose.addEventListener('click',    () => switchMode('expose'));
+btnModeFull.addEventListener('click',      () => switchMode('full'));
+btnModeVerfahren.addEventListener('click', () => switchMode('verfahren'));
 
 function switchMode(mode) {
   currentMode = mode;
@@ -927,10 +979,22 @@ function switchMode(mode) {
   btnModeExpose.classList.toggle('is-active', mode === 'expose');
   btnModeExpose.classList.toggle('expose',    mode === 'expose');
   btnModeFull.classList.toggle('is-active',  mode === 'full');
-  wizard.style.display      = mode === 'quick'  ? '' : 'none';
-  exposePanel.style.display = mode === 'expose' ? '' : 'none';
-  fullForm.style.display    = mode === 'full'   ? '' : 'none';
+  btnModeVerfahren.classList.toggle('is-active',  mode === 'verfahren');
+  btnModeVerfahren.classList.toggle('verfahren',  mode === 'verfahren');
+  wizard.style.display         = mode === 'quick'     ? '' : 'none';
+  exposePanel.style.display    = mode === 'expose'    ? '' : 'none';
+  fullForm.style.display       = mode === 'full'      ? '' : 'none';
+  verfahrenPanel.style.display = mode === 'verfahren' ? '' : 'none';
   if (mode === 'quick') goToStep(1);
+  if (mode === 'verfahren') {
+    if (procState && procState.lastCalc) {
+      showProcedureResult(procState.lastCalc, true);
+    } else if (!procState) {
+      startProcedureChat();
+    }
+  } else {
+    stProcedure.style.display = 'none';
+  }
 }
 
 /* ─────────────────────────────────────
@@ -1147,15 +1211,21 @@ function populateResult(mode, apiData = null) {
   trendEl.innerHTML = '';
   compEl.innerHTML  = '';
 
-  PropChart.Line(trendEl, {
-    labels: ['Q1 22','Q2 22','Q3 22','Q4 22','Q1 23','Q2 23','Q3 23','Q4 23'],
-    values: [7800, 8050, 8200, 8100, 8000, 8300, 8420, 8454],
-  }, { unit: '€/m²', color: 'var(--color-primary)', height: 160, area: true });
+  new PropChart.Line(trendEl, [
+    { label: 'Q1 22', value: 7800 }, { label: 'Q2 22', value: 8050 },
+    { label: 'Q3 22', value: 8200 }, { label: 'Q4 22', value: 8100 },
+    { label: 'Q1 23', value: 8000 }, { label: 'Q2 23', value: 8300 },
+    { label: 'Q3 23', value: 8420 }, { label: 'Q4 23', value: 8454 },
+  ], { unit: '€/m²', color: 'var(--color-primary)', area: true });
 
-  PropChart.Bar(compEl, {
-    labels: ['Max. 24','Max. 8','Odeons.','Brienner','Theatiner','Dieses Obj.'],
-    values: [8985, 8545, 8243, 6628, 9375, 8454],
-  }, { unit: '€/m²', color: 'var(--color-secondary)', height: 160 });
+  new PropChart.Bar(compEl, [
+    { label: 'Max. 24',     value: 8985 },
+    { label: 'Max. 8',      value: 8545 },
+    { label: 'Odeons.',     value: 8243 },
+    { label: 'Brienner',    value: 6628 },
+    { label: 'Theatiner',   value: 9375 },
+    { label: 'Dieses Obj.', value: 8454 },
+  ], { unit: '€/m²', color: 'var(--color-secondary)' });
 
   // Show/hide factor card for quick mode (simplified)
   document.getElementById('r-factors').style.opacity = isQuick ? '0.55' : '1';
@@ -1173,6 +1243,388 @@ function animateConfidence(pct) {
   const gap    = circ - filled;
   arc.style.strokeDasharray = `${filled.toFixed(1)} ${gap.toFixed(1)}`;
   text.textContent = pct + ' %';
+}
+
+/* ─────────────────────────────────────
+   Verfahren — Chat-Wizard
+   (Ertragswert- & Sachwertverfahren, dialoggeführt nach ImmoWertV)
+───────────────────────────────────── */
+const procMessages = document.getElementById('proc-messages');
+const procComposer = document.getElementById('proc-composer');
+
+let procState = null;
+
+const PROC_START_QUESTION = {
+  id: 'verfahren',
+  bot: 'Welches gesetzlich vorgeschriebene Bewertungsverfahren möchten Sie anwenden?',
+  type: 'choice',
+  options: [
+    { value: 'ertragswert', label: 'Ertragswertverfahren', sub: 'Für vermietete Renditeobjekte · §§ 17–20 ImmoWertV' },
+    { value: 'sachwert',    label: 'Sachwertverfahren',    sub: 'Für eigengenutzte Objekte ohne Vergleichsmarkt · §§ 21–23 ImmoWertV' },
+  ],
+};
+
+const PROC_GEBAEUDETYP_OPTIONS = {
+  ertragswert: ['Eigentumswohnung', 'Mehrfamilienhaus', 'Einfamilienhaus', 'Reihenhaus', 'Bürogebäude', 'Geschäftshaus'],
+  sachwert:    ['Einfamilienhaus', 'Reihenhaus', 'Mehrfamilienhaus', 'Eigentumswohnung', 'Bürogebäude', 'Geschäftshaus'],
+};
+
+const PROC_MODERNISIERUNG_OPTIONS = [
+  { value: 'keine',     label: 'Nicht modernisiert' },
+  { value: 'teilweise', label: 'Teilweise modernisiert' },
+  { value: 'umfassend', label: 'Umfassend modernisiert' },
+];
+
+const PROC_QUESTIONS = {
+  ertragswert: [
+    { id: 'gebaeudetyp', bot: 'Um welchen Gebäudetyp handelt es sich?', type: 'choice',
+      options: PROC_GEBAEUDETYP_OPTIONS.ertragswert.map(v => ({ value: v, label: v })) },
+    { id: 'baujahr', bot: 'In welchem Jahr wurde das Gebäude errichtet?', type: 'number',
+      placeholder: 'z. B. 1998', suffix: '' },
+    { id: 'flaeche', bot: 'Wie groß ist die Wohn-/Nutzfläche?', type: 'number',
+      placeholder: 'z. B. 85', suffix: 'm²' },
+    { id: 'grundstuecksflaeche', bot: 'Wie groß ist die (anteilige) Grundstücksfläche?', type: 'number',
+      placeholder: 'z. B. 450', suffix: 'm²',
+      hint: 'Bei Eigentumswohnungen: anteilige Grundstücksfläche gemäß Teilungserklärung / Miteigentumsanteil.' },
+    { id: 'bodenrichtwert', bot: 'Wie hoch ist der Bodenrichtwert am Standort?', type: 'number',
+      placeholder: 'z. B. 850', suffix: '€/m²',
+      hint: 'Aktuelle Bodenrichtwerte finden Sie über das Bodenrichtwert-Informationssystem BORIS Ihres Bundeslandes oder beim örtlichen Gutachterausschuss.' },
+    { id: 'jahresnettokaltmiete', bot: 'Wie hoch ist die erzielte Jahresnettokaltmiete?', type: 'number',
+      placeholder: 'z. B. 14400', suffix: '€ / Jahr',
+      hint: 'Monatliche Nettokaltmiete (ohne Nebenkosten) × 12 Monate.' },
+    { id: 'modernisierung', bot: 'Wurde das Gebäude modernisiert?', type: 'choice', options: PROC_MODERNISIERUNG_OPTIONS,
+      hint: 'Modernisierungen verlängern die Restnutzungsdauer und wirken sich auf den Vervielfältiger aus.' },
+  ],
+  sachwert: [
+    { id: 'gebaeudetyp', bot: 'Um welchen Gebäudetyp handelt es sich?', type: 'choice',
+      options: PROC_GEBAEUDETYP_OPTIONS.sachwert.map(v => ({ value: v, label: v })) },
+    { id: 'baujahr', bot: 'In welchem Jahr wurde das Gebäude errichtet?', type: 'number',
+      placeholder: 'z. B. 1998', suffix: '' },
+    { id: 'flaeche', bot: 'Wie groß ist die Wohn-/Nutzfläche?', type: 'number',
+      placeholder: 'z. B. 140', suffix: 'm²' },
+    { id: 'grundstuecksflaeche', bot: 'Wie groß ist die Grundstücksfläche?', type: 'number',
+      placeholder: 'z. B. 600', suffix: 'm²' },
+    { id: 'bodenrichtwert', bot: 'Wie hoch ist der Bodenrichtwert am Standort?', type: 'number',
+      placeholder: 'z. B. 650', suffix: '€/m²',
+      hint: 'Aktuelle Bodenrichtwerte finden Sie über das Bodenrichtwert-Informationssystem BORIS Ihres Bundeslandes oder beim örtlichen Gutachterausschuss.' },
+    { id: 'standard', bot: 'Welchen Ausstattungsstandard hat das Gebäude?', type: 'choice',
+      options: [
+        { value: 'einfach', label: 'Einfacher Standard', sub: 'Standardausstattung, Baujahr-typisch' },
+        { value: 'mittel',  label: 'Mittlerer Standard', sub: 'Übliche, gepflegte Ausstattung' },
+        { value: 'gehoben', label: 'Gehobener Standard', sub: 'Hochwertige Materialien & Technik' },
+      ],
+      hint: 'Bestimmt die Regelherstellungskosten je m² (NHK 2010).' },
+    { id: 'modernisierung', bot: 'Wurde das Gebäude modernisiert?', type: 'choice', options: PROC_MODERNISIERUNG_OPTIONS,
+      hint: 'Modernisierungen verjüngen das wirtschaftliche Alter und verringern die Alterswertminderung.' },
+  ],
+};
+
+function startProcedureChat() {
+  procState = { verfahren: null, queue: [], idx: -1, answers: {}, lastCalc: null };
+  procMessages.innerHTML = '';
+  procComposer.innerHTML = '';
+  stProcedure.style.display = 'none';
+  setResultStates(true, false, false);
+  askProcedureQuestion(PROC_START_QUESTION);
+}
+
+function appendProcMessage(role, text, hint) {
+  const wrap = document.createElement('div');
+  wrap.className = `proc-msg proc-msg--${role}`;
+  const bubble = document.createElement('div');
+  bubble.className = 'proc-bubble';
+  bubble.textContent = text;
+  wrap.appendChild(bubble);
+  if (hint) {
+    const h = document.createElement('div');
+    h.className = 'proc-hint';
+    h.textContent = hint;
+    wrap.appendChild(h);
+  }
+  procMessages.appendChild(wrap);
+  procMessages.scrollTop = procMessages.scrollHeight;
+  return wrap;
+}
+
+function askProcedureQuestion(q) {
+  appendProcMessage('bot', q.bot, q.hint);
+  renderProcComposer(q);
+}
+
+function renderProcComposer(q) {
+  procComposer.innerHTML = '';
+
+  if (q.type === 'choice') {
+    const wrap = document.createElement('div');
+    wrap.className = 'proc-chips';
+    q.options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'proc-chip';
+      btn.innerHTML = `<span class="proc-chip-label">${opt.label}</span>` +
+        (opt.sub ? `<span class="proc-chip-sub">${opt.sub}</span>` : '');
+      btn.addEventListener('click', () => handleProcAnswer(q, opt.value, opt.label));
+      wrap.appendChild(btn);
+    });
+    procComposer.appendChild(wrap);
+    return;
+  }
+
+  if (q.type === 'number') {
+    const row = document.createElement('div');
+    row.className = 'proc-input-row';
+    row.innerHTML = `
+      <input class="proc-input" type="number" inputmode="decimal" min="0" step="any" placeholder="${q.placeholder || ''}">
+      ${q.suffix ? `<span class="proc-input-suffix">${q.suffix}</span>` : ''}
+      <button class="proc-send-btn" type="button" title="Antwort senden">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>`;
+    const input = row.querySelector('.proc-input');
+    const send  = row.querySelector('.proc-send-btn');
+    const submit = () => {
+      const val = parseFloat(input.value);
+      if (!isFinite(val) || val <= 0) { input.classList.add('is-error'); input.focus(); return; }
+      const display = val.toLocaleString('de-DE') + (q.suffix ? ' ' + q.suffix : '');
+      handleProcAnswer(q, val, display);
+    };
+    send.addEventListener('click', submit);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+    input.addEventListener('input', () => input.classList.remove('is-error'));
+    procComposer.appendChild(row);
+    setTimeout(() => input.focus(), 60);
+  }
+}
+
+function handleProcAnswer(q, value, displayLabel) {
+  appendProcMessage('user', displayLabel);
+  procComposer.innerHTML = '';
+
+  if (q.id === 'verfahren') {
+    procState.verfahren = value;
+    procState.queue = PROC_QUESTIONS[value].slice();
+    procState.idx   = -1;
+    advanceProcedureChat();
+    return;
+  }
+
+  procState.answers[q.id] = value;
+  advanceProcedureChat();
+}
+
+function advanceProcedureChat() {
+  procState.idx++;
+  if (procState.idx < procState.queue.length) {
+    setTimeout(() => askProcedureQuestion(procState.queue[procState.idx]), 320);
+  } else {
+    setTimeout(finishProcedureChat, 320);
+  }
+}
+
+function finishProcedureChat() {
+  const verfahrenName = procState.verfahren === 'ertragswert' ? 'Ertragswertverfahren' : 'Sachwertverfahren';
+  appendProcMessage('bot', `Danke! Ich berechne die Marktwertherleitung nach dem ${verfahrenName} …`);
+
+  const inputs = { ...procState.answers, bewertungsjahr: new Date().getFullYear() };
+  const calc = procState.verfahren === 'ertragswert'
+    ? ValuationProcedures.ertragswert(inputs)
+    : ValuationProcedures.sachwert(inputs);
+
+  procState.lastCalc   = calc;
+  procState.lastInputs = inputs;
+  procState.lastMonteCarlo = null;
+
+  setTimeout(() => {
+    appendProcMessage('bot', `Ergebnis: ${ValuationProcedures.eur(calc.ergebnis)} nach dem ${verfahrenName}. Die vollständige Herleitung sehen Sie rechts im Ergebnisbereich.`);
+    showProcedureResult(calc, true);
+    offerMonteCarloSimulation();
+  }, 650);
+}
+
+/* ── Monte-Carlo-Risikosimulation (Phase 1: Szenario-Lab) ──
+   Bietet nach der deterministischen Verfahrensberechnung an, die mit Markt-
+   unsicherheit behafteten Parameter (Bodenrichtwert, Zinssatz/Sachwertfaktor,
+   Miete, Baupreisindex) über N Simulationsläufe zu variieren — und ersetzt so
+   eine pauschale ±-Spanne durch eine objektspezifische Risikoverteilung. */
+function offerMonteCarloSimulation() {
+  appendProcMessage('bot',
+    'Möchten Sie zusätzlich eine objektspezifische Risikoverteilung berechnen? ' +
+    'Dabei simuliert Proplytic 2.000 Marktszenarien, in denen Bodenrichtwert, Zinssatz/Marktanpassung ' +
+    'und weitere unsichere Größen gemäß realistischer Schwankungsbreiten variieren.');
+
+  procComposer.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'proc-chips';
+
+  const yesBtn = document.createElement('button');
+  yesBtn.type = 'button';
+  yesBtn.className = 'proc-chip';
+  yesBtn.innerHTML = '<span class="proc-chip-label">Ja, Risikoverteilung simulieren</span>' +
+    '<span class="proc-chip-sub">Monte-Carlo-Simulation · 2.000 Szenarien</span>';
+  yesBtn.addEventListener('click', runMonteCarloFlow);
+
+  const noBtn = document.createElement('button');
+  noBtn.type = 'button';
+  noBtn.className = 'proc-chip';
+  noBtn.innerHTML = '<span class="proc-chip-label">Nein, danke</span>';
+  noBtn.addEventListener('click', () => {
+    appendProcMessage('user', 'Nein, danke');
+    renderProcRestartComposer();
+  });
+
+  wrap.appendChild(yesBtn);
+  wrap.appendChild(noBtn);
+  procComposer.appendChild(wrap);
+}
+
+function runMonteCarloFlow() {
+  appendProcMessage('user', 'Ja, Risikoverteilung simulieren');
+  appendProcMessage('bot', 'Simuliere 2.000 Marktszenarien — einen Moment …');
+  procComposer.innerHTML = '';
+
+  setTimeout(() => {
+    const mc = MonteCarloSimulation.runSimulation(procState.verfahren, procState.lastInputs, 2000);
+    procState.lastMonteCarlo = mc;
+
+    appendProcMessage('bot',
+      `Fertig. Der wahrscheinliche Wertbereich (10.–90. Perzentil) liegt zwischen ` +
+      `${ValuationProcedures.eur(mc.percentiles.p10)} und ${ValuationProcedures.eur(mc.percentiles.p90)} ` +
+      `— Verteilung und Sensitivitätsanalyse sehen Sie rechts unter der Herleitung.`);
+    appendMonteCarloResult(mc);
+    renderProcRestartComposer();
+  }, 900);
+}
+
+function renderProcRestartComposer() {
+  procComposer.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'proc-restart-btn';
+  btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M13 4a6 6 0 101.5 5.5M14 2v3.5h-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Neue Berechnung starten`;
+  btn.addEventListener('click', startProcedureChat);
+  procComposer.appendChild(btn);
+}
+
+function showProcedureResult(calc, scrollIntoView) {
+  setResultStates(false, false, false);
+  stProcedure.innerHTML = renderProcedureResultHTML(calc);
+  stProcedure.style.display = '';
+  if (scrollIntoView) stProcedure.scrollTop = 0;
+  btnExp.removeAttribute('disabled');
+  btnSave.removeAttribute('disabled');
+}
+
+function renderProcStepGroup(g) {
+  const eur = ValuationProcedures.eur;
+  const rows = g.rows.map(r => {
+    let valDisplay;
+    if (r.isFactor) valDisplay = r.wert.toFixed(2);
+    else if (r.isArea) valDisplay = Math.round(r.wert).toLocaleString('de-DE') + ' m²';
+    else if (r.isRate) valDisplay = eur(r.wert) + ' / m²';
+    else valDisplay = eur(r.wert);
+    return `
+      <div class="proc-step-row">
+        <div class="proc-step-label">${r.label}${r.formel ? `<span class="proc-step-formula">${r.formel}</span>` : ''}</div>
+        <div class="proc-step-value">${valDisplay}</div>
+      </div>`;
+  }).join('');
+
+  const s = g.summe;
+  const sumDisplay = s.isFactor ? s.wert.toFixed(2) : eur(s.wert);
+  return `
+    <div class="proc-step-group${s.isResult ? ' is-result' : ''}">
+      <div class="proc-step-group-title">${g.gruppe}</div>
+      ${rows}
+      <div class="proc-step-row proc-step-sum${s.isResult ? ' is-result' : ''}">
+        <div class="proc-step-label">${s.label}</div>
+        <div class="proc-step-value">${s.subtract ? '− ' : ''}${sumDisplay}</div>
+      </div>
+    </div>`;
+}
+
+function renderProcedureResultHTML(calc) {
+  const eur = ValuationProcedures.eur;
+  const kpis = calc.kennzahlen.map(k => `
+    <div class="proc-kpi">
+      <span class="proc-kpi-label">${k.label}</span>
+      <span class="proc-kpi-value">${k.wert}</span>
+    </div>`).join('');
+
+  const groups = calc.schritte.map(renderProcStepGroup).join('');
+
+  return `
+    <div class="proc-result-header">
+      <div class="proc-result-eyebrow">${calc.titel} <span class="proc-result-legal">${calc.rechtsgrundlage}</span></div>
+      <div class="proc-result-value">${eur(calc.ergebnis)}</div>
+      <div class="proc-result-sub">Ermittelter Wert nach gesetzlich vorgeschriebenem Verfahren — gerundet auf volle 1.000 €</div>
+    </div>
+    <div class="proc-result-kpis">${kpis}</div>
+    <div class="proc-result-steps">${groups}</div>
+    <div class="proc-result-disclaimer">
+      <strong>Hinweis:</strong> Diese Berechnung dient der fachlichen Orientierung und ersetzt kein
+      Verkehrswertgutachten nach § 194 BauGB. Liegenschaftszinssätze, Bodenrichtwerte, Regelherstellungskosten
+      und Sachwertfaktoren wurden als marktübliche Orientierungswerte angesetzt — für eine rechtsverbindliche
+      Bewertung sind die aktuellen Daten des örtlich zuständigen Gutachterausschusses heranzuziehen.
+    </div>`;
+}
+
+function appendMonteCarloResult(mc) {
+  const section = document.createElement('div');
+  section.className = 'proc-mc-section';
+  section.innerHTML = renderMonteCarloHTML(procState.lastCalc, mc);
+  stProcedure.appendChild(section);
+  renderMonteCarloChart(mc);
+}
+
+function renderMonteCarloHTML(calc, mc) {
+  const eur = ValuationProcedures.eur;
+  const p = mc.percentiles;
+  const tornadoMax = Math.max(...mc.sensitivity.map(s => s.spread)) || 1;
+
+  const tornadoRows = mc.sensitivity.map(s => {
+    const widthPct = (s.spread / tornadoMax * 100).toFixed(1);
+    return `
+      <div class="proc-tornado-row">
+        <div class="proc-tornado-label">${s.label}</div>
+        <div class="proc-tornado-track">
+          <div class="proc-tornado-bar" style="width:${widthPct}%"></div>
+        </div>
+        <div class="proc-tornado-value">${eur(s.low)} – ${eur(s.high)}</div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="proc-mc-header">
+      <div class="proc-mc-eyebrow">Monte-Carlo-Risikosimulation <span class="proc-mc-badge">${mc.n.toLocaleString('de-DE')} Szenarien</span></div>
+      <div class="proc-mc-range">${eur(p.p10)} – ${eur(p.p90)}</div>
+      <div class="proc-mc-sub">Wahrscheinlicher Wertbereich (10.–90. Perzentil) — objektspezifische Risikoverteilung statt pauschaler ±-Bandbreite</div>
+    </div>
+    <div class="proc-result-kpis proc-mc-kpis">
+      <div class="proc-kpi"><span class="proc-kpi-label">P10</span><span class="proc-kpi-value">${eur(p.p10)}</span></div>
+      <div class="proc-kpi"><span class="proc-kpi-label">P50 · Median</span><span class="proc-kpi-value">${eur(p.p50)}</span></div>
+      <div class="proc-kpi"><span class="proc-kpi-label">P90</span><span class="proc-kpi-value">${eur(p.p90)}</span></div>
+      <div class="proc-kpi"><span class="proc-kpi-label">Streuung σ</span><span class="proc-kpi-value">${eur(mc.stdDev)}</span></div>
+    </div>
+    <div class="proc-mc-chart-wrap">
+      <div class="proc-mc-chart-title">Wertverteilung über ${mc.n.toLocaleString('de-DE')} simulierte Marktszenarien</div>
+      <div id="proc-mc-chart" class="proc-mc-chart"></div>
+    </div>
+    <div class="proc-mc-chart-wrap">
+      <div class="proc-mc-chart-title">Sensitivitätsanalyse — welcher Faktor treibt die Unsicherheit?</div>
+      <div class="proc-tornado">${tornadoRows}</div>
+    </div>
+    <div class="proc-result-disclaimer">
+      <strong>Methodik:</strong> Die Simulation variiert Bodenrichtwert, Liegenschaftszinssatz bzw. Sachwertfaktor
+      und weitere marktunsichere Eingangsgrößen ${mc.n.toLocaleString('de-DE')}-fach normalverteilt um ihren Basiswert
+      und führt jeden Lauf vollständig durch das gesetzlich vorgeschriebene Verfahren. Die resultierende
+      Wertverteilung ersetzt eine pauschale Fehlerspanne durch ein objektspezifisches Konfidenzintervall —
+      die Sensitivitätsanalyse zeigt, welche Eingangsgröße die Unsicherheit am stärksten treibt.
+    </div>`;
+}
+
+function renderMonteCarloChart(mc) {
+  const el = document.getElementById('proc-mc-chart');
+  if (!el) return;
+  new PropChart.Bar(el, MonteCarloSimulation.buildHistogram(mc.samples, 22), { unit: 'Szenarien', color: 'var(--color-teal)' });
 }
 
 /* ─────────────────────────────────────
