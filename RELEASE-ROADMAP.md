@@ -37,10 +37,10 @@ Zentrale Checkliste für den Release. Status-Legende:
 |---|---|---|
 | Dashboard | ✅ | `layouts/dashboard.html` |
 | Bewertungsengine (Eingabe + Ergebnis) | 🔧 | `layouts/bewertung.html`, `components/valuation-procedures.js` — Ertragswert-/Sachwertverfahren + Chat-Wizard implementiert (PR #4) |
-| Vergleichsfunktion | ⬜ | |
+| Vergleichsfunktion | 🔧 | `layouts/vergleich.html` — Objekt-Picker (bis zu 4 Objekte, auch per `?objekte=`-URL-Parameter vorbelegbar), Kennzahlenvergleichstabelle mit Best-Wert-Hervorhebung, Rendite-Chart (PropChart.Bar), Entfernen einzelner Objekte aus dem Vergleich |
 | Monte-Carlo × MiroFish-Risikosimulation | 🔧 | Monte-Carlo-Phase-1 implementiert (`components/monte-carlo.js`, PR #4); MiroFish-Agentensimulation (Enterprise-Vollausbau) noch offen |
-| Objekt-/Portfolio-Verwaltung | 🔧 | `layouts/detail.html` (Objekt-Detailseite) vorhanden, Portfolio-Übersicht offen |
-| Gespeicherte Bewertungen / Verlauf | ⬜ | |
+| Objekt-/Portfolio-Verwaltung | 🔧 | `layouts/detail.html` (Objekt-Detailseite) sowie `layouts/portfolio.html` (Portfolio-Übersicht: Filter, Suche, Sortierung, Mehrfachauswahl mit Sammel-Aktionsleiste inkl. Direktsprung in die Vergleichsfunktion) vorhanden |
+| Gespeicherte Bewertungen / Verlauf | 🔧 | `layouts/verlauf.html` — Statusfilter (Abgeschlossen/Entwurf/Archiviert), Verfahrensfilter, Suche, Leerzustand sowie Aktionen (Öffnen/Export/Löschen als Demo-Flow) |
 | PDF-/Gutachten-Export | ✅ | `layouts/bewertung-pdf.html`, `bewertung-pdf.css` |
 
 ## Billing
