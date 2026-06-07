@@ -21,11 +21,11 @@ Zentrale Checkliste für den Release. Status-Legende:
 
 | Seite | Status | Notiz |
 |---|---|---|
-| Login | ⬜ | |
-| Registrierung | ⬜ | |
-| Logout | ⬜ | |
-| Passwort vergessen / zurücksetzen | ⬜ | |
-| E-Mail-Verifizierung | ⬜ | |
+| Login | 🔧 | `layouts/login.html` — E-Mail/Passwort-Form (Client-Validierung), „Angemeldet bleiben", Link zu Passwort-Reset, Google-/Microsoft-SSO-Buttons (Enterprise-Hinweis); Demo-Flow leitet auf `dashboard.html` weiter, echte Authentifizierung folgt mit Backend-Anbindung |
+| Registrierung | 🔧 | `layouts/registrieren.html` — Name/Unternehmen (optional)/E-Mail/Passwort, AGB- & Datenschutz-Zustimmung; Demo-Flow leitet mit E-Mail-Parameter auf `e-mail-verifizierung.html` weiter |
+| Logout | ⬜ | Kein eigenständiger Screen nötig — i. d. R. Aktion/Bestätigungsdialog im Account-Menü; folgt mit Backend-Session-Anbindung |
+| Passwort vergessen / zurücksetzen | 🔧 | `layouts/passwort-vergessen.html` (Anfrage-Flow mit Bestätigungs-Card + Resend) und `layouts/passwort-zuruecksetzen.html` (Formular für neues Passwort inkl. Token-Prüfung und „Link ungültig"-Zustand) |
+| E-Mail-Verifizierung | 🔧 | `layouts/e-mail-verifizierung.html` — Wartezustand mit Resend-Option + Demo-Bestätigungsbutton, der den verifizierten Zustand zeigt |
 | Onboarding / Welcome-Flow | ⬜ | |
 | Profil / Account-Einstellungen | ⬜ | |
 | Team-/Nutzerverwaltung (Rollen & Einladungen) | ⬜ | Enterprise |

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passwort vergessen — Proplytic.ai</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="../components/input.css">
+  <link rel="stylesheet" href="./auth.css">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <a class="auth-logo" href="./dashboard.html">
+    <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="32">
+  </a>
+
+  <div class="auth-card" id="request-card">
+    <p class="auth-eyebrow">Konto-Wiederherstellung</p>
+    <h1 class="auth-title">Passwort vergessen?</h1>
+    <p class="auth-sub">Kein Problem — geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link zum Zurücksetzen Ihres Passworts.</p>
+
+    <form class="auth-form" id="reset-request-form" novalidate>
+      <div class="form-field">
+        <label class="form-label form-label-required" for="reset-email">E-Mail-Adresse</label>
+        <input class="input" id="reset-email" name="email" type="email" placeholder="name@unternehmen.de" autocomplete="email" required>
+        <span class="form-error-msg" id="reset-email-error" hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</span>
+      </div>
+
+      <button type="submit" class="btn btn-primary auth-submit">Link zum Zurücksetzen senden</button>
+    </form>
+
+    <p class="auth-footer-note">
+      <a href="./login.html">← Zurück zur Anmeldung</a>
+    </p>
+  </div>
+
+  <div class="auth-card" id="confirm-card" hidden>
+    <div class="auth-status-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 7l9 6 9-6M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h1 class="auth-title">E-Mail unterwegs</h1>
+    <p class="auth-sub">
+      Falls ein Konto mit der Adresse <strong id="confirm-email">—</strong> existiert, haben wir
+      einen Link zum Zurücksetzen des Passworts gesendet. Der Link ist 60 Minuten gültig.
+    </p>
+    <p class="auth-footer-note" style="margin-top: 0;">
+      Keine E-Mail erhalten? Prüfen Sie Ihren Spam-Ordner oder
+      <a href="#" id="resend-link">fordern Sie den Link erneut an</a>.
+    </p>
+    <p class="auth-footer-note">
+      <a href="./login.html">← Zurück zur Anmeldung</a>
+    </p>
+  </div>
+
+  <nav class="auth-legal-links" aria-label="Rechtliche Seiten">
+    <a href="./impressum.html">Impressum</a>
+    <a href="./datenschutz.html">Datenschutz</a>
+    <a href="./agb.html">AGB</a>
+  </nav>
+
+</div>
+
+<script>
+  const requestCard = document.getElementById('request-card');
+  const confirmCard = document.getElementById('confirm-card');
+  const form  = document.getElementById('reset-request-form');
+  const email = document.getElementById('reset-email');
+  const error = document.getElementById('reset-email-error');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+    email.classList.toggle('input-error', !valid);
+    error.hidden = valid;
+    if (!valid) return;
+
+    document.getElementById('confirm-email').textContent = email.value.trim();
+    requestCard.hidden = true;
+    confirmCard.hidden = false;
+  });
+
+  document.getElementById('resend-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.target.textContent = 'Link erneut gesendet ✓';
+  });
+</script>
+
+</body>
+</html>

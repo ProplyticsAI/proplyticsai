@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anmelden — Proplytic.ai</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="../components/input.css">
+  <link rel="stylesheet" href="./auth.css">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <a class="auth-logo" href="./dashboard.html">
+    <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="32">
+  </a>
+
+  <div class="auth-card">
+    <p class="auth-eyebrow">Willkommen zurück</p>
+    <h1 class="auth-title">Anmelden</h1>
+    <p class="auth-sub">Melden Sie sich an, um auf Ihre Bewertungen, Portfolios und Analysen zuzugreifen.</p>
+
+    <form class="auth-form" id="login-form" novalidate>
+      <div class="form-field">
+        <label class="form-label form-label-required" for="login-email">E-Mail-Adresse</label>
+        <input class="input" id="login-email" name="email" type="email" placeholder="name@unternehmen.de" autocomplete="email" required>
+        <span class="form-error-msg" id="login-email-error" hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</span>
+      </div>
+
+      <div class="form-field">
+        <div class="auth-row-between">
+          <label class="form-label form-label-required" for="login-password">Passwort</label>
+          <a class="auth-link" href="./passwort-vergessen.html">Passwort vergessen?</a>
+        </div>
+        <input class="input" id="login-password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+        <span class="form-error-msg" id="login-password-error" hidden>Bitte geben Sie Ihr Passwort ein.</span>
+      </div>
+
+      <label class="auth-checkbox-row">
+        <input type="checkbox" name="remember">
+        Angemeldet bleiben
+      </label>
+
+      <button type="submit" class="btn btn-primary auth-submit">Anmelden</button>
+    </form>
+
+    <div class="auth-divider">oder</div>
+
+    <div class="auth-sso">
+      <button type="button" class="btn btn-outline" id="sso-google">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M15.7 8.18c0-.57-.05-1.12-.14-1.64H8v3.1h4.3a3.7 3.7 0 0 1-1.6 2.43v2h2.6c1.5-1.4 2.4-3.46 2.4-5.9z" fill="#4285F4"/>
+          <path d="M8 16c2.16 0 3.97-.71 5.3-1.93l-2.6-2c-.72.48-1.64.77-2.7.77-2.07 0-3.83-1.4-4.46-3.27H.85v2.06A8 8 0 0 0 8 16z" fill="#34A853"/>
+          <path d="M3.54 9.57A4.8 4.8 0 0 1 3.29 8c0-.55.1-1.07.25-1.57V4.37H.85a8 8 0 0 0 0 7.26l2.69-2.06z" fill="#FBBC05"/>
+          <path d="M8 3.16c1.18 0 2.23.4 3.06 1.2l2.3-2.3C11.96.8 10.15 0 8 0A8 8 0 0 0 .85 4.37l2.69 2.06C4.17 4.56 5.93 3.16 8 3.16z" fill="#EA4335"/>
+        </svg>
+        Mit Google anmelden
+      </button>
+      <button type="button" class="btn btn-outline" id="sso-microsoft">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="1" y="1" width="6.5" height="6.5" fill="#F25022"/>
+          <rect x="8.5" y="1" width="6.5" height="6.5" fill="#7FBA00"/>
+          <rect x="1" y="8.5" width="6.5" height="6.5" fill="#00A4EF"/>
+          <rect x="8.5" y="8.5" width="6.5" height="6.5" fill="#FFB900"/>
+        </svg>
+        Mit Microsoft anmelden
+      </button>
+      <p class="auth-sub" style="margin: var(--space-1) 0 0; font-size: var(--text-2xs, 10px);">
+        Single Sign-On (SSO) ist Teil des Enterprise-Funktionsumfangs.
+      </p>
+    </div>
+
+    <p class="auth-footer-note">
+      Noch kein Konto? <a href="./registrieren.html">Jetzt registrieren</a>
+    </p>
+  </div>
+
+  <nav class="auth-legal-links" aria-label="Rechtliche Seiten">
+    <a href="./impressum.html">Impressum</a>
+    <a href="./datenschutz.html">Datenschutz</a>
+    <a href="./agb.html">AGB</a>
+  </nav>
+
+</div>
+
+<script>
+  const form = document.getElementById('login-form');
+
+  function validateField(input, errorEl, validator) {
+    const valid = validator(input.value.trim());
+    input.classList.toggle('input-error', !valid);
+    errorEl.hidden = valid;
+    return valid;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('login-email');
+    const password = document.getElementById('login-password');
+
+    const emailValid = validateField(email, document.getElementById('login-email-error'),
+      v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+    const passwordValid = validateField(password, document.getElementById('login-password-error'),
+      v => v.length > 0);
+
+    if (emailValid && passwordValid) {
+      // Demo-Flow: echte Authentifizierung folgt mit Backend-Anbindung
+      window.location.href = './dashboard.html';
+    }
+  });
+
+  ['sso-google', 'sso-microsoft'].forEach(id => {
+    document.getElementById(id).addEventListener('click', () => {
+      alert('Single Sign-On ist Teil des Enterprise-Funktionsumfangs und wird mit der Backend-Anbindung aktiviert.');
+    });
+  });
+</script>
+
+</body>
+</html>
