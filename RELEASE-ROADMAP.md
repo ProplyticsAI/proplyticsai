@@ -23,13 +23,13 @@ Zentrale Checkliste für den Release. Status-Legende:
 |---|---|---|
 | Login | 🔧 | `layouts/login.html` — E-Mail/Passwort-Form (Client-Validierung), „Angemeldet bleiben", Link zu Passwort-Reset, Google-/Microsoft-SSO-Buttons (Enterprise-Hinweis); Demo-Flow leitet auf `dashboard.html` weiter, echte Authentifizierung folgt mit Backend-Anbindung |
 | Registrierung | 🔧 | `layouts/registrieren.html` — Name/Unternehmen (optional)/E-Mail/Passwort, AGB- & Datenschutz-Zustimmung; Demo-Flow leitet mit E-Mail-Parameter auf `e-mail-verifizierung.html` weiter |
-| Logout | ⬜ | Kein eigenständiger Screen nötig — i. d. R. Aktion/Bestätigungsdialog im Account-Menü; folgt mit Backend-Session-Anbindung |
+| Logout | 🔧 | Als Bestätigungsdialog in `layouts/account-einstellungen.html` (§ Konto) umgesetzt — kein eigenständiger Screen, Demo-Flow leitet auf `login.html` weiter; echtes Session-Ende folgt mit Backend-Anbindung |
 | Passwort vergessen / zurücksetzen | 🔧 | `layouts/passwort-vergessen.html` (Anfrage-Flow mit Bestätigungs-Card + Resend) und `layouts/passwort-zuruecksetzen.html` (Formular für neues Passwort inkl. Token-Prüfung und „Link ungültig"-Zustand) |
 | E-Mail-Verifizierung | 🔧 | `layouts/e-mail-verifizierung.html` — Wartezustand mit Resend-Option + Demo-Bestätigungsbutton, der den verifizierten Zustand zeigt |
-| Onboarding / Welcome-Flow | ⬜ | |
-| Profil / Account-Einstellungen | ⬜ | |
+| Onboarding / Welcome-Flow | 🔧 | `layouts/willkommen.html` — 3-stufiger Einrichtungs-Flow (Begrüßung → Nutzungsart wählen → Abschluss mit Direktlink zur ersten Bewertung), inkl. „Überspringen"-Option; Auswahl wird mit Backend-Anbindung im Nutzerprofil gespeichert |
+| Profil / Account-Einstellungen | 🔧 | `layouts/account-einstellungen.html` — Tab-Layout (Profil, Sicherheit inkl. Passwort-Änderung & 2FA-Hinweis, Benachrichtigungen, Konto inkl. Logout & Konto-löschen) im App-Layout (Sidebar/Header wie Dashboard) |
 | Team-/Nutzerverwaltung (Rollen & Einladungen) | ⬜ | Enterprise |
-| 2FA / SSO | ⬜ | Enterprise |
+| 2FA / SSO | ⬜ | Enterprise — Hinweis-Karte bereits in `account-einstellungen.html` (§ Sicherheit) verankert |
 
 ## Kernprodukt
 
