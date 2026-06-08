@@ -34,7 +34,7 @@
 }
 
 .btn:focus-visible {
-  box-shadow: 0 0 0 3px var(--color-ring), 0 0 0 5px rgba(45, 90, 61, 0.15);
+  box-shadow: 0 0 0 3px var(--color-ring), 0 0 0 5px rgba(58, 167, 181, 0.2);
 }
 
 .btn:disabled,
@@ -47,14 +47,14 @@
 /* ── Varianten ──────────────────────────── */
 
 .btn-primary {
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-hover); /* tieferes Teal für besseren Weißtext-Kontrast */
   color: #fff;
-  border-color: var(--color-primary);
+  border-color: var(--color-primary-hover);
 }
 
 .btn-primary:hover {
-  background-color: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
+  background-color: #257885; /* noch dunkleres Teal im Hover */
+  border-color: #257885;
   box-shadow: var(--shadow-md);
 }
 

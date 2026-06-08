@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagination — Proplytic.ai Design System</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="./pagination.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--color-background);
+      color: var(--color-foreground);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      padding: var(--space-16) var(--space-10);
+    }
+    .page-title {
+      font-family: var(--font-serif); font-size: var(--text-4xl);
+      font-weight: var(--font-normal); letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--space-2);
+    }
+    .page-subtitle { color: var(--color-muted); font-size: var(--text-sm); margin-bottom: var(--space-16); }
+    .section { margin-bottom: var(--space-12); }
+    .section-label {
+      font-size: var(--text-xs); font-weight: var(--font-semibold);
+      letter-spacing: var(--tracking-wider); text-transform: uppercase;
+      color: var(--color-muted); margin-bottom: var(--space-5);
+      padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border);
+    }
+    .stack { display: flex; flex-direction: column; gap: var(--space-6); }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">Pagination</h1>
+  <p class="page-subtitle">Komponente · components/pagination.css</p>
+
+  <div class="stack">
+
+    <!-- Standard mit Info-Bar -->
+    <section class="section">
+      <p class="section-label">Standard — mit Info-Bar</p>
+      <div class="pagination-bar">
+        <span class="pagination-info">6–12 von 51 Objekten</span>
+        <nav class="pagination" aria-label="Seitennavigation">
+          <button class="page-item page-item-first" aria-label="Erste Seite">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M10 3L6 7l4 4M5 3v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="page-item page-item-prev" aria-label="Zurück">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="page-item">1</button>
+          <button class="page-item is-active" aria-current="page">2</button>
+          <button class="page-item">3</button>
+          <span class="page-ellipsis">…</span>
+          <button class="page-item">9</button>
+          <button class="page-item page-item-next" aria-label="Weiter">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="page-item page-item-last" aria-label="Letzte Seite">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M4 3l4 4-4 4M9 3v8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </nav>
+        <div class="page-size-select">
+          Pro Seite
+          <select aria-label="Einträge pro Seite">
+            <option>6</option>
+            <option>12</option>
+            <option selected>25</option>
+            <option>50</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Erste Seite -->
+    <section class="section">
+      <p class="section-label">Erste Seite aktiv</p>
+      <nav class="pagination" aria-label="Seitennavigation">
+        <button class="page-item page-item-prev" aria-label="Zurück" disabled>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="page-item is-active" aria-current="page">1</button>
+        <button class="page-item">2</button>
+        <button class="page-item">3</button>
+        <button class="page-item">4</button>
+        <span class="page-ellipsis">…</span>
+        <button class="page-item">9</button>
+        <button class="page-item page-item-next" aria-label="Weiter">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </nav>
+    </section>
+
+    <!-- Mittlere Seite -->
+    <section class="section">
+      <p class="section-label">Mittlere Seite aktiv</p>
+      <nav class="pagination" aria-label="Seitennavigation">
+        <button class="page-item page-item-prev" aria-label="Zurück">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="page-item">1</button>
+        <span class="page-ellipsis">…</span>
+        <button class="page-item">3</button>
+        <button class="page-item">4</button>
+        <button class="page-item is-active" aria-current="page">5</button>
+        <button class="page-item">6</button>
+        <button class="page-item">7</button>
+        <span class="page-ellipsis">…</span>
+        <button class="page-item">9</button>
+        <button class="page-item page-item-next" aria-label="Weiter">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </nav>
+    </section>
+
+    <!-- Compact -->
+    <section class="section">
+      <p class="section-label">Compact</p>
+      <nav class="pagination pagination-compact" aria-label="Seitennavigation">
+        <button class="page-item page-item-prev" aria-label="Zurück">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="page-item">1</button>
+        <button class="page-item is-active">2</button>
+        <button class="page-item">3</button>
+        <span class="page-ellipsis" style="width:24px;">…</span>
+        <button class="page-item">9</button>
+        <button class="page-item page-item-next" aria-label="Weiter">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </nav>
+    </section>
+
+    <!-- Simple -->
+    <section class="section">
+      <p class="section-label">Simple — Zurück / Weiter</p>
+      <div class="pagination-bar">
+        <span class="pagination-info">Seite 2 von 9</span>
+        <nav class="pagination pagination-simple" aria-label="Seitennavigation">
+          <button class="page-item">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M9 3L5 7l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Zurück
+          </button>
+          <button class="page-item">
+            Weiter
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </nav>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>

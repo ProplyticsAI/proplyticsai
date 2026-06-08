@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modal — Proplytic.ai Design System</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="./button.css">
+  <link rel="stylesheet" href="./input.css">
+  <link rel="stylesheet" href="./badge.css">
+  <link rel="stylesheet" href="./modal.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--color-background);
+      color: var(--color-foreground);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      padding: var(--space-16) var(--space-10);
+    }
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: var(--text-4xl);
+      font-weight: var(--font-normal);
+      letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--space-2);
+    }
+    .page-subtitle { color: var(--color-muted); font-size: var(--text-sm); margin-bottom: var(--space-12); }
+    .section { margin-bottom: var(--space-12); }
+    .section-label {
+      font-size: var(--text-xs); font-weight: var(--font-semibold);
+      letter-spacing: var(--tracking-wider); text-transform: uppercase;
+      color: var(--color-muted); margin-bottom: var(--space-4);
+      padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border);
+    }
+    .row { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  </style>
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-backdrop.is-open')
+          .forEach(m => m.classList.remove('is-open'));
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+</head>
+<body>
+
+  <h1 class="page-title">Modal</h1>
+  <p class="page-subtitle">Komponente · components/modal.css</p>
+
+  <!-- Trigger-Buttons -->
+  <section class="section">
+    <p class="section-label">Varianten</p>
+    <div class="row">
+      <button class="btn btn-outline" onclick="openModal('modal-form')">Formular-Modal</button>
+      <button class="btn btn-outline" onclick="openModal('modal-confirm-delete')">Löschen bestätigen</button>
+      <button class="btn btn-outline" onclick="openModal('modal-confirm-warning')">Warnung</button>
+      <button class="btn btn-outline" onclick="openModal('modal-info')">Info (groß)</button>
+    </div>
+  </section>
+
+  <!-- ── Modal: Objekt hinzufügen ── -->
+  <div class="modal-backdrop" id="modal-form" role="dialog" aria-modal="true" aria-labelledby="mf-title"
+       onclick="if(event.target===this) closeModal('modal-form')">
+    <div class="modal modal-md">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="mf-title">Objekt hinzufügen</h2>
+          <p class="modal-subtitle">Neues Objekt zur Analyse einreichen</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-form')" aria-label="Schließen">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+          <div class="form-field">
+            <label class="form-label form-label-required" for="mf-street">Straße & Nr.</label>
+            <input class="input" id="mf-street" type="text" placeholder="Leopoldstr. 142">
+          </div>
+          <div class="form-field">
+            <label class="form-label form-label-required" for="mf-zip">PLZ</label>
+            <input class="input" id="mf-zip" type="text" placeholder="80802" maxlength="5">
+          </div>
+        </div>
+        <div class="form-field" style="margin-top: var(--space-4);">
+          <label class="form-label form-label-required" for="mf-city">Stadt</label>
+          <input class="input" id="mf-city" type="text" placeholder="München">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-top: var(--space-4);">
+          <div class="form-field">
+            <label class="form-label form-label-required" for="mf-type">Objektart</label>
+            <select class="input" id="mf-type">
+              <option value="">Bitte wählen</option>
+              <option>Büro</option>
+              <option>Wohnen</option>
+              <option>Einzelhandel</option>
+              <option>Logistik</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label form-label-required" for="mf-area">Fläche</label>
+            <div class="input-group">
+              <input class="input" id="mf-area" type="number" placeholder="0">
+              <span class="input-addon">m²</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-field" style="margin-top: var(--space-4);">
+          <label class="form-label" for="mf-price">Kaufpreis (optional)</label>
+          <div class="input-group">
+            <span class="input-addon">€</span>
+            <input class="input" id="mf-price" type="number" placeholder="0">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal('modal-form')">Abbrechen</button>
+        <button class="btn btn-primary">Objekt speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: Löschen bestätigen ── -->
+  <div class="modal-backdrop" id="modal-confirm-delete" role="dialog" aria-modal="true" aria-labelledby="mcd-title"
+       onclick="if(event.target===this) closeModal('modal-confirm-delete')">
+    <div class="modal modal-sm">
+      <div class="modal-body" style="text-align: center; padding: var(--space-8) var(--space-6) var(--space-6);">
+        <div class="modal-icon modal-icon-error" style="margin: 0 auto var(--space-4);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 11v6M14 11v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h2 class="modal-title" id="mcd-title" style="font-size: var(--text-xl); margin-bottom: var(--space-2);">Objekt löschen?</h2>
+        <p style="font-size: var(--text-sm); color: var(--color-muted); line-height: var(--leading-relaxed);">
+          <strong style="color: var(--color-foreground);">Leopoldstr. 142</strong> wird dauerhaft entfernt.
+          Alle zugehörigen Analysen und Berichte gehen verloren.
+        </p>
+      </div>
+      <div class="modal-footer" style="justify-content: center; gap: var(--space-3);">
+        <button class="btn btn-outline" onclick="closeModal('modal-confirm-delete')">Abbrechen</button>
+        <button class="btn" style="background: var(--color-error); color: #fff; border-color: var(--color-error);"
+                onmouseover="this.style.background='#9e3f33'" onmouseout="this.style.background='var(--color-error)'">
+          Endgültig löschen
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: Warnung ── -->
+  <div class="modal-backdrop" id="modal-confirm-warning" role="dialog" aria-modal="true" aria-labelledby="mcw-title"
+       onclick="if(event.target===this) closeModal('modal-confirm-warning')">
+    <div class="modal modal-sm">
+      <div class="modal-body" style="text-align: center; padding: var(--space-8) var(--space-6) var(--space-6);">
+        <div class="modal-icon modal-icon-warning" style="margin: 0 auto var(--space-4);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 9v5M12 17v.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2 class="modal-title" id="mcw-title" style="font-size: var(--text-xl); margin-bottom: var(--space-2);">Analyse überschreiben?</h2>
+        <p style="font-size: var(--text-sm); color: var(--color-muted); line-height: var(--leading-relaxed);">
+          Für dieses Objekt existiert bereits eine Analyse vom <strong style="color: var(--color-foreground);">3. Juni 2026</strong>.
+          Beim Fortfahren wird sie ersetzt.
+        </p>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <button class="btn btn-outline" onclick="closeModal('modal-confirm-warning')">Abbrechen</button>
+        <button class="btn btn-primary">Neue Analyse starten</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Modal: Info (groß) ── -->
+  <div class="modal-backdrop" id="modal-info" role="dialog" aria-modal="true" aria-labelledby="mi-title"
+       onclick="if(event.target===this) closeModal('modal-info')">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="mi-title">Analysebericht</h2>
+          <p class="modal-subtitle">Leopoldstr. 142 · München · erstellt 5. Jun 2026</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-info')" aria-label="Schließen">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); margin-bottom: var(--space-6);">
+          <div style="background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+            <p style="font-size: var(--text-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: var(--space-1);">Bewertung</p>
+            <p style="font-family: var(--font-serif); font-size: var(--text-3xl); letter-spacing: -0.02em; color: var(--color-primary);">82</p>
+            <p style="font-size: var(--text-xs); color: var(--color-muted);">von 100 Punkten</p>
+          </div>
+          <div style="background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+            <p style="font-size: var(--text-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: var(--space-1);">Rendite</p>
+            <p style="font-family: var(--font-serif); font-size: var(--text-3xl); letter-spacing: -0.02em;">4,1 %</p>
+            <p style="font-size: var(--text-xs); color: var(--color-muted);">Nettomietrendite</p>
+          </div>
+          <div style="background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+            <p style="font-size: var(--text-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: var(--space-1);">Status</p>
+            <p style="font-family: var(--font-serif); font-size: var(--text-3xl); letter-spacing: -0.02em;">Gut</p>
+            <span class="badge badge-success-subtle badge-dot" style="margin-top: var(--space-1);">Vollvermietet</span>
+          </div>
+        </div>
+        <p style="font-size: var(--text-sm); color: var(--color-muted); line-height: var(--leading-relaxed);">
+          Das Bürogebäude in der Leopoldstraße 142 präsentiert sich als solides Investitionsobjekt
+          in einer der gefragtesten Bürolagen Münchens. Die vollständige Vermietung an drei bonitätsstarke
+          Mieter mit Vertragslaufzeiten bis mindestens 2027 sichert stabile Cashflows.
+          Die erzielte Nettomietrendite von 4,1 % liegt im oberen Bereich des Münchener Marktes
+          für vergleichbare Büroobjekte (3,5–4,5 %).
+        </p>
+      </div>
+      <div class="modal-footer">
+        <div class="modal-footer-left">
+          <button class="btn btn-ghost btn-sm">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M2 8h12M8 3v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Exportieren
+          </button>
+        </div>
+        <button class="btn btn-outline" onclick="closeModal('modal-info')">Schließen</button>
+        <button class="btn btn-primary">Zur Detailseite</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

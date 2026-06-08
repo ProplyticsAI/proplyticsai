@@ -630,3 +630,5 @@
   width: 100%;
   margin: 0 auto;
 }
+
+.wordmark-dot { color: var(--color-primary); }

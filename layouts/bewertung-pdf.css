@@ -8,13 +8,13 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --report-beige:   #F5F0E8;
-  --report-surface: #FDFBF7;
-  --report-border:  #E5E0D5;
+  --report-beige:   #EEF2F5;
+  --report-surface: #FFFFFF;
+  --report-border:  #DCE3E9;
   --report-fg:      #1A1A1A;
-  --report-muted:   #7A7A7A;
-  --report-green:   #2D5A3D;
-  --report-blue:    #2C4A6E;
+  --report-muted:   #5E6B78;
+  --report-green:   #2E8F9C;
+  --report-blue:    #2E4150;
   --report-warn:    #C4883A;
   --report-error:   #B84A3C;
   --ff-serif: 'Cormorant Garamond', Georgia, serif;
