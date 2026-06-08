@@ -7,53 +7,53 @@
   /* ==========================================
    * HINTERGRUND
    * ========================================== */
-  --color-background: #F5F0E8;   /* Warm beige — Haupthintergrund */
-  --color-surface: #FDFBF7;      /* Helleres Beige — Karten, Panels */
-  --color-surface-hover: #F0EBE2; /* Oberfläche Hover-Zustand */
+  --color-background: #EEF2F5;   /* Helles Blaugrau — Haupthintergrund */
+  --color-surface: #FFFFFF;      /* Weiß — Karten, Panels */
+  --color-surface-hover: #E7ECF0; /* Oberfläche Hover-Zustand */
 
   /* ==========================================
    * TEXT
    * ========================================== */
-  --color-foreground: #1C1C1C;    /* Haupttext */
-  --color-muted: #7A7A7A;         /* Sekundärtext */
-  --color-placeholder: #A8A8A8;    /* Input Placeholder */
+  --color-foreground: #1B2733;    /* Tinte — Haupttext */
+  --color-muted: #5E6B78;         /* Blaugrauer Sekundärtext */
+  --color-placeholder: #94A0AC;    /* Input Placeholder */
 
   /* ==========================================
    * MARKE / AKZENTE
    * ========================================== */
-  --color-primary: #2D5A3D;       /* Dunkelgrün — Aktionen, Links, Buttons */
-  --color-primary-hover: #234A31;  /* Dunkelgrün Hover */
-  --color-primary-muted: rgba(45, 90, 61, 0.12); /* Primary mit Transparenz */
+  --color-primary: #3AA7B5;       /* Teal — Aktionen, Links, CTAs */
+  --color-primary-hover: #2E8F9C;  /* Teal Hover */
+  --color-primary-muted: rgba(58, 167, 181, 0.14); /* Primary mit Transparenz */
 
-  --color-secondary: #2C4A6E;      /* Dunkelblau — Highlights, Akzente */
-  --color-secondary-hover: #233B56; /* Dunkelblau Hover */
-  --color-secondary-muted: rgba(44, 74, 110, 0.12);
+  --color-secondary: #2E4150;      /* Slate — Strukturflächen, Sidebar */
+  --color-secondary-hover: #243444; /* Slate Hover */
+  --color-secondary-muted: rgba(46, 65, 80, 0.12);
 
   /* ==========================================
    * BORDERS
    * ========================================== */
-  --color-border: #E5E0D5;         /* Beige-graue Trennlinie */
-  --color-border-strong: #CCC5B8;  /* Stärkere Trennlinie */
-  --color-input: #E5E0D5;          /* Input Border */
-  --color-ring: #2D5A3D;           /* Focus Ring */
+  --color-border: #DCE3E9;         /* Blaugraue Trennlinie */
+  --color-border-strong: #C2CCD6;  /* Stärkere Trennlinie */
+  --color-input: #DCE3E9;          /* Input Border */
+  --color-ring: #3AA7B5;           /* Focus Ring (Teal) */
 
   /* ==========================================
    * SEMANTISCH
    * ========================================== */
-  --color-success: #2D5A3D;        /* Erfolg (grün) */
-  --color-success-bg: #E8F0EA;      /* Erfolg Hintergrund */
+  --color-success: #2E8B57;        /* Erfolg (grün) */
+  --color-success-bg: #E6F4EC;      /* Erfolg Hintergrund */
   --color-warning: #C4883A;         /* Warnung (warm orange) */
   --color-warning-bg: #FDF3E7;      /* Warnung Hintergrund */
   --color-error: #B84A3C;          /* Fehler (gedecktes rot) */
   --color-error-bg: #FAECEA;        /* Fehler Hintergrund */
-  --color-info: #2C4A6E;           /* Info (dunkelblau) */
-  --color-info-bg: #EDF1F6;        /* Info Hintergrund */
+  --color-info: #2E4150;           /* Info (slate) */
+  --color-info-bg: #E9EEF2;        /* Info Hintergrund */
 
   /* ==========================================
    * CHARTS (Analytik)
    * ========================================== */
-  --color-chart-1: #2D5A3D;        /* Grün */
-  --color-chart-2: #2C4A6E;        /* Blau */
+  --color-chart-1: #3AA7B5;        /* Teal */
+  --color-chart-2: #2E4150;        /* Slate */
   --color-chart-3: #C4883A;        /* Orange */
   --color-chart-4: #7A7A7A;        /* Grau */
   --color-chart-5: #B84A3C;         /* Rot */
@@ -74,5 +74,5 @@
   /* ==========================================
    * OVERLAYS
    * ========================================== */
-  --color-overlay: rgba(28, 28, 28, 0.4);
+  --color-overlay: rgba(27, 39, 51, 0.45);
 }

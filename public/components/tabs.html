@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabs — Proplytic.ai Design System</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="./badge.css">
+  <link rel="stylesheet" href="./tabs.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--color-background);
+      color: var(--color-foreground);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      padding: var(--space-16) var(--space-10);
+    }
+    .page-title {
+      font-family: var(--font-serif); font-size: var(--text-4xl);
+      font-weight: var(--font-normal); letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--space-2);
+    }
+    .page-subtitle { color: var(--color-muted); font-size: var(--text-sm); margin-bottom: var(--space-16); }
+    .section { margin-bottom: var(--space-16); }
+    .section-label {
+      font-size: var(--text-xs); font-weight: var(--font-semibold);
+      letter-spacing: var(--tracking-wider); text-transform: uppercase;
+      color: var(--color-muted); margin-bottom: var(--space-5);
+      padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border);
+    }
+    .panel-content {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-5);
+      font-size: var(--text-sm);
+      color: var(--color-muted);
+    }
+    .stack { display: flex; flex-direction: column; gap: var(--space-8); }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('[data-tabs]').forEach(container => {
+        const tabEls = container.querySelectorAll('[data-tab]');
+        const panelEls = document.querySelectorAll(`[data-panels="${container.dataset.tabs}"] [data-panel]`);
+
+        tabEls.forEach(tab => {
+          tab.addEventListener('click', () => {
+            if (tab.disabled || tab.getAttribute('aria-disabled') === 'true') return;
+            tabEls.forEach(t => t.classList.remove('is-active'));
+            panelEls.forEach(p => p.classList.remove('is-active'));
+            tab.classList.add('is-active');
+            const target = tab.dataset.tab;
+            const panel = document.querySelector(`[data-panels="${container.dataset.tabs}"] [data-panel="${target}"]`);
+            if (panel) panel.classList.add('is-active');
+          });
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+
+  <h1 class="page-title">Tabs</h1>
+  <p class="page-subtitle">Komponente · components/tabs.css</p>
+
+  <div class="stack">
+
+    <!-- Underline -->
+    <section class="section">
+      <p class="section-label">Underline (Standard)</p>
+      <div class="tabs tabs-underline" data-tabs="t1" role="tablist">
+        <button class="tab is-active" data-tab="uebersicht" role="tab" aria-selected="true">Übersicht</button>
+        <button class="tab" data-tab="analyse" role="tab" aria-selected="false">
+          Analyse
+          <span class="tab-badge">3</span>
+        </button>
+        <button class="tab" data-tab="vergleiche" role="tab" aria-selected="false">Vergleiche</button>
+        <button class="tab" data-tab="dokumente" role="tab" aria-selected="false">
+          Dokumente
+          <span class="tab-badge">12</span>
+        </button>
+        <button class="tab" data-tab="verlauf" role="tab" aria-selected="false">Verlauf</button>
+        <button class="tab" data-tab="disabled" role="tab" aria-disabled="true" disabled>Archiv</button>
+      </div>
+      <div class="tab-panels" data-panels="t1">
+        <div class="tab-content is-active panel-content" data-panel="uebersicht" role="tabpanel">
+          Übersicht — Objektdaten, Standortkarte und KPI-Zusammenfassung
+        </div>
+        <div class="tab-content panel-content" data-panel="analyse" role="tabpanel">
+          Analyse — KI-Bewertung, Renditeberechnung und Marktvergleich
+        </div>
+        <div class="tab-content panel-content" data-panel="vergleiche" role="tabpanel">
+          Vergleiche — 5 ähnliche Transaktionen in der näheren Umgebung
+        </div>
+        <div class="tab-content panel-content" data-panel="dokumente" role="tabpanel">
+          Dokumente — Exposé, Grundbuchauszug, Energieausweis
+        </div>
+        <div class="tab-content panel-content" data-panel="verlauf" role="tabpanel">
+          Verlauf — Preishistorie und Analysedurchläufe
+        </div>
+      </div>
+    </section>
+
+    <!-- Pills -->
+    <section class="section">
+      <p class="section-label">Pills</p>
+      <div class="tabs tabs-pills" data-tabs="t2" role="tablist">
+        <button class="tab is-active" data-tab="alle" role="tab">Alle</button>
+        <button class="tab" data-tab="buero" role="tab">Büro</button>
+        <button class="tab" data-tab="wohnen" role="tab">Wohnen</button>
+        <button class="tab" data-tab="handel" role="tab">Einzelhandel</button>
+        <button class="tab" data-tab="logistik" role="tab">Logistik</button>
+      </div>
+      <div class="tab-panels" data-panels="t2">
+        <div class="tab-content is-active panel-content" data-panel="alle">Alle 51 Objekte im Portfolio</div>
+        <div class="tab-content panel-content" data-panel="buero">12 Bürogebäude</div>
+        <div class="tab-content panel-content" data-panel="wohnen">34 Wohnobjekte</div>
+        <div class="tab-content panel-content" data-panel="handel">0 Einzelhandel</div>
+        <div class="tab-content panel-content" data-panel="logistik">5 Logistikimmobilien</div>
+      </div>
+    </section>
+
+    <!-- Boxed -->
+    <section class="section">
+      <p class="section-label">Boxed</p>
+      <div class="tabs tabs-boxed" data-tabs="t3" role="tablist">
+        <button class="tab is-active" data-tab="monat" role="tab">Monat</button>
+        <button class="tab" data-tab="quartal" role="tab">Quartal</button>
+        <button class="tab" data-tab="jahr" role="tab">Jahr</button>
+        <button class="tab" data-tab="gesamt" role="tab">Gesamt</button>
+      </div>
+      <div class="tab-panels" data-panels="t3">
+        <div class="tab-content is-active panel-content" data-panel="monat">Monatliche Marktdaten — Mai 2026</div>
+        <div class="tab-content panel-content" data-panel="quartal">Quartalsübersicht — Q2 2026</div>
+        <div class="tab-content panel-content" data-panel="jahr">Jahresübersicht — 2026</div>
+        <div class="tab-content panel-content" data-panel="gesamt">Gesamter Zeitraum seit Einrichtung</div>
+      </div>
+    </section>
+
+    <!-- Größen -->
+    <section class="section">
+      <p class="section-label">Größen — Underline</p>
+      <div style="display: flex; flex-direction: column; gap: var(--space-6);">
+        <div>
+          <p style="font-size: var(--text-xs); color: var(--color-muted); margin-bottom: var(--space-2);">sm</p>
+          <div class="tabs tabs-underline tabs-sm">
+            <button class="tab is-active">Übersicht</button>
+            <button class="tab">Analyse</button>
+            <button class="tab">Dokumente</button>
+          </div>
+        </div>
+        <div>
+          <p style="font-size: var(--text-xs); color: var(--color-muted); margin-bottom: var(--space-2);">md (Standard)</p>
+          <div class="tabs tabs-underline">
+            <button class="tab is-active">Übersicht</button>
+            <button class="tab">Analyse</button>
+            <button class="tab">Dokumente</button>
+          </div>
+        </div>
+        <div>
+          <p style="font-size: var(--text-xs); color: var(--color-muted); margin-bottom: var(--space-2);">lg</p>
+          <div class="tabs tabs-underline tabs-lg">
+            <button class="tab is-active">Übersicht</button>
+            <button class="tab">Analyse</button>
+            <button class="tab">Dokumente</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>

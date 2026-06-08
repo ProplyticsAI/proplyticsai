@@ -205,7 +205,7 @@ const PropChart = (() => {
     _render() {
       const { series, opts } = this;
       const COLORS = ['var(--color-chart-1)', 'var(--color-chart-2)', 'var(--color-chart-3)', 'var(--color-chart-4)'];
-      const HEX    = ['#2D5A3D', '#2C4A6E', '#C4883A', '#7A7A7A'];
+      const HEX    = ['#3AA7B5', '#2E4150', '#C4883A', '#7A7A7A'];
       const W = 600, H = 200;
       const P = { t: 16, r: 20, b: 42, l: 58 };
       const cW = W - P.l - P.r, cH = H - P.t - P.b;

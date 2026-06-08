@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkbox & Radio — Proplytic.ai Design System</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="./checkbox-radio.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--color-background); color: var(--color-foreground); font-family: var(--font-sans); padding: var(--space-16) var(--space-10); }
+    .page-title { font-family: var(--font-serif); font-size: var(--text-4xl); font-weight: var(--font-normal); letter-spacing: var(--tracking-tight); margin-bottom: var(--space-2); }
+    .page-subtitle { color: var(--color-muted); font-size: var(--text-sm); margin-bottom: var(--space-16); }
+    .section { margin-bottom: var(--space-12); }
+    .section-label { font-size: var(--text-xs); font-weight: var(--font-semibold); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--color-muted); margin-bottom: var(--space-5); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-10); }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">Checkbox & Radio</h1>
+  <p class="page-subtitle">Komponente · components/checkbox-radio.css</p>
+
+  <div class="grid-2">
+    <div>
+
+      <!-- Checkbox Zustände -->
+      <section class="section">
+        <p class="section-label">Checkbox — Zustände</p>
+        <div class="form-control-group">
+          <label class="form-control">
+            <input type="checkbox">
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Standard</span>
+            </span>
+          </label>
+          <label class="form-control">
+            <input type="checkbox" checked>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Ausgewählt</span>
+            </span>
+          </label>
+          <label class="form-control" id="indeterminate-label">
+            <input type="checkbox" id="indeterminate-cb">
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Teilweise ausgewählt</span>
+              <span class="form-control-desc">Indeterminate-Zustand</span>
+            </span>
+          </label>
+          <label class="form-control">
+            <input type="checkbox" disabled>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Deaktiviert</span>
+            </span>
+          </label>
+          <label class="form-control">
+            <input type="checkbox" checked disabled>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Ausgewählt &amp; Deaktiviert</span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Checkbox mit Beschreibung -->
+      <section class="section">
+        <p class="section-label">Mit Beschreibung</p>
+        <div class="form-control-group">
+          <label class="form-control">
+            <input type="checkbox" checked>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">E-Mail-Benachrichtigungen</span>
+              <span class="form-control-desc">Analyseergebnisse per E-Mail erhalten</span>
+            </span>
+          </label>
+          <label class="form-control">
+            <input type="checkbox">
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Marktberichte abonnieren</span>
+              <span class="form-control-desc">Wöchentliche Zusammenfassung für ausgewählte Regionen</span>
+            </span>
+          </label>
+          <label class="form-control">
+            <input type="checkbox">
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Preisveränderungen</span>
+              <span class="form-control-desc">Bei mehr als ±5 % gegenüber Vormonat</span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Card-Variante -->
+      <section class="section">
+        <p class="section-label">Card-Variante</p>
+        <div class="form-control-group">
+          <label class="form-control-card">
+            <input type="checkbox" checked>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Büro</span>
+              <span class="form-control-desc">Bürogebäude, Coworking, Mixed-Use</span>
+            </span>
+          </label>
+          <label class="form-control-card">
+            <input type="checkbox">
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Wohnen</span>
+              <span class="form-control-desc">Wohnhäuser, Wohnanlagen, WEG</span>
+            </span>
+          </label>
+          <label class="form-control-card">
+            <input type="checkbox" checked>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Logistik</span>
+              <span class="form-control-desc">Lagerhallen, Last-Mile, Industrie</span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+    </div>
+    <div>
+
+      <!-- Radio Zustände -->
+      <section class="section">
+        <p class="section-label">Radio — Zustände</p>
+        <div class="form-control-group">
+          <label class="form-control">
+            <input type="radio" name="state-demo">
+            <span class="form-control-indicator"></span>
+            <span class="form-control-text">Standard</span>
+          </label>
+          <label class="form-control">
+            <input type="radio" name="state-demo" checked>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-text">Ausgewählt</span>
+          </label>
+          <label class="form-control">
+            <input type="radio" name="state-demo" disabled>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-text">Deaktiviert</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Radio Objektart -->
+      <section class="section">
+        <p class="section-label">Analysezeitraum</p>
+        <div class="form-control-group">
+          <label class="form-control">
+            <input type="radio" name="zeitraum" value="monat">
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Letzter Monat</span>
+              <span class="form-control-desc">Daten der letzten 30 Tage</span>
+            </span>
+          </label>
+          <label class="form-control">
+            <input type="radio" name="zeitraum" value="quartal" checked>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Letztes Quartal</span>
+              <span class="form-control-desc">Daten der letzten 3 Monate</span>
+            </span>
+          </label>
+          <label class="form-control">
+            <input type="radio" name="zeitraum" value="jahr">
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Letztes Jahr</span>
+              <span class="form-control-desc">Daten der letzten 12 Monate</span>
+            </span>
+          </label>
+          <label class="form-control">
+            <input type="radio" name="zeitraum" value="gesamt">
+            <span class="form-control-indicator"></span>
+            <span class="form-control-label">
+              <span class="form-control-text">Gesamter Zeitraum</span>
+              <span class="form-control-desc">Alle verfügbaren historischen Daten</span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Größen -->
+      <section class="section">
+        <p class="section-label">Größen</p>
+        <div class="form-control-group">
+          <label class="form-control form-control-sm">
+            <input type="checkbox" checked>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-text">Klein (sm)</span>
+          </label>
+          <label class="form-control">
+            <input type="checkbox" checked>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-text">Standard (md)</span>
+          </label>
+          <label class="form-control form-control-lg">
+            <input type="checkbox" checked>
+            <span class="form-control-indicator"></span>
+            <span class="form-control-text">Groß (lg)</span>
+          </label>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('indeterminate-cb').indeterminate = true;
+  </script>
+
+</body>
+</html>

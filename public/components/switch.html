@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Switch — Proplytic.ai Design System</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="./switch.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--color-background); color: var(--color-foreground); font-family: var(--font-sans); padding: var(--space-16) var(--space-10); }
+    .page-title { font-family: var(--font-serif); font-size: var(--text-4xl); font-weight: var(--font-normal); letter-spacing: var(--tracking-tight); margin-bottom: var(--space-2); }
+    .page-subtitle { color: var(--color-muted); font-size: var(--text-sm); margin-bottom: var(--space-16); }
+    .section { margin-bottom: var(--space-12); }
+    .section-label { font-size: var(--text-xs); font-weight: var(--font-semibold); letter-spacing: var(--tracking-wider); text-transform: uppercase; color: var(--color-muted); margin-bottom: var(--space-5); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border); }
+    .row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-6); }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">Switch</h1>
+  <p class="page-subtitle">Komponente · components/switch.css</p>
+
+  <!-- Zustände -->
+  <section class="section">
+    <p class="section-label">Zustände</p>
+    <div class="row">
+      <label class="switch">
+        <input type="checkbox">
+        <span class="switch-track"></span>
+        <span class="switch-label">Aus</span>
+      </label>
+      <label class="switch">
+        <input type="checkbox" checked>
+        <span class="switch-track"></span>
+        <span class="switch-label">An</span>
+      </label>
+      <label class="switch">
+        <input type="checkbox" disabled>
+        <span class="switch-track"></span>
+        <span class="switch-label">Deaktiviert (aus)</span>
+      </label>
+      <label class="switch">
+        <input type="checkbox" checked disabled>
+        <span class="switch-track"></span>
+        <span class="switch-label">Deaktiviert (an)</span>
+      </label>
+    </div>
+  </section>
+
+  <!-- Größen -->
+  <section class="section">
+    <p class="section-label">Größen</p>
+    <div class="row" style="align-items: center;">
+      <label class="switch switch-sm">
+        <input type="checkbox" checked>
+        <span class="switch-track"></span>
+        <span class="switch-label">Klein (sm)</span>
+      </label>
+      <label class="switch">
+        <input type="checkbox" checked>
+        <span class="switch-track"></span>
+        <span class="switch-label">Standard (md)</span>
+      </label>
+      <label class="switch switch-lg">
+        <input type="checkbox" checked>
+        <span class="switch-track"></span>
+        <span class="switch-label">Groß (lg)</span>
+      </label>
+    </div>
+  </section>
+
+  <!-- Einstellungen-Gruppe -->
+  <section class="section">
+    <p class="section-label">Einstellungen-Gruppe</p>
+    <div class="switch-group" style="max-width: 520px;">
+
+      <div class="switch-group-item">
+        <div class="switch-group-item-info">
+          <p class="switch-group-item-title">E-Mail-Benachrichtigungen</p>
+          <p class="switch-group-item-desc">Analyseergebnisse und Marktberichte per E-Mail</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="switch-group-item">
+        <div class="switch-group-item-info">
+          <p class="switch-group-item-title">Preisalarme</p>
+          <p class="switch-group-item-desc">Benachrichtigung bei Preisänderung über ±5 %</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="switch-group-item">
+        <div class="switch-group-item-info">
+          <p class="switch-group-item-title">Automatische Analyse</p>
+          <p class="switch-group-item-desc">Neue Objekte automatisch mit KI analysieren</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox">
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="switch-group-item">
+        <div class="switch-group-item-info">
+          <p class="switch-group-item-title">Wöchentlicher Bericht</p>
+          <p class="switch-group-item-desc">Zusammenfassung jeden Montag um 08:00 Uhr</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" checked>
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="switch-group-item">
+        <div class="switch-group-item-info">
+          <p class="switch-group-item-title">Beta-Funktionen</p>
+          <p class="switch-group-item-desc">Zugang zu experimentellen Analyse-Tools</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" disabled>
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

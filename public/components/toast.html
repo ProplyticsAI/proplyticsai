@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toast — Proplytic.ai Design System</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="./button.css">
+  <link rel="stylesheet" href="./toast.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--color-background);
+      color: var(--color-foreground);
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      padding: var(--space-16) var(--space-10);
+      min-height: 100vh;
+    }
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: var(--text-4xl);
+      font-weight: var(--font-normal);
+      letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--space-2);
+    }
+    .page-subtitle { color: var(--color-muted); font-size: var(--text-sm); margin-bottom: var(--space-12); }
+    .section { margin-bottom: var(--space-12); }
+    .section-label {
+      font-size: var(--text-xs); font-weight: var(--font-semibold);
+      letter-spacing: var(--tracking-wider); text-transform: uppercase;
+      color: var(--color-muted); margin-bottom: var(--space-4);
+      padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border);
+    }
+    .row { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-6); }
+
+    /* Statische Vorschau (kein fixed) */
+    .toast-preview {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      max-width: 360px;
+    }
+    .toast-preview .toast {
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">Toast</h1>
+  <p class="page-subtitle">Komponente · components/toast.css</p>
+
+  <!-- Trigger-Buttons -->
+  <section class="section">
+    <p class="section-label">Live-Demo — unten rechts</p>
+    <div class="row">
+      <button class="btn btn-outline" onclick="showToast('success')">Erfolg</button>
+      <button class="btn btn-outline" onclick="showToast('warning')">Warnung</button>
+      <button class="btn btn-outline" onclick="showToast('error')">Fehler</button>
+      <button class="btn btn-outline" onclick="showToast('info')">Info</button>
+      <button class="btn btn-outline" onclick="showToast('action')">Mit Aktion</button>
+    </div>
+  </section>
+
+  <!-- Statische Vorschau -->
+  <section class="section">
+    <p class="section-label">Statische Vorschau</p>
+    <div class="toast-preview">
+
+      <div class="toast toast-success">
+        <div class="toast-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="toast-content">
+          <p class="toast-title">Objekt gespeichert</p>
+          <p class="toast-message">Leopoldstr. 142 wurde erfolgreich hinzugefügt.</p>
+        </div>
+        <button class="toast-close" aria-label="Schließen">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="toast toast-warning">
+        <div class="toast-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 6v4M8 12v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M7.13 2.5L1.06 13a1 1 0 0 0 .87 1.5h12.14a1 1 0 0 0 .87-1.5L8.87 2.5a1 1 0 0 0-1.74 0Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="toast-content">
+          <p class="toast-title">Marktdaten veraltet</p>
+          <p class="toast-message">Hamburg-Daten wurden seit 7 Tagen nicht aktualisiert.</p>
+          <div class="toast-action"><button>Jetzt aktualisieren</button></div>
+        </div>
+        <button class="toast-close" aria-label="Schließen">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="toast toast-error">
+        <div class="toast-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="toast-content">
+          <p class="toast-title">Analyse fehlgeschlagen</p>
+          <p class="toast-message">Verbindung zum Datendienst unterbrochen. Bitte erneut versuchen.</p>
+        </div>
+        <button class="toast-close" aria-label="Schließen">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="toast toast-info">
+        <div class="toast-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M8 7.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="8" cy="5" r="0.8" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="toast-content">
+          <p class="toast-title">Analyse läuft</p>
+          <p class="toast-message">KI-Analyse für Friedrichstr. 67 wird berechnet — ca. 2 Minuten.</p>
+        </div>
+        <button class="toast-close" aria-label="Schließen">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Live Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    const icons = {
+      success: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      warning: `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 6v4M8 12v.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7.13 2.5L1.06 13a1 1 0 0 0 .87 1.5h12.14a1 1 0 0 0 .87-1.5L8.87 2.5a1 1 0 0 0-1.74 0Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>`,
+      error:   `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+      info:    `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="5" r=".8" fill="currentColor"/></svg>`,
+      action:  `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="5" r=".8" fill="currentColor"/></svg>`,
+    };
+
+    const content = {
+      success: { title: 'Objekt gespeichert', message: 'Leopoldstr. 142 wurde erfolgreich hinzugefügt.' },
+      warning: { title: 'Marktdaten veraltet', message: 'Hamburg-Daten seit 7 Tagen nicht aktualisiert.' },
+      error:   { title: 'Analyse fehlgeschlagen', message: 'Verbindung unterbrochen. Bitte erneut versuchen.' },
+      info:    { title: 'Analyse läuft', message: 'KI-Analyse für Friedrichstr. 67 — ca. 2 Minuten.' },
+      action:  { title: 'Bericht bereit', message: 'Marktbericht München Q1 2026 kann heruntergeladen werden.', action: 'Jetzt herunterladen' },
+    };
+
+    const typeMap = { action: 'info' };
+
+    function showToast(type) {
+      const cssType = typeMap[type] || type;
+      const c = content[type];
+      const container = document.getElementById('toast-container');
+
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${cssType}`;
+      toast.innerHTML = `
+        <div class="toast-icon">${icons[type]}</div>
+        <div class="toast-content">
+          <p class="toast-title">${c.title}</p>
+          <p class="toast-message">${c.message}</p>
+          ${c.action ? `<div class="toast-action"><button>${c.action}</button></div>` : ''}
+        </div>
+        <button class="toast-close" aria-label="Schließen">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="toast-progress" style="animation-duration: 5000ms;"></div>
+      `;
+
+      const close = () => {
+        toast.classList.add('is-hiding');
+        setTimeout(() => toast.remove(), 300);
+      };
+
+      toast.querySelector('.toast-close').addEventListener('click', close);
+      container.appendChild(toast);
+      setTimeout(close, 5000);
+    }
+  </script>
+
+</body>
+</html>

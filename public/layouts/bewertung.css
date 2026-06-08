@@ -185,7 +185,7 @@
 .form-input:focus,
 .form-select:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(45, 90, 61, 0.12);
+  box-shadow: 0 0 0 2px rgba(58, 167, 181, 0.14);
 }
 
 .form-select-wrapper {
@@ -1828,7 +1828,7 @@
 
 .feedback-field-input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(45, 90, 61, 0.12);
+  box-shadow: 0 0 0 2px rgba(58, 167, 181, 0.14);
 }
 
 /* Submit button */
@@ -2406,3 +2406,5 @@
   color: var(--color-muted);
   white-space: nowrap;
 }
+
+.wordmark-dot { color: var(--color-primary); }

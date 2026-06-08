@@ -3,44 +3,53 @@
 ## Marke
 
 - **Präzise** Immobilien-KI
-- **Beige** als Hauptfarbe (warm,vertrauenswürdig)
-- **Dunkelgrün + Dunkelblau** als Highlight-Akzente
+- **Blau-Grau (Slate)** als Hauptfarbe (kühl, sachlich, vertrauenswürdig)
+- **Teal** als Akzent-/CTA-Farbe
 - **Cormorant Garamond** für Headlines (Serif, elegant)
 - **System-Sans** für Body
 - **Kein Dark Mode**
 
 ## Logo
 
-| Datei | Verwendung |
-|-------|------------|
-| `brand/logo-lockup.svg` | Hauptschriftzug + Icon |
-| `brand/logo-pin.svg` | Icon allein (dunkel) |
-| `brand/logo-pin-light.svg` | Icon allein (hell/dunkel Kontext) |
+- **Keine Logo-Grafik.** Marke wird ausschließlich als **Text-Wortmarke** geführt:
+  `proplytic` + `.ai` (der Punkt-Suffix `.ai` in Teal `--color-primary`).
+- Markup: `proplytic<span class="wordmark-dot">.ai</span>`, Klasse `.wordmark`
+  (`.wordmark-light` auf der Slate-Sidebar, `.wordmark-dark` auf hellen Flächen).
+- Schrift: Cormorant Garamond (`--font-serif`). Die alten SVG-Dateien in `brand/`
+  werden nicht mehr eingebunden.
 
 ## Farben
 
+Single Source: `tokens/colors.css` (`:root`). Hauptschema **hell blau-grau**:
+heller Hintergrund, weiße Karten, dunkle **Slate-Sidebar**, **Teal**-Akzent, Ink-Text.
+
 | Token | Hex | Verwendung |
 |-------|-----|------------|
-| `--color-background` | `#F5F0E8` | Haupthintergrund (warm Beige) |
-| `--color-surface` | `#FDFBF7` | Karten, Panels (helleres Beige) |
-| `--color-foreground` | `#1A1A1A` | Haupttext |
-| `--color-muted` | `#7A7A7A` | Sekundärtext |
-| `--color-primary` | `#2D5A3D` | Dunkelgrün — Aktionen, Links |
-| `--color-secondary` | `#2C4A6E` | Dunkelblau — Highlights, Akzente |
-| `--color-border` | `#E5E0D5` | Beige-graue Trennlinien |
-| `--color-success` | `#2D5A3D` | Erfolg (grün) |
+| `--color-background` | `#EEF2F5` | Haupthintergrund (helles Blaugrau) |
+| `--color-surface` | `#FFFFFF` | Karten, Panels (weiß) |
+| `--color-foreground` | `#1B2733` | Haupttext (Tinte) |
+| `--color-muted` | `#5E6B78` | Sekundärtext (blaugrau) |
+| `--color-primary` | `#3AA7B5` | Teal — Aktionen, Links, CTAs |
+| `--color-secondary` | `#2E4150` | Slate — Strukturflächen, Sidebar |
+| `--color-border` | `#DCE3E9` | Blaugraue Trennlinien |
+| `--color-success` | `#2E8B57` | Erfolg (grün) |
 | `--color-warning` | `#C4883A` | Warnung (warm orange) |
 | `--color-error` | `#B84A3C` | Fehler (gedecktes rot) |
+| `--color-info` | `#2E4150` | Info (slate) |
 
-### Tech-Palette (Slate · Teal · Tinte)
+### Tech-Tokens (Slate · Teal · Tinte)
 
 | Token | Hex | Verwendung |
 |-------|-----|------------|
-| `--color-ink` | `#1B2733` | Tinte — Text auf hellen Tech-Flächen |
-| `--color-slate` | `#2E4150` | Blaugrau — Sekundäre Oberflächen, Panels |
+| `--color-ink` | `#1B2733` | Tinte — Text auf hellen Flächen |
+| `--color-slate` | `#2E4150` | Blaugrau — Sidebar, sekundäre Oberflächen |
 | `--color-slate-hover` | `#243444` | Slate Hover |
 | `--color-teal` | `#3AA7B5` | Teal-Akzent — Highlights, CTAs |
 | `--color-teal-hover` | `#2E8F9C` | Teal Hover |
+
+> **Hinweis:** Primary-Buttons nutzen das tiefere Teal `--color-primary-hover`
+> (`#2E8F9C`) als Basis, damit weißer Text ausreichend Kontrast hat; hellere
+> Teal-Akzente (Links, aktiver Nav-Punkt) bleiben `#3AA7B5`.
 
 ## Typografie
 

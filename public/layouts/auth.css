@@ -192,3 +192,9 @@ body {
   .auth-card { padding: var(--space-6); }
   .auth-title { font-size: var(--text-2xl); }
 }
+
+/* ── Wortmarke (ersetzt Logo-Grafik) ── */
+.wordmark { font-family: var(--font-serif); font-size: 18px; font-weight: 500; letter-spacing: -0.3px; text-decoration: none; line-height: 1; display: inline-block; }
+.wordmark-light { color: rgba(255, 255, 255, 0.92); }
+.wordmark-dark { color: var(--color-foreground); }
+.wordmark-dot { color: var(--color-primary); }
