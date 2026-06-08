@@ -37,7 +37,7 @@ export class ProplyticApiClient {
   private readonly token: string;
   private readonly fetcher: typeof fetch;
 
-  constructor({ baseUrl, token, fetcher = fetch }: ApiClientOptions) {
+  constructor({ baseUrl, token, fetcher = fetch.bind(globalThis) }: ApiClientOptions) {
     this.baseUrl = baseUrl.replace(/\/+$/, "");
     this.token = token;
     this.fetcher = fetcher;
