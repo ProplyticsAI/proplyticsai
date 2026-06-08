@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serverfehler — Proplytic.ai</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="./auth.css">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <a class="auth-logo" href="./dashboard.html">
+    <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="32">
+  </a>
+
+  <div class="auth-card" style="text-align: center;">
+    <div class="auth-status-icon is-error">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M10.3 4.4 2.7 17.5a1.8 1.8 0 0 0 1.55 2.7h15.5a1.8 1.8 0 0 0 1.55-2.7L13.7 4.4a1.8 1.8 0 0 0-3.1 0z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    </div>
+    <p class="auth-eyebrow">Fehler 500</p>
+    <h1 class="auth-title">Etwas ist schiefgelaufen</h1>
+    <p class="auth-sub">
+      Auf unserer Seite ist ein unerwarteter Fehler aufgetreten. Unser Team wurde automatisch
+      benachrichtigt — bitte versuchen Sie es in ein paar Minuten erneut.
+    </p>
+
+    <div class="auth-form">
+      <button type="button" class="btn btn-primary auth-submit" id="retry-btn">Seite neu laden</button>
+      <a class="btn btn-secondary auth-submit" href="./dashboard.html">Zum Dashboard</a>
+    </div>
+
+    <p class="auth-footer-note">
+      Fehler hält an? <a href="mailto:support@proplytic.ai">Support kontaktieren</a> ·
+      <a href="./status.html">Systemstatus ansehen</a>
+    </p>
+  </div>
+
+  <nav class="auth-legal-links" aria-label="Rechtliche Seiten">
+    <a href="./impressum.html">Impressum</a>
+    <a href="./datenschutz.html">Datenschutz</a>
+    <a href="./agb.html">AGB</a>
+  </nav>
+
+</div>
+
+<script>
+  document.getElementById('retry-btn').addEventListener('click', () => window.location.reload());
+</script>
+
+</body>
+</html>
