@@ -56,11 +56,11 @@ Zentrale Checkliste für den Release. Status-Legende:
 
 | Seite | Status | Notiz |
 |---|---|---|
-| Landingpage | ⬜ | |
-| Feature-Seiten | ⬜ | |
-| Über uns | ⬜ | |
-| Kontakt | ⬜ | |
-| FAQ / Hilfe | ⬜ | |
+| Landingpage | 🔧 | `layouts/landing.html` (+ neues gemeinsames `layouts/marketing.css`-Layout) — Hero, Funktions-Grid (Bewertungsengine, Vergleich, Monte-Carlo, Portfolio, PDF-Export, Verlauf), „So funktioniert's"-Schritte, CTA-Band, Footer mit Produkt-/Unternehmens-/Rechtliches-Spalten |
+| Feature-Seiten | 🔧 | `layouts/features.html` — konsolidierte Funktionsübersicht mit Detail-Abschnitten je Kernfunktion (Bewertungsengine, Vergleich, Monte-Carlo, Portfolio, Export/Verlauf) inkl. Vorteils-Listen und CTA-Band |
+| Über uns | 🔧 | `layouts/ueber-uns.html` — Mission/Werte-Seite (Nachvollziehbarkeit, Sorgfalt, Zugänglichkeit, Datenschutz); bewusst ohne Gründer-/Team-/Historien-Angaben, um keine Fakten zu erfinden — kann vor Launch um echte Unternehmensdaten ergänzt werden |
+| Kontakt | 🔧 | `layouts/kontakt.html` — Kontaktformular (Name/E-Mail/Betreff/Nachricht, Client-Validierung, Demo-Erfolgsmeldung) sowie Kontaktinfo-Karte mit E-Mail/Telefon/Anschrift; Telefon- und Adressangaben als „Platzhalter" markiert (analog `impressum.html`) und vor Launch zu ersetzen |
+| FAQ / Hilfe | 🔧 | `layouts/faq.html` — Akkordeon mit nativen `<details>`/`<summary>`-Elementen, gruppiert nach Bewertung & Verfahren / Funktionen / Konto & Datenschutz, plus Kontakt-Hinweiskarte |
 
 ## Legal (DE-Pflicht — release-kritisch)
 
