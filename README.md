@@ -48,3 +48,19 @@ npm run design:catalog
 ## Design
 
 **Ledger/Nebel Theme** — Slate-Blau `#2E4150`, Teal `#3AA7B5`, DM Sans + Geist.
+
+## Chrome-Extension: Bulk-Import
+
+Die Chrome-Extension liegt als eigenständiges TypeScript/Vite-Paket in `extension/`.
+Sie sammelt ImmoScout24-Inserate clientseitig im Browser, speichert eine lokale Queue
+in `chrome.storage.local`, sendet Listings in Batches an die Bulk-Import-API und zeigt
+priorisierte Treffer für Human Review.
+
+```bash
+cd extension
+npm install
+npm run mock-api   # http://localhost:4317/v1, Demo-PAT: mock-valid-token
+npm run build      # danach extension/dist als unpacked extension laden
+```
+
+Details: siehe `extension/README.md`.

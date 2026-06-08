@@ -9,3 +9,9 @@ node_modules/
 .DS_Store
 *.pem
 npm-debug.log*
+
+# Chrome extension package
+extension/node_modules/
+extension/dist/
+extension/coverage/
+extension/.vite/

@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "Proplytic.ai Bulk-Import",
+  "version": "0.1.0",
+  "description": "Immobilieninserate clientseitig sammeln und an Proplytic.ai übertragen.",
+  "permissions": ["activeTab", "sidePanel", "storage", "tabs"],
+  "host_permissions": [
+    "http://localhost:4317/*",
+    "https://api.proplytic.ai/*",
+    "https://app.proplytic.ai/*",
+    "https://www.immobilienscout24.de/*",
+    "https://*.immobilienscout24.de/*"
+  ],
+  "background": {
+    "service_worker": "assets/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.immobilienscout24.de/*",
+        "https://*.immobilienscout24.de/*"
+      ],
+      "js": ["assets/contentScript.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Proplytic Bulk-Import",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  }
+}
