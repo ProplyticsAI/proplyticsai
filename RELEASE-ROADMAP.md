@@ -80,8 +80,8 @@ Zentrale Checkliste für den Release. Status-Legende:
 
 | Seite | Status | Notiz |
 |---|---|---|
-| 404 | ⬜ | |
-| 500 | ⬜ | |
-| Wartungsseite | ⬜ | |
-| Status-Seite | ⬜ | |
-| Transaktionale E-Mail-Templates | ⬜ | |
+| 404 | 🔧 | `layouts/404.html` — Auth-Card-Layout mit Hinweistext und Schnellzugriffen (Dashboard/Objektübersicht), Support-Link |
+| 500 | 🔧 | `layouts/500.html` — Hinweis auf unerwarteten Serverfehler, „Seite neu laden"-Button, Links zu Support und Systemstatus |
+| Wartungsseite | 🔧 | `layouts/wartung.html` — Hinweis auf geplante Wartung mit ETA-Platzhalter („in Kürze“), Verweis auf Statusseite und Support |
+| Status-Seite | 🔧 | `layouts/status.html` — Gesamtstatus-Banner, Dienste-Liste mit Badges, geplante Wartungen, Vorfallshistorie (Demo-Einträge) sowie Update-Abo (Demo-Flow) |
+| Transaktionale E-Mail-Templates | 🔧 | `layouts/e-mail-templates.html` — Katalogseite im App-Layout mit Live-Vorschau für Willkommen-, Bestätigungs-, Passwort-Reset- und „Bewertung fertig"-E-Mail inkl. Metadaten (Auslöser/Von/Betreff); Versand folgt mit Backend-/E-Mail-Provider-Anbindung |
