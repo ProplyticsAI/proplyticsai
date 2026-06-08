@@ -20,24 +20,39 @@
 const MonteCarloSimulation = (() => {
   'use strict';
 
-  // Box-Muller-Transformation für normalverteilte Zufallszahlen
-  function sampleNormal(mean, stdDev) {
+  // Box-Muller-Transformation für standardnormalverteilte Zufallszahlen (μ=0, σ=1)
+  function sampleStdNormal() {
     let u = 0, v = 0;
     while (u === 0) u = Math.random();
     while (v === 0) v = Math.random();
-    const z = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-    return mean + z * stdDev;
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+
+  // Lognormalverteilung: realistischer als die Normalverteilung für streng
+  // positive, multiplikativ schwankende Marktgrößen (Preise, Mieten, Indizes) —
+  // erzeugt von Natur aus rechtsschiefe, nie-negative Stichproben (kein
+  // Clamping nötig) statt der Normalverteilung samt künstlicher Math.max(0, …).
+  // `median` ist der Basiswert (= Median der Verteilung), `relSigma` die
+  // gewünschte relative Streuung (Näherung: σ_log ≈ relSigma für kleine Werte).
+  function sampleLognormal(median, relSigma, z = sampleStdNormal()) {
+    const sigmaLog = Math.sqrt(Math.log(1 + relSigma * relSigma));
+    return median * Math.exp(sigmaLog * z);
   }
 
   // Welche Eingangsgrößen tragen Marktunsicherheit, und wie stark
-  // (relative Standardabweichung als Anteil des Basiswerts)?
+  // (relative Streuung als Anteil des Basiswerts, lognormalverteilt)?
   // `lookup`/`fallback` lösen Werte auf, die intern aus Tabellen abgeleitet
   // werden (z. B. Liegenschaftszinssatz), `overrideKey` ist der Parameter,
   // über den ValuationProcedures diesen Wert pro Simulationslauf übersteuern lässt.
+  // `correlatedWith` + `rho`: Lagegüte wirkt nicht isoliert — ein hoher
+  // Bodenrichtwert geht im Mittel mit höheren erzielbaren Mieten einher.
+  // Beide Größen werden daher aus korrelierten Standardnormalen gezogen,
+  // statt unabhängig voneinander zu schwanken.
   const PARAM_SPECS = {
     ertragswert: [
       { key: 'bodenrichtwert',       overrideKey: 'bodenrichtwert',                label: 'Bodenrichtwert',        relSigma: 0.12 },
-      { key: 'jahresnettokaltmiete', overrideKey: 'jahresnettokaltmiete',          label: 'Jahresnettokaltmiete',  relSigma: 0.06 },
+      { key: 'jahresnettokaltmiete', overrideKey: 'jahresnettokaltmiete',          label: 'Jahresnettokaltmiete',  relSigma: 0.06,
+        correlatedWith: 'bodenrichtwert', rho: 0.5 },
       { key: 'liegenschaftszinssatz',overrideKey: 'liegenschaftszinssatzOverride', label: 'Liegenschaftszinssatz', relSigma: 0.15,
         lookup: () => ValuationProcedures.LIEGENSCHAFTSZINS, fallback: 0.045 },
     ],
@@ -59,14 +74,37 @@ const MonteCarloSimulation = (() => {
     return inputs[spec.key];
   }
 
+  // Zieht für einen Simulationslauf die standardnormalen Schock-Werte (z) je
+  // Parameter — unabhängig, außer bei explizit korrelierten Paaren
+  // (`correlatedWith`/`rho`), die per Cholesky-Konstruktion (z₂ = ρ·z₁ + √(1-ρ²)·ε)
+  // einen gemeinsamen Lagegüte-Faktor abbilden.
+  function drawCorrelatedShocks(specs) {
+    const shocks  = new Array(specs.length);
+    const byKey   = new Map(specs.map((s, idx) => [s.key, idx]));
+
+    specs.forEach((s, idx) => {
+      if (s.correlatedWith && byKey.has(s.correlatedWith)) {
+        const baseIdx = byKey.get(s.correlatedWith);
+        if (shocks[baseIdx] === undefined) shocks[baseIdx] = sampleStdNormal();
+        const z1 = shocks[baseIdx];
+        shocks[idx] = s.rho * z1 + Math.sqrt(1 - s.rho * s.rho) * sampleStdNormal();
+      } else if (shocks[idx] === undefined) {
+        shocks[idx] = sampleStdNormal();
+      }
+    });
+
+    return shocks;
+  }
+
   function percentileOf(sortedSamples, q) {
     const idx = Math.min(sortedSamples.length - 1, Math.max(0, Math.round(q * (sortedSamples.length - 1))));
     return sortedSamples[idx];
   }
 
   // Hauptsimulation: N Durchläufe, in jedem werden die unsicheren Parameter
-  // unabhängig normalverteilt um ihren Basiswert gezogen und das Ergebnis
-  // der Verfahrens-Berechnung gesammelt.
+  // lognormalverteilt um ihren Basiswert gezogen — korrelierte Paare (z. B.
+  // Bodenrichtwert ↔ Miete) teilen sich dabei einen gemeinsamen Lage-Schock —
+  // und das Ergebnis der Verfahrens-Berechnung gesammelt.
   function runSimulation(verfahren, baseInputs, n = 2000) {
     const specs   = PARAM_SPECS[verfahren];
     const calcFn  = calcFnFor(verfahren);
@@ -75,9 +113,9 @@ const MonteCarloSimulation = (() => {
     const samples = new Array(n);
     for (let i = 0; i < n; i++) {
       const perturbed = { ...baseInputs };
+      const shocks    = drawCorrelatedShocks(specs);
       specs.forEach((s, idx) => {
-        const base = baseVal[idx];
-        perturbed[s.overrideKey] = Math.max(0, sampleNormal(base, base * s.relSigma));
+        perturbed[s.overrideKey] = sampleLognormal(baseVal[idx], s.relSigma, shocks[idx]);
       });
       samples[i] = calcFn(perturbed).ergebnis;
     }
