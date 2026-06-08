@@ -1,0 +1,226 @@
+/**
+ * Proplytic.ai — Input / FormField
+ * Elemente: input · textarea · select · form-field
+ * Zustände: default · focus · error · success · disabled
+ */
+
+/* ── Base Input ─────────────────────────── */
+
+.input {
+  display: block;
+  width: 100%;
+
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  line-height: var(--leading-normal);
+  color: var(--color-foreground);
+
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-input);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+
+  outline: none;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.input::placeholder {
+  color: var(--color-placeholder);
+}
+
+.input:hover:not(:disabled):not(.input-error) {
+  border-color: var(--color-border-strong);
+}
+
+.input:focus:not(.input-error) {
+  border-color: var(--color-ring);
+  box-shadow: 0 0 0 3px var(--color-primary-muted);
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--color-background);
+}
+
+/* ── Zustände ───────────────────────────── */
+
+.input-error {
+  border-color: var(--color-error);
+}
+
+.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(184, 74, 60, 0.12);
+}
+
+.input-success {
+  border-color: var(--color-success);
+}
+
+.input-success:focus {
+  border-color: var(--color-ring);
+  box-shadow: 0 0 0 3px var(--color-primary-muted);
+}
+
+/* ── Größen ─────────────────────────────── */
+
+.input-sm {
+  font-size: var(--text-xs);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+}
+
+.input-lg {
+  font-size: var(--text-base);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+}
+
+/* ── Textarea ───────────────────────────── */
+
+textarea.input {
+  resize: vertical;
+  min-height: 6rem;
+  line-height: var(--leading-relaxed);
+}
+
+/* ── Select ─────────────────────────────── */
+
+select.input {
+  cursor: pointer;
+  padding-right: var(--space-10);
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7A7A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-4) center;
+}
+
+/* ── Input Wrapper (mit Icon) ───────────── */
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper .input {
+  width: 100%;
+}
+
+.input-icon-left {
+  position: absolute;
+  left: var(--space-4);
+  color: var(--color-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-right {
+  position: absolute;
+  right: var(--space-4);
+  color: var(--color-muted);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper:has(.input-icon-left) .input {
+  padding-left: var(--space-10);
+}
+
+.input-wrapper:has(.input-icon-right) .input {
+  padding-right: var(--space-10);
+}
+
+/* ── Prefix / Suffix (Text-Adornment) ───── */
+
+.input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.input-group .input {
+  border-radius: 0;
+  flex: 1;
+}
+
+.input-group .input:first-child,
+.input-group > *:first-child .input {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.input-group .input:last-child,
+.input-group > *:last-child .input {
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.input-addon {
+  display: flex;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-input);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.input-addon:first-child {
+  border-right: none;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.input-addon:last-child {
+  border-left: none;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* ── FormField ──────────────────────────── */
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-foreground);
+  line-height: var(--leading-none);
+}
+
+.form-label-required::after {
+  content: ' *';
+  color: var(--color-error);
+}
+
+.form-helper {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  line-height: var(--leading-normal);
+}
+
+.form-error-msg {
+  font-size: var(--text-xs);
+  color: var(--color-error);
+  line-height: var(--leading-normal);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.form-error-msg[hidden] { display: none; }
+
+.form-success-msg {
+  font-size: var(--text-xs);
+  color: var(--color-success);
+  line-height: var(--leading-normal);
+}
