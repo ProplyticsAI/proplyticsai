@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrieren — Proplytic.ai</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="../components/input.css">
+  <link rel="stylesheet" href="./auth.css">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <a class="auth-logo" href="./dashboard.html">
+    <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="32">
+  </a>
+
+  <div class="auth-card">
+    <p class="auth-eyebrow">Jetzt loslegen</p>
+    <h1 class="auth-title">Konto erstellen</h1>
+    <p class="auth-sub">Erstellen Sie Ihr Proplytic-Konto und starten Sie mit präzisen, gesetzeskonformen Immobilienbewertungen.</p>
+
+    <form class="auth-form" id="register-form" novalidate>
+      <div class="form-field">
+        <label class="form-label form-label-required" for="reg-name">Name</label>
+        <input class="input" id="reg-name" name="name" type="text" placeholder="Vorname Nachname" autocomplete="name" required>
+        <span class="form-error-msg" id="reg-name-error" hidden>Bitte geben Sie Ihren Namen ein.</span>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="reg-company">Unternehmen</label>
+        <input class="input" id="reg-company" name="company" type="text" placeholder="z. B. Musterimmobilien GmbH" autocomplete="organization">
+        <span class="form-helper">Optional — für Team- und Enterprise-Konten relevant.</span>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label form-label-required" for="reg-email">E-Mail-Adresse</label>
+        <input class="input" id="reg-email" name="email" type="email" placeholder="name@unternehmen.de" autocomplete="email" required>
+        <span class="form-error-msg" id="reg-email-error" hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</span>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label form-label-required" for="reg-password">Passwort</label>
+        <input class="input" id="reg-password" name="password" type="password" placeholder="Mindestens 8 Zeichen" autocomplete="new-password" required>
+        <span class="form-helper" id="reg-password-helper">Mindestens 8 Zeichen, mit Zahlen und Buchstaben.</span>
+        <span class="form-error-msg" id="reg-password-error" hidden>Das Passwort muss mindestens 8 Zeichen lang sein.</span>
+      </div>
+
+      <label class="auth-checkbox-row">
+        <input type="checkbox" id="reg-terms" name="terms" required>
+        Ich akzeptiere die <a href="./agb.html">AGB</a> und die
+        <a href="./datenschutz.html">Datenschutzerklärung</a> von Proplytic.ai.
+      </label>
+      <span class="form-error-msg" id="reg-terms-error" hidden>Bitte stimmen Sie den AGB und der Datenschutzerklärung zu.</span>
+
+      <button type="submit" class="btn btn-primary auth-submit">Konto erstellen</button>
+    </form>
+
+    <p class="auth-footer-note">
+      Sie haben bereits ein Konto? <a href="./login.html">Jetzt anmelden</a>
+    </p>
+  </div>
+
+  <nav class="auth-legal-links" aria-label="Rechtliche Seiten">
+    <a href="./impressum.html">Impressum</a>
+    <a href="./datenschutz.html">Datenschutz</a>
+    <a href="./agb.html">AGB</a>
+  </nav>
+
+</div>
+
+<script>
+  const form = document.getElementById('register-form');
+
+  function setError(input, errorEl, valid, focusFirst) {
+    input.classList.toggle('input-error', !valid);
+    errorEl.hidden = valid;
+    return valid;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name     = document.getElementById('reg-name');
+    const email    = document.getElementById('reg-email');
+    const password = document.getElementById('reg-password');
+    const terms    = document.getElementById('reg-terms');
+
+    const nameValid     = setError(name, document.getElementById('reg-name-error'), name.value.trim().length > 1);
+    const emailValid    = setError(email, document.getElementById('reg-email-error'), /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()));
+    const passwordValid = setError(password, document.getElementById('reg-password-error'), password.value.length >= 8);
+
+    const termsValid = terms.checked;
+    document.getElementById('reg-terms-error').hidden = termsValid;
+
+    if (nameValid && emailValid && passwordValid && termsValid) {
+      // Demo-Flow: löst nach Backend-Anbindung den E-Mail-Verifizierungs-Flow aus
+      window.location.href = './e-mail-verifizierung.html?email=' + encodeURIComponent(email.value.trim());
+    }
+  });
+</script>
+
+</body>
+</html>

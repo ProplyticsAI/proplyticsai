@@ -1,0 +1,208 @@
+/**
+ * Proplytic.ai — Checkbox & Radio
+ * CSS-only: natives Input versteckt, custom Visual via ::before/::after
+ */
+
+/* ── Base ───────────────────────────────── */
+
+.form-control {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+  line-height: var(--leading-normal);
+}
+
+.form-control input[type="checkbox"],
+.form-control input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ── Custom Indicator ───────────────────── */
+
+.form-control-indicator {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-input);
+  border-radius: var(--radius-sm);
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+/* Radio → Kreis */
+.form-control input[type="radio"] ~ .form-control-indicator {
+  border-radius: 50%;
+}
+
+/* Hover */
+.form-control:hover .form-control-indicator {
+  border-color: var(--color-ring);
+}
+
+/* Checked */
+.form-control input:checked ~ .form-control-indicator {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Focus */
+.form-control input:focus-visible ~ .form-control-indicator {
+  box-shadow: 0 0 0 3px var(--color-primary-muted);
+  border-color: var(--color-ring);
+}
+
+/* Disabled */
+.form-control input:disabled ~ .form-control-indicator {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background-color: var(--color-background);
+}
+
+.form-control:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* ── Checkbox Checkmark ─────────────────── */
+
+.form-control input[type="checkbox"] ~ .form-control-indicator::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4l2.5 2.5L9 1' stroke='white' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.form-control input[type="checkbox"]:checked ~ .form-control-indicator::after {
+  opacity: 1;
+}
+
+/* Indeterminate */
+.form-control input[type="checkbox"]:indeterminate ~ .form-control-indicator {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.form-control input[type="checkbox"]:indeterminate ~ .form-control-indicator::after {
+  opacity: 1;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='2' viewBox='0 0 10 2' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1h8' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* ── Radio Dot ──────────────────────────── */
+
+.form-control input[type="radio"] ~ .form-control-indicator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #fff;
+  transition: transform var(--transition-fast);
+}
+
+.form-control input[type="radio"]:checked ~ .form-control-indicator::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* ── Label ──────────────────────────────── */
+
+.form-control-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.form-control-text {
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  color: var(--color-foreground);
+  line-height: var(--leading-snug);
+}
+
+.form-control-desc {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  line-height: var(--leading-normal);
+}
+
+/* ── Größen ─────────────────────────────── */
+
+.form-control-sm .form-control-indicator {
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+}
+
+.form-control-sm .form-control-text {
+  font-size: var(--text-xs);
+}
+
+.form-control-lg .form-control-indicator {
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+.form-control-lg .form-control-text {
+  font-size: var(--text-base);
+}
+
+/* ── Gruppe ─────────────────────────────── */
+
+.form-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.form-control-group-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+/* ── Card-Variante ──────────────────────── */
+
+.form-control-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+  background-color: var(--color-surface);
+}
+
+.form-control-card:hover {
+  border-color: var(--color-ring);
+  background-color: var(--color-primary-muted);
+}
+
+.form-control-card:has(input:checked) {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-muted);
+}

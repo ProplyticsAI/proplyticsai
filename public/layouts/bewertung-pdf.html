@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marktwertanalyse — Proplytic.ai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="bewertung-pdf.css">
+  <link rel="stylesheet" href="../components/chart.css">
+</head>
+<body>
+
+<div class="report-screen-wrap">
+
+  <!-- Screen-only toolbar -->
+  <div class="report-screen-bar">
+    <span class="report-screen-bar-title">Marktwertanalyse · Vorschau</span>
+    <button class="report-print-btn" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M4 6V2h8v4M4 12H2V7h12v5h-2M4 12v3h8v-3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+      Als PDF speichern
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SEITE 1 — DECKBLATT
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-1">
+
+    <div class="page-header">
+      <div class="page-header-logo">
+        <img src="../brand/logo-pin.svg" alt="" width="18" height="18">
+        Proplytic.ai
+      </div>
+      <div class="page-header-meta">
+        Marktwertanalyse<br>
+        <span id="r-date"></span>
+      </div>
+    </div>
+
+    <div class="cover-body">
+
+      <div class="cover-eyebrow">Marktwertanalyse · Immobilienbewertung</div>
+
+      <div class="cover-address-block">
+        <div class="cover-street" id="r-street">Maximilianstraße 12</div>
+        <div class="cover-city" id="r-city">80539 München</div>
+      </div>
+
+      <div class="cover-divider"></div>
+
+      <div class="cover-value-block">
+        <div>
+          <div class="cover-value-label">Geschätzter Marktwert</div>
+          <div class="cover-value-number" id="r-value">1.285.000 €</div>
+          <div class="cover-value-range">
+            Bandbreite: <strong id="r-range">1.180.000 – 1.390.000 €</strong>
+          </div>
+        </div>
+
+        <!-- Confidence ring -->
+        <div class="cover-confidence">
+          <svg width="88" height="88" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="36"
+              fill="none" stroke="#E5E0D5" stroke-width="8" stroke-linecap="round"
+              stroke-dasharray="169.6 56.5" stroke-dashoffset="-14.1"
+              transform="rotate(135 50 50)"/>
+            <circle id="pdf-conf-arc" cx="50" cy="50" r="36"
+              fill="none" stroke="#2D5A3D" stroke-width="8" stroke-linecap="round"
+              stroke-dasharray="0 226.2" stroke-dashoffset="-14.1"
+              transform="rotate(135 50 50)"/>
+            <text id="pdf-conf-val" x="50" y="54" text-anchor="middle"
+              font-family="'Cormorant Garamond', serif" font-size="18" fill="#1A1A1A">87 %</text>
+          </svg>
+          <div class="cover-conf-label">KI-Konfidenz</div>
+        </div>
+      </div>
+
+      <div class="cover-tags" id="r-tags">
+        <span class="cover-tag green">Büro · 152 m²</span>
+        <span class="cover-tag blue">München · Innenstadt</span>
+        <span class="cover-tag warm">Baujahr 1998</span>
+      </div>
+
+      <div class="cover-divider"></div>
+
+      <div class="cover-info">
+        <div class="cover-info-cell">
+          <div class="cover-info-label">Analysemodus</div>
+          <div class="cover-info-value" id="r-mode">Vollanalyse</div>
+        </div>
+        <div class="cover-info-cell">
+          <div class="cover-info-label">Analysedatum</div>
+          <div class="cover-info-value" id="r-date2">05. Juni 2026</div>
+        </div>
+        <div class="cover-info-cell">
+          <div class="cover-info-label">Erstellt von</div>
+          <div class="cover-info-value">Proplytic.ai KI</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Proplytic.ai Bewertungsengine — Vertraulich</span>
+      <span>Seite 1 von 4</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SEITE 2 — KPIs & WERTFAKTOREN
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-2">
+
+    <div class="page-header">
+      <div class="page-header-logo">
+        <img src="../brand/logo-pin.svg" alt="" width="18" height="18">
+        Proplytic.ai
+      </div>
+      <div class="page-header-meta">
+        Marktwertanalyse · <span id="r-addr-short2">Maximilianstraße 12, München</span>
+      </div>
+    </div>
+
+    <div class="analysis-body">
+
+      <!-- KPIs -->
+      <div>
+        <div class="section-title">Kennzahlen</div>
+        <div style="margin-top:16px">
+          <div class="kpi-strip">
+            <div class="kpi-cell">
+              <div class="kpi-label">Preis je m²</div>
+              <div class="kpi-value" id="r-sqm">8.454 €</div>
+              <div class="kpi-delta up">+4,2 % ggü. Vorjahr</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="kpi-label">Marktvergleich</div>
+              <div class="kpi-value">+3,1 %</div>
+              <div class="kpi-delta neutral">über Lagedurchschnitt</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="kpi-label">Lage-Score</div>
+              <div class="kpi-value">9,1 / 10</div>
+              <div class="kpi-delta up">1A-Lage</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Factors -->
+      <div class="factor-section">
+        <div class="section-title">Wertfaktoren-Analyse</div>
+        <div style="margin-top:16px">
+          <div class="factor-table">
+            <div class="factor-row">
+              <span class="factor-name">Mikrolage (1A-Lage)</span>
+              <div class="factor-track"><div class="factor-fill pos" style="--pct:88%"></div></div>
+              <span class="factor-val pos">+12,4 %</span>
+            </div>
+            <div class="factor-row">
+              <span class="factor-name">Sanierungsstand</span>
+              <div class="factor-track"><div class="factor-fill pos" style="--pct:72%"></div></div>
+              <span class="factor-val pos">+8,1 %</span>
+            </div>
+            <div class="factor-row">
+              <span class="factor-name">DGNB-Zertifizierung</span>
+              <div class="factor-track"><div class="factor-fill pos" style="--pct:56%"></div></div>
+              <span class="factor-val pos">+5,8 %</span>
+            </div>
+            <div class="factor-row">
+              <span class="factor-name">Aufzug &amp; Tiefgarage</span>
+              <div class="factor-track"><div class="factor-fill pos" style="--pct:44%"></div></div>
+              <span class="factor-val pos">+3,6 %</span>
+            </div>
+            <div class="factor-row">
+              <span class="factor-name">Klimaanlage</span>
+              <div class="factor-track"><div class="factor-fill pos" style="--pct:28%"></div></div>
+              <span class="factor-val pos">+2,1 %</span>
+            </div>
+            <div class="factor-row">
+              <span class="factor-name">Baujahr (1998)</span>
+              <div class="factor-track"><div class="factor-fill warn" style="--pct:22%"></div></div>
+              <span class="factor-val neg">−3,2 %</span>
+            </div>
+            <div class="factor-row">
+              <span class="factor-name">Kein Dachgeschoss</span>
+              <div class="factor-track"><div class="factor-fill neg" style="--pct:12%"></div></div>
+              <span class="factor-val neg">−1,4 %</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Methodik -->
+      <div class="methodik-box">
+        <strong>KI-Methodik:</strong> Die Bewertung basiert auf einem Ensemble-Modell aus Hedonischer Regression, Gradient-Boosting und komparativer Marktanalyse. Datenbasis: 42.800 Transaktionen (2020–2026), aktualisiert quartalsweise. Konfidenz 87 % entspricht einer mittleren Abweichung von ±8,2 % gegenüber tatsächlichen Kaufpreisen in dieser Lage und Objektklasse.
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Proplytic.ai Bewertungsengine — Vertraulich</span>
+      <span>Seite 2 von 4</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SEITE 3 — MARKTDATEN
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-3">
+
+    <div class="page-header">
+      <div class="page-header-logo">
+        <img src="../brand/logo-pin.svg" alt="" width="18" height="18">
+        Proplytic.ai
+      </div>
+      <div class="page-header-meta">
+        Marktwertanalyse · <span id="r-addr-short3">Maximilianstraße 12, München</span>
+      </div>
+    </div>
+
+    <div class="market-body">
+
+      <div class="section-title">Marktdaten &amp; Preisvergleich</div>
+
+      <div class="chart-pair">
+        <div class="chart-block">
+          <div class="chart-block-title">Preistrend Standort (€/m²)</div>
+          <div id="pdf-chart-trend"></div>
+        </div>
+        <div class="chart-block">
+          <div class="chart-block-title">Vergleichsobjekte (€/m²)</div>
+          <div id="pdf-chart-comp"></div>
+        </div>
+      </div>
+
+      <div class="chart-block">
+        <div class="chart-block-title">Städtevergleich (€/m²) · Büroflächen Innenstadt</div>
+        <div id="pdf-chart-cities"></div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Proplytic.ai Bewertungsengine — Vertraulich</span>
+      <span>Seite 3 von 4</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SEITE 4 — VERGLEICHE & DISCLAIMER
+  ══════════════════════════════════════ -->
+  <div class="page" id="page-4">
+
+    <div class="page-header">
+      <div class="page-header-logo">
+        <img src="../brand/logo-pin.svg" alt="" width="18" height="18">
+        Proplytic.ai
+      </div>
+      <div class="page-header-meta">
+        Marktwertanalyse · <span id="r-addr-short4">Maximilianstraße 12, München</span>
+      </div>
+    </div>
+
+    <div class="comp-body">
+
+      <!-- Comparables table -->
+      <div>
+        <div class="section-title">Vergleichstransaktionen</div>
+        <div style="margin-top:16px; font-size:7.5pt; color:#7A7A7A; margin-bottom:12px">
+          Ähnliche Verkäufe der letzten 24 Monate · Umkreis 500 m · gleiche Nutzungsart
+        </div>
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>Adresse</th>
+              <th>Objekt</th>
+              <th>Verkaufsdatum</th>
+              <th>Kaufpreis</th>
+              <th>€/m²</th>
+              <th>Δ Schätzwert</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Maximilianstraße 24</td>
+              <td>Büro · 138 m² · 3. OG · Gut</td>
+              <td>Jan. 2025</td>
+              <td class="mono">1.240.000 €</td>
+              <td class="mono">8.985 €</td>
+              <td><span class="comp-badge higher">+6,4 %</span></td>
+            </tr>
+            <tr>
+              <td>Maximilianstraße 8</td>
+              <td>Büro · 165 m² · 2. OG · Sehr gut</td>
+              <td>Okt. 2024</td>
+              <td class="mono">1.410.000 €</td>
+              <td class="mono">8.545 €</td>
+              <td><span class="comp-badge match">+1,1 %</span></td>
+            </tr>
+            <tr>
+              <td>Odeonsplatz 3</td>
+              <td>Büro · 148 m² · 1. OG · Gut</td>
+              <td>Aug. 2024</td>
+              <td class="mono">1.220.000 €</td>
+              <td class="mono">8.243 €</td>
+              <td><span class="comp-badge lower">−2,5 %</span></td>
+            </tr>
+            <tr>
+              <td>Brienner Str. 46</td>
+              <td>Büro · 172 m² · EG · Renovierungsbedarf</td>
+              <td>Mai 2024</td>
+              <td class="mono">1.140.000 €</td>
+              <td class="mono">6.628 €</td>
+              <td><span class="comp-badge lower">−21,4 %</span></td>
+            </tr>
+            <tr>
+              <td>Theatinerstr. 11</td>
+              <td>Büro · 144 m² · 2. OG · Neuwertig</td>
+              <td>März 2024</td>
+              <td class="mono">1.350.000 €</td>
+              <td class="mono">9.375 €</td>
+              <td><span class="comp-badge higher">+10,9 %</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Disclaimer -->
+      <div>
+        <div class="section-title">Rechtlicher Hinweis</div>
+        <div style="margin-top:12px">
+          <div class="disclaimer-box">
+            <strong>Haftungsausschluss:</strong> Diese Marktwertanalyse ist ein KI-gestützter Schätzwert, der auf der Auswertung von Marktdaten, Vergleichsobjekten und standortbezogenen Faktoren basiert. Sie stellt keine zertifizierte Verkehrswertermittlung nach § 194 BauGB dar und ersetzt nicht die Beauftragung eines öffentlich bestellten und vereidigten Sachverständigen oder eines qualifizierten Immobiliengutachters.
+            <br><br>
+            Die Bewertung dient ausschließlich als erste Orientierung und Entscheidungsunterstützung. Proplytic.ai GmbH übernimmt keine Haftung für wirtschaftliche Entscheidungen, die allein auf der Grundlage dieser Analyse getroffen werden. Alle Angaben ohne Gewähr. Marktveränderungen, objektspezifische Besonderheiten oder nicht bekannte Mängel können zu erheblichen Abweichungen führen.
+            <br><br>
+            <strong>Datenbasis:</strong> Transaktionsdatenbank Proplytic.ai (42.800 Verkäufe 2020–2026), Bodenrichtwertinformationssystem (BORIS), amtliche Kaufpreissammlungen, öffentlich zugängliche Angebotspreise. Stand: Juni 2026.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="page-footer">
+      <span>Proplytic.ai Bewertungsengine · proplytic.ai · Alle Rechte vorbehalten</span>
+      <span>Seite 4 von 4</span>
+    </div>
+  </div>
+
+</div><!-- /report-screen-wrap -->
+
+<script src="../components/chart.js"></script>
+<script>
+/* ─────────────────────────────────────
+   Load data from sessionStorage or use defaults
+───────────────────────────────────── */
+const defaults = {
+  street:     'Maximilianstraße 12',
+  city:       '80539 München',
+  value:      '1.285.000 €',
+  range:      '1.180.000 – 1.390.000 €',
+  confidence: 87,
+  mode:       'Vollanalyse',
+  type:       'Büro',
+  size:       '152',
+  year:       '1998',
+  sqm:        '8.454 €',
+  addrShort:  'Maximilianstraße 12, München',
+};
+
+let d = defaults;
+try {
+  const raw = sessionStorage.getItem('bewertung-report');
+  if (raw) d = { ...defaults, ...JSON.parse(raw) };
+} catch (e) {}
+
+/* ─────────────────────────────────────
+   Populate dynamic fields
+───────────────────────────────────── */
+const now = new Date();
+const dateStr = now.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' });
+
+document.getElementById('r-street').textContent     = d.street;
+document.getElementById('r-city').textContent       = d.city;
+document.getElementById('r-value').textContent      = d.value;
+document.getElementById('r-range').textContent      = d.range;
+document.getElementById('r-mode').textContent       = d.mode;
+document.getElementById('r-date').textContent       = dateStr;
+document.getElementById('r-date2').textContent      = dateStr;
+document.getElementById('r-sqm').textContent        = d.sqm;
+document.title = `Marktwertanalyse ${d.street} — Proplytic.ai`;
+
+['r-addr-short2','r-addr-short3','r-addr-short4'].forEach(id => {
+  document.getElementById(id).textContent = d.addrShort;
+});
+
+// Tags
+document.getElementById('r-tags').innerHTML = [
+  `<span class="cover-tag green">${d.type}${d.size ? ' · ' + d.size + ' m²' : ''}</span>`,
+  `<span class="cover-tag blue">${d.city.split(' ').slice(-1)[0] || 'Standort'}</span>`,
+  d.year ? `<span class="cover-tag warm">Baujahr ${d.year}</span>` : '',
+].join('');
+
+/* ─────────────────────────────────────
+   Confidence arc
+───────────────────────────────────── */
+(function() {
+  const pct  = d.confidence;
+  const r    = 36;
+  const circ = 2 * Math.PI * r;
+  const filled = circ * 0.75 * (pct / 100);
+  const gap    = circ - filled;
+  const arc = document.getElementById('pdf-conf-arc');
+  arc.setAttribute('stroke-dasharray', `${filled.toFixed(1)} ${gap.toFixed(1)}`);
+  document.getElementById('pdf-conf-val').textContent = pct + ' %';
+})();
+
+/* ─────────────────────────────────────
+   Charts
+───────────────────────────────────── */
+PropChart.Line(document.getElementById('pdf-chart-trend'), {
+  labels: ['Q1 22','Q2 22','Q3 22','Q4 22','Q1 23','Q2 23','Q3 23','Q4 23'],
+  values: [7800, 8050, 8200, 8100, 8000, 8300, 8420, 8454],
+}, { unit: '€/m²', color: '#2D5A3D', height: 160, area: true });
+
+PropChart.Bar(document.getElementById('pdf-chart-comp'), {
+  labels: ['Max. 24','Max. 8','Odeons.','Brienner','Theatiner','Dieses Obj.'],
+  values: [8985, 8545, 8243, 6628, 9375, 8454],
+}, { unit: '€/m²', color: '#2C4A6E', height: 160 });
+
+PropChart.MultiLine(document.getElementById('pdf-chart-cities'), [
+  { label: 'München', values: [8100,8380,8520,8290,8150,8410,8650,8454], color: '#2D5A3D' },
+  { label: 'Hamburg', values: [5800,5950,6100,5980,5870,6020,6180,5980], color: '#2C4A6E' },
+  { label: 'Berlin',  values: [4500,4620,4780,4650,4520,4610,4720,4320], color: '#C4883A' },
+], {
+  labels: ['Q1 22','Q2 22','Q3 22','Q4 22','Q1 23','Q2 23','Q3 23','Q4 23'],
+  unit: '€/m²',
+  height: 180,
+});
+</script>
+
+</body>
+</html>

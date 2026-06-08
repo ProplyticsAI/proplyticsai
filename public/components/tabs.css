@@ -1,0 +1,192 @@
+/**
+ * Proplytic.ai — Tabs
+ * Varianten: underline (Standard) · pills · boxed
+ * Größen: sm · md (Standard) · lg
+ */
+
+/* ── Base ───────────────────────────────── */
+
+.tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.is-active {
+  display: block;
+}
+
+/* ── Underline (Standard) ───────────────── */
+
+.tabs-underline {
+  border-bottom: 1px solid var(--color-border);
+  gap: 0;
+}
+
+.tabs-underline .tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  color: var(--color-muted);
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  margin-bottom: -1px;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.tabs-underline .tab:hover {
+  color: var(--color-foreground);
+}
+
+.tabs-underline .tab.is-active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  font-weight: var(--font-medium);
+}
+
+.tabs-underline .tab:disabled,
+.tabs-underline .tab[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Pills ──────────────────────────────── */
+
+.tabs-pills {
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  width: fit-content;
+}
+
+.tabs-pills .tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  color: var(--color-muted);
+  border: none;
+  border-radius: var(--radius-md);
+  background: none;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.tabs-pills .tab:hover {
+  color: var(--color-foreground);
+}
+
+.tabs-pills .tab.is-active {
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  font-weight: var(--font-medium);
+  box-shadow: var(--shadow-xs);
+}
+
+/* ── Boxed ──────────────────────────────── */
+
+.tabs-boxed {
+  gap: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  width: fit-content;
+}
+
+.tabs-boxed .tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  color: var(--color-muted);
+  border: none;
+  border-right: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.tabs-boxed .tab:last-child {
+  border-right: none;
+}
+
+.tabs-boxed .tab:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-foreground);
+}
+
+.tabs-boxed .tab.is-active {
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  font-weight: var(--font-medium);
+}
+
+/* ── Größen ─────────────────────────────── */
+
+.tabs-sm .tab {
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-3);
+}
+
+.tabs-lg .tab {
+  font-size: var(--text-base);
+  padding: var(--space-3) var(--space-5);
+}
+
+/* ── Tab-Badge ──────────────────────────── */
+
+.tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: var(--font-semibold);
+  line-height: 1;
+  background-color: var(--color-background);
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+}
+
+.tab.is-active .tab-badge {
+  background-color: var(--color-primary-muted);
+  color: var(--color-primary);
+  border-color: transparent;
+}
+
+/* ── Panel-Wrapper ──────────────────────── */
+
+.tab-panels {
+  padding-top: var(--space-6);
+}

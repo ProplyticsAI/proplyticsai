@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Über uns — Proplytic.ai</title>
+  <meta name="description" content="Proplytic.ai macht Immobilienbewertung verständlich, nachvollziehbar und zugänglich — mit eigener Bewertungsengine und KI-gestützten Analysewerkzeugen.">
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="./marketing.css">
+  <style>
+    .values-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6);
+    }
+    @media (max-width: 700px) { .values-grid { grid-template-columns: 1fr; } }
+    .value-card {
+      padding: var(--space-6); border-radius: var(--radius-lg);
+      background-color: var(--color-surface); border: 1px solid var(--color-border);
+    }
+    .value-card-title { font-size: var(--text-base); font-weight: var(--font-semibold); margin: 0 0 var(--space-2); }
+    .value-card-desc { font-size: var(--text-sm); color: var(--color-muted); margin: 0; line-height: var(--leading-relaxed); }
+
+    .quote-block {
+      max-width: 720px; margin: 0 auto; text-align: center;
+      font-family: var(--font-serif); font-style: italic; font-size: var(--text-2xl);
+      letter-spacing: var(--tracking-tight); line-height: var(--leading-snug); color: var(--color-foreground);
+    }
+    .quote-block span { color: var(--color-primary); }
+  </style>
+</head>
+<body>
+
+<div class="marketing-page">
+
+  <header class="marketing-header">
+    <a class="marketing-logo" href="./landing.html">
+      <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="28">
+    </a>
+    <nav class="marketing-nav">
+      <div class="marketing-nav-links">
+        <a href="./features.html">Funktionen</a>
+        <a href="./ueber-uns.html">Über uns</a>
+        <a href="./kontakt.html">Kontakt</a>
+        <a href="./faq.html">FAQ</a>
+      </div>
+      <div class="marketing-nav-actions">
+        <a href="./login.html" class="btn btn-outline">Anmelden</a>
+        <a href="./registrieren.html" class="btn btn-primary">Kostenlos starten</a>
+      </div>
+      <button class="marketing-nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" id="nav-toggle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <span class="hero-eyebrow">Über uns</span>
+    <h1 class="hero-title">Immobilienbewertung soll <em>verständlich</em> sein — nicht undurchsichtig</h1>
+    <p class="hero-sub">
+      Wir glauben, dass fundierte Einschätzungen zum Wert einer Immobilie kein Privileg weniger sein sollten.
+      Proplytic.ai verbindet etablierte Bewertungsverfahren mit KI-gestützten Werkzeugen, die Ergebnisse
+      nachvollziehbar statt undurchsichtig machen.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="section-narrow">
+      <p class="quote-block">
+        Eine Bewertung ist nur dann hilfreich, wenn man <span>nachvollziehen</span> kann, wie sie zustande kommt.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="section-inner">
+      <p class="section-eyebrow">Unsere Mission</p>
+      <h2 class="section-title">Klarheit über Immobilienwerte — für alle, die sie brauchen</h2>
+      <p class="section-sub">
+        Ob Kaufentscheidung, Portfolio-Steuerung oder erste Orientierung: Proplytic.ai soll fundierte
+        Immobilieneinschätzungen zugänglich machen, ohne dass man dafür Gutachter oder Fachjargon braucht.
+        Im Mittelpunkt steht dabei immer Nachvollziehbarkeit — jede Zahl soll erklärbar sein.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <p class="section-eyebrow">Wofür wir stehen</p>
+      <h2 class="section-title">Unsere Grundsätze</h2>
+      <p class="section-sub">Diese Prinzipien leiten, wie wir Proplytic.ai gestalten und weiterentwickeln.</p>
+
+      <div class="values-grid">
+        <div class="value-card">
+          <h3 class="value-card-title">Nachvollziehbarkeit vor Black-Box</h3>
+          <p class="value-card-desc">Wir zeigen, welche Annahmen und Verfahren in eine Bewertung einfließen — statt nur eine Zahl auszugeben. So können Sie jedes Ergebnis selbst einordnen.</p>
+        </div>
+        <div class="value-card">
+          <h3 class="value-card-title">Sorgfalt statt Schnellschuss</h3>
+          <p class="value-card-desc">Etablierte Bewertungsverfahren wie Ertragswert- und Sachwertverfahren bilden die Grundlage — KI unterstützt dabei, ersetzt aber keine sorgfältige Prüfung.</p>
+        </div>
+        <div class="value-card">
+          <h3 class="value-card-title">Zugänglichkeit</h3>
+          <p class="value-card-desc">Fundierte Einschätzungen sollen nicht an Fachjargon oder hohen Einstiegshürden scheitern — geführte Eingaben machen den Einstieg einfach.</p>
+        </div>
+        <div class="value-card">
+          <h3 class="value-card-title">Verantwortungsvoller Umgang mit Daten</h3>
+          <p class="value-card-desc">Ihre Objekt- und Bewertungsdaten gehören Ihnen. Wir gehen sorgfältig damit um — transparent geregelt in unserer Datenschutzerklärung.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="cta-band">
+      <h2 class="cta-band-title">Lernen Sie Proplytic.ai kennen</h2>
+      <p class="cta-band-sub">Starten Sie kostenlos und überzeugen Sie sich selbst — oder sprechen Sie direkt mit uns.</p>
+      <div class="hero-actions">
+        <a href="./registrieren.html" class="btn btn-primary btn-lg">Kostenlos starten</a>
+        <a href="./kontakt.html" class="btn btn-outline btn-lg">Kontakt aufnehmen</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="marketing-footer">
+    <div class="marketing-footer-inner">
+      <div>
+        <a class="marketing-logo" href="./landing.html">
+          <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="24">
+        </a>
+        <p class="footer-brand-desc">Präzise Immobilien-KI für Bewertung, Vergleich und Risikoanalyse — von der ersten Einschätzung bis zum exportierfertigen Gutachten.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Produkt</p>
+        <ul class="footer-links">
+          <li><a href="./features.html">Funktionen</a></li>
+          <li><a href="./registrieren.html">Kostenlos starten</a></li>
+          <li><a href="./login.html">Anmelden</a></li>
+          <li><a href="./status.html">Systemstatus</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Unternehmen</p>
+        <ul class="footer-links">
+          <li><a href="./ueber-uns.html">Über uns</a></li>
+          <li><a href="./kontakt.html">Kontakt</a></li>
+          <li><a href="./faq.html">FAQ / Hilfe</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Rechtliches</p>
+        <ul class="footer-links">
+          <li><a href="./impressum.html">Impressum</a></li>
+          <li><a href="./datenschutz.html">Datenschutz</a></li>
+          <li><a href="./agb.html">AGB</a></li>
+          <li><a href="./widerruf.html">Widerrufsbelehrung</a></li>
+          <li><a href="./cookie-richtlinie.html">Cookie-Richtlinie</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="marketing-footer-bottom">
+      <span>© 2026 Proplytic.ai — Alle Rechte vorbehalten</span>
+      <span>Bewertungen sind unverbindliche Einschätzungen und ersetzen kein Verkehrswertgutachten nach § 194 BauGB.</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const links  = document.querySelector('.marketing-nav-links');
+
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>
+
+</body>
+</html>

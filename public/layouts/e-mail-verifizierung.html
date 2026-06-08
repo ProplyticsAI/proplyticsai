@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Mail-Verifizierung — Proplytic.ai</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="../components/input.css">
+  <link rel="stylesheet" href="./auth.css">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <a class="auth-logo" href="./dashboard.html">
+    <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="32">
+  </a>
+
+  <div class="auth-card" id="pending-card">
+    <div class="auth-status-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 7l9 6 9-6M5 5h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h1 class="auth-title">Bestätigen Sie Ihre E-Mail-Adresse</h1>
+    <p class="auth-sub">
+      Wir haben einen Bestätigungslink an <strong id="pending-email">Ihre E-Mail-Adresse</strong> gesendet.
+      Bitte klicken Sie auf den Link, um Ihr Konto zu aktivieren. Der Link ist 24 Stunden gültig.
+    </p>
+
+    <form class="auth-form" id="demo-verify-form">
+      <button type="submit" class="btn btn-primary auth-submit">Demo: E-Mail jetzt bestätigen</button>
+    </form>
+
+    <p class="auth-footer-note" style="margin-top: var(--space-4);">
+      Keine E-Mail erhalten? Prüfen Sie Ihren Spam-Ordner oder
+      <a href="#" id="resend-link">fordern Sie eine neue Bestätigungs-E-Mail an</a>.
+    </p>
+    <p class="auth-footer-note">
+      <a href="./login.html">← Zurück zur Anmeldung</a>
+    </p>
+  </div>
+
+  <div class="auth-card" id="verified-card" hidden>
+    <div class="auth-status-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h1 class="auth-title">E-Mail-Adresse bestätigt</h1>
+    <p class="auth-sub">
+      Ihr Konto ist jetzt aktiviert. Sie können sich anmelden und mit Ihren ersten Bewertungen starten.
+    </p>
+    <a href="./login.html" class="btn btn-primary auth-submit" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Zur Anmeldung</a>
+  </div>
+
+  <nav class="auth-legal-links" aria-label="Rechtliche Seiten">
+    <a href="./impressum.html">Impressum</a>
+    <a href="./datenschutz.html">Datenschutz</a>
+    <a href="./agb.html">AGB</a>
+  </nav>
+
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const emailParam = params.get('email');
+  if (emailParam) {
+    document.getElementById('pending-email').textContent = emailParam;
+  }
+
+  const pendingCard  = document.getElementById('pending-card');
+  const verifiedCard = document.getElementById('verified-card');
+
+  // Demo-Flow: simuliert den Klick auf den Bestätigungslink aus der E-Mail; echte Verifizierung folgt mit Backend-Anbindung
+  document.getElementById('demo-verify-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    pendingCard.hidden = true;
+    verifiedCard.hidden = false;
+  });
+
+  document.getElementById('resend-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    e.target.textContent = 'Bestätigungs-E-Mail erneut gesendet ✓';
+  });
+</script>
+
+</body>
+</html>
