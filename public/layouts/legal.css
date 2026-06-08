@@ -1,0 +1,226 @@
+/*!
+ * Legal-Seiten — Proplytic.ai
+ * Gemeinsames Layout für Impressum, Datenschutz, AGB, Widerrufsbelehrung,
+ * Cookie-Richtlinie und weitere rechtlich/operativ erforderliche Inhaltsseiten.
+ */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+.legal-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6) var(--space-12);
+}
+
+/* ── Header ── */
+
+.legal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-6);
+  margin-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.legal-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--color-foreground);
+}
+
+.legal-logo svg { display: block; }
+
+.legal-logo-word {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-foreground);
+}
+
+.legal-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.legal-back-link:hover {
+  color: var(--color-primary);
+}
+
+/* ── Title ── */
+
+.legal-eyebrow {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin: 0 0 var(--space-2);
+}
+
+.legal-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-5xl);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-tight);
+  margin: 0 0 var(--space-2);
+}
+
+.legal-updated {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  margin: 0 0 var(--space-8);
+}
+
+/* ── Content ── */
+
+.legal-content {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.legal-content h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-tight);
+  margin: var(--space-8) 0 var(--space-3);
+}
+
+.legal-content h2:first-child {
+  margin-top: 0;
+}
+
+.legal-content h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  margin: var(--space-5) 0 var(--space-2);
+}
+
+.legal-content p {
+  margin: 0 0 var(--space-4);
+  color: var(--color-foreground);
+}
+
+.legal-content ul,
+.legal-content ol {
+  margin: 0 0 var(--space-4);
+  padding-left: var(--space-5);
+}
+
+.legal-content li {
+  margin-bottom: var(--space-1);
+}
+
+.legal-content a {
+  color: var(--color-primary);
+}
+
+.legal-content strong {
+  font-weight: var(--font-semibold);
+}
+
+.legal-content hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-8) 0;
+}
+
+.legal-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.legal-content th,
+.legal-content td {
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+.legal-content th {
+  font-weight: var(--font-semibold);
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* ── Platzhalter-Hinweis ── */
+/* Markiert Inhalte, die vor Veröffentlichung durch reale Unternehmens-/
+   Rechtsdaten bzw. juristische Prüfung ersetzt werden müssen. */
+
+.legal-todo {
+  display: inline-block;
+  padding: 1px var(--space-2);
+  background-color: #FBEFE3;
+  color: var(--color-warning);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-weight: var(--font-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+
+.legal-notice {
+  margin-top: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed);
+  color: var(--color-muted);
+}
+
+.legal-notice strong {
+  color: var(--color-foreground);
+}
+
+/* ── Footer ── */
+
+.legal-footer {
+  margin-top: var(--space-8);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  font-size: var(--text-sm);
+}
+
+.legal-footer a {
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.legal-footer a:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 640px) {
+  .legal-content { padding: var(--space-5); }
+  .legal-title { font-size: var(--text-4xl); }
+}

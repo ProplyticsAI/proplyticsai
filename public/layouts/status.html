@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Systemstatus — Proplytic.ai</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="../components/input.css">
+  <link rel="stylesheet" href="../components/badge.css">
+  <link rel="stylesheet" href="./legal.css">
+  <style>
+    .status-banner {
+      display: flex; align-items: center; gap: var(--space-4);
+      background-color: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6);
+      margin-bottom: var(--space-8);
+    }
+    .status-banner-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; border-radius: var(--radius-md);
+      background-color: #E3F2E9; color: var(--color-success); flex-shrink: 0;
+    }
+    .status-banner-icon.is-degraded { background-color: #FBEFE0; color: var(--color-warning); }
+    .status-banner-title { font-size: var(--text-lg); font-weight: var(--font-semibold); margin: 0; }
+    .status-banner-sub { margin: var(--space-1) 0 0; font-size: var(--text-sm); color: var(--color-muted); }
+
+    .status-list { list-style: none; margin: 0; padding: 0; }
+    .status-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-4) 0; border-bottom: 1px solid var(--color-border);
+    }
+    .status-row:last-child { border-bottom: none; }
+    .status-row-name { font-weight: var(--font-medium); }
+    .status-row-desc { margin: var(--space-1) 0 0; font-size: var(--text-sm); color: var(--color-muted); }
+
+    .incident-list { list-style: none; margin: 0; padding: 0; }
+    .incident-item {
+      padding: var(--space-4) 0; border-bottom: 1px solid var(--color-border);
+    }
+    .incident-item:last-child { border-bottom: none; }
+    .incident-date { font-size: var(--text-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: var(--tracking-wide); }
+    .incident-title { margin: var(--space-1) 0 var(--space-1); font-weight: var(--font-medium); }
+    .incident-desc { margin: 0; font-size: var(--text-sm); color: var(--color-muted); }
+
+    .status-empty { text-align: center; padding: var(--space-8) var(--space-4); color: var(--color-muted); }
+
+    .subscribe-row { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+    .subscribe-row .input { flex: 1; min-width: 220px; }
+    .subscribe-success { font-size: var(--text-sm); color: var(--color-success); margin-top: var(--space-3); }
+  </style>
+</head>
+<body>
+
+<div class="legal-page">
+
+  <header class="legal-header">
+    <a class="legal-logo" href="./dashboard.html">
+      <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="28">
+    </a>
+    <a class="legal-back-link" href="./dashboard.html">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M9.5 3.5L5 8l4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Zur Startseite
+    </a>
+  </header>
+
+  <p class="legal-eyebrow">System</p>
+  <h1 class="legal-title">Systemstatus</h1>
+  <p class="legal-updated">Aktueller Betriebsstatus aller Proplytic.ai-Dienste · zuletzt aktualisiert: <span id="status-updated">—</span></p>
+
+  <div class="legal-content">
+
+    <div class="status-banner">
+      <div class="status-banner-icon" id="status-banner-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <p class="status-banner-title" id="status-banner-title">Alle Systeme funktionsfähig</p>
+        <p class="status-banner-sub" id="status-banner-sub">Es liegen derzeit keine bekannten Störungen vor.</p>
+      </div>
+    </div>
+
+    <h2>Dienste</h2>
+    <ul class="status-list">
+      <li class="status-row">
+        <div>
+          <p class="status-row-name">Bewertungsengine</p>
+          <p class="status-row-desc">Ertragswert-, Sachwert- und Vergleichswertverfahren</p>
+        </div>
+        <span class="badge badge-success-subtle badge-dot">Betriebsbereit</span>
+      </li>
+      <li class="status-row">
+        <div>
+          <p class="status-row-name">Vergleichs- &amp; Portfolio-Funktionen</p>
+          <p class="status-row-desc">Objektvergleich, Portfolio-Übersicht, Verlauf</p>
+        </div>
+        <span class="badge badge-success-subtle badge-dot">Betriebsbereit</span>
+      </li>
+      <li class="status-row">
+        <div>
+          <p class="status-row-name">Monte-Carlo-Risikosimulation</p>
+          <p class="status-row-desc">Szenario- und Risikoanalysen</p>
+        </div>
+        <span class="badge badge-success-subtle badge-dot">Betriebsbereit</span>
+      </li>
+      <li class="status-row">
+        <div>
+          <p class="status-row-name">PDF-/Gutachten-Export</p>
+          <p class="status-row-desc">Erstellung und Download von Bewertungsberichten</p>
+        </div>
+        <span class="badge badge-success-subtle badge-dot">Betriebsbereit</span>
+      </li>
+      <li class="status-row">
+        <div>
+          <p class="status-row-name">Anmeldung &amp; Konto</p>
+          <p class="status-row-desc">Login, Registrierung, Passwort-Zurücksetzung, E-Mail-Versand</p>
+        </div>
+        <span class="badge badge-success-subtle badge-dot">Betriebsbereit</span>
+      </li>
+    </ul>
+
+    <h2>Geplante Wartungen</h2>
+    <div class="status-empty">Aktuell sind keine Wartungsarbeiten geplant.</div>
+
+    <h2>Vorfallshistorie</h2>
+    <ul class="incident-list" id="incident-list">
+      <li class="incident-item">
+        <p class="incident-date">28.05.2026 · behoben</p>
+        <p class="incident-title">Verzögerungen beim PDF-Export</p>
+        <p class="incident-desc">Für rund 40 Minuten kam es bei der Erstellung von Gutachten-PDFs zu erhöhten Wartezeiten. Die Ursache wurde behoben, alle Exporte laufen wieder regulär.</p>
+      </li>
+      <li class="incident-item">
+        <p class="incident-date">11.04.2026 · behoben</p>
+        <p class="incident-title">Geplante Wartung der Bewertungsengine</p>
+        <p class="incident-desc">Im Rahmen eines Updates der Ertragswert-Berechnung war die Bewertungsengine für ca. 20 Minuten im Wartungsmodus.</p>
+      </li>
+    </ul>
+
+    <h2>Updates abonnieren</h2>
+    <p>Erhalten Sie eine Benachrichtigung per E-Mail, sobald sich der Status eines Dienstes ändert.</p>
+    <form class="subscribe-row" id="subscribe-form" novalidate>
+      <input class="input" id="subscribe-email" type="email" placeholder="name@unternehmen.de" autocomplete="email" required>
+      <button type="submit" class="btn btn-primary">Abonnieren</button>
+    </form>
+    <p class="subscribe-success" id="subscribe-success" hidden>Danke! Wir benachrichtigen Sie ab sofort über Status-Änderungen.</p>
+
+  </div>
+
+  <footer class="legal-footer">
+    <a href="./impressum.html">Impressum</a>
+    <a href="./datenschutz.html">Datenschutz</a>
+    <a href="./agb.html">AGB</a>
+  </footer>
+
+</div>
+
+<script>
+  document.getElementById('status-updated').textContent = new Date().toLocaleString('de-DE', {
+    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit',
+  }) + ' Uhr';
+
+  const form    = document.getElementById('subscribe-form');
+  const email   = document.getElementById('subscribe-email');
+  const success = document.getElementById('subscribe-success');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+    email.classList.toggle('input-error', !valid);
+    if (!valid) return;
+
+    form.hidden = true;
+    success.hidden = false;
+  });
+</script>
+
+</body>
+</html>

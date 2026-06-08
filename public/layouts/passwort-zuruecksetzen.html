@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neues Passwort festlegen — Proplytic.ai</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="../components/input.css">
+  <link rel="stylesheet" href="./auth.css">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <a class="auth-logo" href="./dashboard.html">
+    <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="32">
+  </a>
+
+  <div class="auth-card" id="reset-card">
+    <p class="auth-eyebrow">Konto-Wiederherstellung</p>
+    <h1 class="auth-title">Neues Passwort festlegen</h1>
+    <p class="auth-sub">Bitte vergeben Sie ein neues Passwort für Ihr Proplytic-Konto.</p>
+
+    <form class="auth-form" id="reset-form" novalidate>
+      <div class="form-field">
+        <label class="form-label form-label-required" for="new-password">Neues Passwort</label>
+        <input class="input" id="new-password" name="password" type="password" placeholder="Mindestens 8 Zeichen" autocomplete="new-password" required>
+        <span class="form-helper" id="new-password-helper">Mindestens 8 Zeichen, mit Zahlen und Buchstaben.</span>
+        <span class="form-error-msg" id="new-password-error" hidden>Das Passwort muss mindestens 8 Zeichen lang sein.</span>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label form-label-required" for="confirm-password">Passwort bestätigen</label>
+        <input class="input" id="confirm-password" name="password_confirm" type="password" placeholder="Passwort wiederholen" autocomplete="new-password" required>
+        <span class="form-error-msg" id="confirm-password-error" hidden>Die Passwörter stimmen nicht überein.</span>
+      </div>
+
+      <button type="submit" class="btn btn-primary auth-submit">Passwort speichern</button>
+    </form>
+
+    <p class="auth-footer-note">
+      <a href="./login.html">← Zurück zur Anmeldung</a>
+    </p>
+  </div>
+
+  <div class="auth-card" id="done-card" hidden>
+    <div class="auth-status-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h1 class="auth-title">Passwort aktualisiert</h1>
+    <p class="auth-sub">
+      Ihr Passwort wurde erfolgreich geändert. Sie können sich nun mit Ihrem neuen Passwort anmelden.
+    </p>
+    <a href="./login.html" class="btn btn-primary auth-submit" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Zur Anmeldung</a>
+  </div>
+
+  <div class="auth-card" id="invalid-card" hidden>
+    <div class="auth-status-icon is-error">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.3 3.86l-8.18 14.18A1.5 1.5 0 0 0 3.42 20h17.16a1.5 1.5 0 0 0 1.3-2.25L13.7 3.86a1.5 1.5 0 0 0-2.6 0z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h1 class="auth-title">Link ungültig oder abgelaufen</h1>
+    <p class="auth-sub">
+      Dieser Link zum Zurücksetzen des Passworts ist ungültig oder nicht mehr aktiv.
+      Bitte fordern Sie einen neuen Link an.
+    </p>
+    <a href="./passwort-vergessen.html" class="btn btn-primary auth-submit" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Neuen Link anfordern</a>
+  </div>
+
+  <nav class="auth-legal-links" aria-label="Rechtliche Seiten">
+    <a href="./impressum.html">Impressum</a>
+    <a href="./datenschutz.html">Datenschutz</a>
+    <a href="./agb.html">AGB</a>
+  </nav>
+
+</div>
+
+<script>
+  const resetCard   = document.getElementById('reset-card');
+  const doneCard    = document.getElementById('done-card');
+  const invalidCard = document.getElementById('invalid-card');
+
+  // Demo-Flow: Token-Prüfung folgt mit Backend-Anbindung — fehlt der Token, wird der "ungültiger Link"-Zustand demonstriert
+  const token = new URLSearchParams(window.location.search).get('token');
+  if (!token) {
+    resetCard.hidden = true;
+    invalidCard.hidden = false;
+  }
+
+  const form            = document.getElementById('reset-form');
+  const newPassword     = document.getElementById('new-password');
+  const confirmPassword = document.getElementById('confirm-password');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const passwordValid = newPassword.value.length >= 8;
+    newPassword.classList.toggle('input-error', !passwordValid);
+    document.getElementById('new-password-error').hidden = passwordValid;
+
+    const matchValid = confirmPassword.value.length > 0 && confirmPassword.value === newPassword.value;
+    confirmPassword.classList.toggle('input-error', !matchValid);
+    document.getElementById('confirm-password-error').hidden = matchValid;
+
+    if (passwordValid && matchValid) {
+      resetCard.hidden = true;
+      doneCard.hidden = false;
+    }
+  });
+</script>
+
+</body>
+</html>

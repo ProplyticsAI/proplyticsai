@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ &amp; Hilfe — Proplytic.ai</title>
+  <meta name="description" content="Häufig gestellte Fragen zu Proplytic.ai — Bewertungsverfahren, Vergleichsfunktion, Risikosimulation, Datenschutz und Konto.">
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="./marketing.css">
+  <style>
+    .faq-group { margin-bottom: var(--space-10); }
+    .faq-group:last-child { margin-bottom: 0; }
+    .faq-group-title {
+      font-family: var(--font-serif); font-weight: 500; letter-spacing: var(--tracking-tight);
+      font-size: var(--text-xl); margin: 0 0 var(--space-4);
+    }
+
+    .faq-item {
+      background-color: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-md); margin-bottom: var(--space-3);
+      overflow: hidden;
+    }
+    .faq-item:last-child { margin-bottom: 0; }
+
+    .faq-item summary {
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+      padding: var(--space-4) var(--space-5);
+      font-weight: var(--font-medium); font-size: var(--text-sm);
+      cursor: pointer; list-style: none;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+
+    .faq-item-icon {
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      width: 24px; height: 24px; color: var(--color-muted);
+      transition: transform 0.15s ease;
+    }
+    .faq-item[open] .faq-item-icon { transform: rotate(45deg); color: var(--color-primary); }
+
+    .faq-item-body {
+      padding: 0 var(--space-5) var(--space-5);
+      font-size: var(--text-sm); color: var(--color-muted); line-height: var(--leading-relaxed);
+    }
+    .faq-item-body p { margin: 0; }
+    .faq-item-body p + p { margin-top: var(--space-3); }
+
+    .faq-help-card {
+      display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); flex-wrap: wrap;
+      background-color: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-6) var(--space-7);
+      max-width: 1080px; margin: 0 auto;
+    }
+    .faq-help-card-title { font-size: var(--text-base); font-weight: var(--font-semibold); margin: 0 0 var(--space-1); }
+    .faq-help-card-desc { font-size: var(--text-sm); color: var(--color-muted); margin: 0; }
+  </style>
+</head>
+<body>
+
+<div class="marketing-page">
+
+  <header class="marketing-header">
+    <a class="marketing-logo" href="./landing.html">
+      <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="28">
+    </a>
+    <nav class="marketing-nav">
+      <div class="marketing-nav-links">
+        <a href="./features.html">Funktionen</a>
+        <a href="./ueber-uns.html">Über uns</a>
+        <a href="./kontakt.html">Kontakt</a>
+        <a href="./faq.html">FAQ</a>
+      </div>
+      <div class="marketing-nav-actions">
+        <a href="./login.html" class="btn btn-outline">Anmelden</a>
+        <a href="./registrieren.html" class="btn btn-primary">Kostenlos starten</a>
+      </div>
+      <button class="marketing-nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" id="nav-toggle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <span class="hero-eyebrow">FAQ &amp; Hilfe</span>
+    <h1 class="hero-title">Antworten auf die <em>häufigsten</em> Fragen</h1>
+    <p class="hero-sub">
+      Hier finden Sie Antworten zu Bewertungsverfahren, Funktionen, Konto und Datenschutz.
+      Ist Ihre Frage nicht dabei? Schreiben Sie uns gern direkt.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="section-narrow">
+
+      <div class="faq-group">
+        <h2 class="faq-group-title">Bewertung &amp; Verfahren</h2>
+
+        <details class="faq-item">
+          <summary>
+            Wie berechnet Proplytic.ai den Wert einer Immobilie?
+            <span class="faq-item-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </summary>
+          <div class="faq-item-body">
+            <p>Die Bewertungsengine nutzt etablierte Verfahren — aktuell Ertragswert- und Sachwertverfahren — und führt Sie per Chat-Wizard durch alle relevanten Eingaben wie Lage, Fläche, Zustand und Ertragssituation. Das Ergebnis zeigt nicht nur eine Zahl, sondern auch die zugrunde liegenden Annahmen.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            Ersetzt eine Proplytic-Bewertung ein Verkehrswertgutachten?
+            <span class="faq-item-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </summary>
+          <div class="faq-item-body">
+            <p>Nein. Bewertungen über Proplytic.ai sind unverbindliche Einschätzungen und ersetzen kein Verkehrswertgutachten nach § 194 BauGB. Für rechtsverbindliche Zwecke — etwa Gerichtsverfahren oder Erbauseinandersetzungen — ist weiterhin ein zertifizierter Gutachter erforderlich. Details dazu finden Sie in unseren AGB.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            Was ist die Monte-Carlo-Risikosimulation?
+            <span class="faq-item-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </summary>
+          <div class="faq-item-body">
+            <p>Sie spielt tausende mögliche Marktentwicklungen durch — etwa unterschiedliche Zins-, Miet- und Wertverläufe — und zeigt Ihnen, wie stabil eine Bewertung unter verschiedenen Annahmen bleibt. So erhalten Sie statt einer einzelnen Zahl ein realistisches Bild der möglichen Bandbreite.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="faq-group">
+        <h2 class="faq-group-title">Funktionen</h2>
+
+        <details class="faq-item">
+          <summary>
+            Wie viele Objekte kann ich gleichzeitig vergleichen?
+            <span class="faq-item-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </summary>
+          <div class="faq-item-body">
+            <p>In der Vergleichsfunktion können Sie bis zu vier Objekte nebeneinander gegenüberstellen — inklusive Kennzahlentabelle mit Best-Wert-Hervorhebung und Rendite-Diagramm. Aus Portfolio und Verlauf gelangen Sie mit wenigen Klicks direkt in den Vergleich.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            Kann ich Bewertungen exportieren und teilen?
+            <span class="faq-item-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </summary>
+          <div class="faq-item-body">
+            <p>Ja. Jede Bewertung lässt sich als strukturiertes PDF-Dokument exportieren — inklusive aller Annahmen und Berechnungsgrundlagen. So können Sie Ergebnisse einfach dokumentieren, archivieren oder an Dritte weitergeben.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            Finde ich frühere Bewertungen wieder?
+            <span class="faq-item-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </summary>
+          <div class="faq-item-body">
+            <p>Im Verlauf finden Sie alle gespeicherten Bewertungen wieder — durchsuchbar und filterbar nach Status (Abgeschlossen, Entwurf, Archiviert) und Verfahren. Von dort lassen sie sich erneut öffnen, exportieren oder löschen.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="faq-group">
+        <h2 class="faq-group-title">Konto &amp; Datenschutz</h2>
+
+        <details class="faq-item">
+          <summary>
+            Brauche ich eine Kreditkarte, um Proplytic.ai zu testen?
+            <span class="faq-item-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </summary>
+          <div class="faq-item-body">
+            <p>Nein. Sie können sich kostenlos registrieren und Proplytic.ai ohne Kreditkarte ausprobieren — die Einrichtung dauert nur wenige Minuten.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            Wie geht Proplytic.ai mit meinen Daten um?
+            <span class="faq-item-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </summary>
+          <div class="faq-item-body">
+            <p>Ihre Objekt- und Bewertungsdaten gehören Ihnen. Welche Daten zu welchem Zweck verarbeitet werden, welche Auftragsverarbeiter eingebunden sind und welche Rechte Ihnen zustehen, erläutern wir ausführlich in unserer Datenschutzerklärung.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            Wie kann ich mein Konto löschen?
+            <span class="faq-item-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </summary>
+          <div class="faq-item-body">
+            <p>Unter Konto-Einstellungen → Konto finden Sie die Option, Ihr Konto zu löschen. Falls Sie Unterstützung benötigen, erreichen Sie unseren Support jederzeit über das Kontaktformular.</p>
+          </div>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="faq-help-card">
+      <div>
+        <p class="faq-help-card-title">Ihre Frage war nicht dabei?</p>
+        <p class="faq-help-card-desc">Unser Team antwortet in der Regel innerhalb eines Werktags.</p>
+      </div>
+      <a href="./kontakt.html" class="btn btn-primary">Kontakt aufnehmen</a>
+    </div>
+  </section>
+
+  <footer class="marketing-footer">
+    <div class="marketing-footer-inner">
+      <div>
+        <a class="marketing-logo" href="./landing.html">
+          <img src="../brand/logo-lockup.svg" alt="Proplytic.ai" height="24">
+        </a>
+        <p class="footer-brand-desc">Präzise Immobilien-KI für Bewertung, Vergleich und Risikoanalyse — von der ersten Einschätzung bis zum exportierfertigen Gutachten.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Produkt</p>
+        <ul class="footer-links">
+          <li><a href="./features.html">Funktionen</a></li>
+          <li><a href="./registrieren.html">Kostenlos starten</a></li>
+          <li><a href="./login.html">Anmelden</a></li>
+          <li><a href="./status.html">Systemstatus</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Unternehmen</p>
+        <ul class="footer-links">
+          <li><a href="./ueber-uns.html">Über uns</a></li>
+          <li><a href="./kontakt.html">Kontakt</a></li>
+          <li><a href="./faq.html">FAQ / Hilfe</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Rechtliches</p>
+        <ul class="footer-links">
+          <li><a href="./impressum.html">Impressum</a></li>
+          <li><a href="./datenschutz.html">Datenschutz</a></li>
+          <li><a href="./agb.html">AGB</a></li>
+          <li><a href="./widerruf.html">Widerrufsbelehrung</a></li>
+          <li><a href="./cookie-richtlinie.html">Cookie-Richtlinie</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="marketing-footer-bottom">
+      <span>© 2026 Proplytic.ai — Alle Rechte vorbehalten</span>
+      <span>Bewertungen sind unverbindliche Einschätzungen und ersetzen kein Verkehrswertgutachten nach § 194 BauGB.</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const links  = document.querySelector('.marketing-nav-links');
+
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>
+
+</body>
+</html>

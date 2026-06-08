@@ -1,0 +1,78 @@
+/**
+ * Proplytic.ai Design Tokens
+ * Farben — CSS Custom Properties
+ */
+
+:root {
+  /* ==========================================
+   * HINTERGRUND
+   * ========================================== */
+  --color-background: #F5F0E8;   /* Warm beige — Haupthintergrund */
+  --color-surface: #FDFBF7;      /* Helleres Beige — Karten, Panels */
+  --color-surface-hover: #F0EBE2; /* Oberfläche Hover-Zustand */
+
+  /* ==========================================
+   * TEXT
+   * ========================================== */
+  --color-foreground: #1C1C1C;    /* Haupttext */
+  --color-muted: #7A7A7A;         /* Sekundärtext */
+  --color-placeholder: #A8A8A8;    /* Input Placeholder */
+
+  /* ==========================================
+   * MARKE / AKZENTE
+   * ========================================== */
+  --color-primary: #2D5A3D;       /* Dunkelgrün — Aktionen, Links, Buttons */
+  --color-primary-hover: #234A31;  /* Dunkelgrün Hover */
+  --color-primary-muted: rgba(45, 90, 61, 0.12); /* Primary mit Transparenz */
+
+  --color-secondary: #2C4A6E;      /* Dunkelblau — Highlights, Akzente */
+  --color-secondary-hover: #233B56; /* Dunkelblau Hover */
+  --color-secondary-muted: rgba(44, 74, 110, 0.12);
+
+  /* ==========================================
+   * BORDERS
+   * ========================================== */
+  --color-border: #E5E0D5;         /* Beige-graue Trennlinie */
+  --color-border-strong: #CCC5B8;  /* Stärkere Trennlinie */
+  --color-input: #E5E0D5;          /* Input Border */
+  --color-ring: #2D5A3D;           /* Focus Ring */
+
+  /* ==========================================
+   * SEMANTISCH
+   * ========================================== */
+  --color-success: #2D5A3D;        /* Erfolg (grün) */
+  --color-success-bg: #E8F0EA;      /* Erfolg Hintergrund */
+  --color-warning: #C4883A;         /* Warnung (warm orange) */
+  --color-warning-bg: #FDF3E7;      /* Warnung Hintergrund */
+  --color-error: #B84A3C;          /* Fehler (gedecktes rot) */
+  --color-error-bg: #FAECEA;        /* Fehler Hintergrund */
+  --color-info: #2C4A6E;           /* Info (dunkelblau) */
+  --color-info-bg: #EDF1F6;        /* Info Hintergrund */
+
+  /* ==========================================
+   * CHARTS (Analytik)
+   * ========================================== */
+  --color-chart-1: #2D5A3D;        /* Grün */
+  --color-chart-2: #2C4A6E;        /* Blau */
+  --color-chart-3: #C4883A;        /* Orange */
+  --color-chart-4: #7A7A7A;        /* Grau */
+  --color-chart-5: #B84A3C;         /* Rot */
+
+  /* ==========================================
+   * TECH-PALETTE (Slate · Teal · Tinte)
+   * ========================================== */
+  --color-slate: #2E4150;               /* Blaugrau — Sekundäre Oberflächen */
+  --color-slate-hover: #243444;         /* Slate Hover */
+  --color-slate-muted: rgba(46, 65, 80, 0.12);
+
+  --color-teal: #3AA7B5;                /* Teal-Akzent — Highlights, CTAs */
+  --color-teal-hover: #2E8F9C;          /* Teal Hover */
+  --color-teal-muted: rgba(58, 167, 181, 0.14);
+
+  --color-ink: #1B2733;                 /* Tinte — Text auf hellen Tech-Flächen */
+
+  /* ==========================================
+   * OVERLAYS
+   * ========================================== */
+  --color-overlay: rgba(28, 28, 28, 0.4);
+}

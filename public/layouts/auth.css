@@ -1,0 +1,194 @@
+/*!
+ * Auth-Seiten — Proplytic.ai
+ * Gemeinsames Layout für Login, Registrierung, Passwort-Reset
+ * und verwandte Account-Flows.
+ */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+
+.auth-page {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-logo {
+  display: inline-flex;
+  margin-bottom: var(--space-8);
+  text-decoration: none;
+}
+
+.auth-logo svg,
+.auth-logo img { display: block; }
+
+.auth-card {
+  width: 100%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-8);
+}
+
+.auth-eyebrow {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin: 0 0 var(--space-2);
+  text-align: center;
+}
+
+.auth-title {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-tight);
+  text-align: center;
+  margin: 0 0 var(--space-2);
+}
+
+.auth-sub {
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+  text-align: center;
+  margin: 0 0 var(--space-7);
+  line-height: var(--leading-relaxed);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.auth-row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.auth-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.auth-checkbox-row input[type="checkbox"] {
+  margin-top: 3px;
+  accent-color: var(--color-primary);
+}
+
+.auth-checkbox-row a { color: var(--color-primary); }
+
+.auth-link {
+  font-size: var(--text-sm);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.auth-link:hover { text-decoration: underline; }
+
+.auth-submit {
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-6) 0;
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+.auth-sso {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.auth-footer-note {
+  margin-top: var(--space-6);
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-muted);
+}
+
+.auth-footer-note a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--font-medium);
+}
+
+.auth-footer-note a:hover { text-decoration: underline; }
+
+.auth-legal-links {
+  margin-top: var(--space-6);
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  font-size: var(--text-xs);
+}
+
+.auth-legal-links a {
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.auth-legal-links a:hover { color: var(--color-primary); }
+
+/* ── Status / Confirmation states ── */
+
+.auth-status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-teal-muted, #E3F2F4);
+  color: var(--color-primary);
+  margin: 0 auto var(--space-5);
+}
+
+.auth-status-icon.is-error {
+  background-color: #F7E9E6;
+  color: var(--color-error);
+}
+
+@media (max-width: 480px) {
+  .auth-card { padding: var(--space-6); }
+  .auth-title { font-size: var(--text-2xl); }
+}

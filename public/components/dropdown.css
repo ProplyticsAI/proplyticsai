@@ -1,0 +1,165 @@
+/**
+ * Proplytic.ai — Dropdown / Context Menu
+ */
+
+/* ── Wrapper ────────────────────────────── */
+
+.dropdown {
+  position: relative;
+  display: inline-flex;
+}
+
+/* ── Menu ───────────────────────────────── */
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  left: 0;
+  min-width: 200px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-1);
+  z-index: var(--z-dropdown);
+
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
+  pointer-events: none;
+  transform-origin: top left;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.dropdown-menu.align-right {
+  left: auto;
+  right: 0;
+  transform-origin: top right;
+}
+
+.dropdown-menu.align-center {
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px) scale(0.98);
+  transform-origin: top center;
+}
+
+.dropdown.is-open .dropdown-menu {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+.dropdown.is-open .dropdown-menu.align-center {
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* ── Items ──────────────────────────────── */
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: none;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  color: var(--color-foreground);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.dropdown-item svg {
+  flex-shrink: 0;
+  color: var(--color-muted);
+  transition: color var(--transition-fast);
+}
+
+.dropdown-item:hover {
+  background-color: var(--color-background);
+}
+
+.dropdown-item:hover svg {
+  color: var(--color-foreground);
+}
+
+.dropdown-item.active,
+.dropdown-item[aria-checked="true"] {
+  background-color: var(--color-primary-muted);
+  color: var(--color-primary);
+  font-weight: var(--font-medium);
+}
+
+.dropdown-item.active svg,
+.dropdown-item[aria-checked="true"] svg {
+  color: var(--color-primary);
+}
+
+.dropdown-item:disabled,
+.dropdown-item[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dropdown-item-danger {
+  color: var(--color-error);
+}
+
+.dropdown-item-danger svg {
+  color: var(--color-error) !important;
+}
+
+.dropdown-item-danger:hover {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+/* ── Shortcut-Hinweis ───────────────────── */
+
+.dropdown-shortcut {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+  padding-left: var(--space-4);
+}
+
+/* ── Checkmark ──────────────────────────── */
+
+.dropdown-check {
+  margin-left: auto;
+  color: var(--color-primary);
+  visibility: hidden;
+}
+
+.dropdown-item[aria-checked="true"] .dropdown-check {
+  visibility: visible;
+}
+
+/* ── Separator ──────────────────────────── */
+
+.dropdown-separator {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: var(--space-1) 0;
+}
+
+/* ── Label ──────────────────────────────── */
+
+.dropdown-label {
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  font-size: var(--text-2xs);
+  font-weight: var(--font-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
