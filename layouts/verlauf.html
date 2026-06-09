@@ -314,20 +314,69 @@
   procedureFilter.addEventListener('change', applyFilters);
   searchInput.addEventListener('input', applyFilters);
 
-  // Demo-Flow: Aktionen (Öffnen/Export/Löschen) folgen mit Backend-Anbindung
-  document.querySelectorAll('[data-action]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const action = btn.dataset.action;
-      if (action === 'open') window.location.href = './bewertung.html';
-      if (action === 'export') window.location.href = './bewertung-pdf.html';
-      if (action === 'delete') {
-        const row = btn.closest('tr');
-        row.style.opacity = '0.4';
-        btn.disabled = true;
-        btn.textContent = 'Gelöscht';
-      }
+  // Demo-Flow: Aktionen (Öffnen/Export/Löschen)
+  function bindRowActions(container) {
+    container.querySelectorAll('[data-action]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const action = btn.dataset.action;
+        if (action === 'open') window.location.href = './bewertung.html';
+        if (action === 'export') window.location.href = './bewertung-pdf.html';
+        if (action === 'delete') {
+          const row = btn.closest('tr');
+          // Remove from localStorage if it's a saved entry
+          const id = row.dataset.savedId;
+          if (id) {
+            try {
+              const saved = JSON.parse(localStorage.getItem('proplytic-bewertungen') || '[]');
+              localStorage.setItem('proplytic-bewertungen', JSON.stringify(saved.filter(e => e.id !== id)));
+            } catch (_) {}
+          }
+          row.style.opacity = '0.4';
+          btn.disabled = true;
+          btn.textContent = 'Gelöscht';
+        }
+      });
     });
-  });
+  }
+  bindRowActions(document.getElementById('history-table'));
+
+  // Gespeicherte Bewertungen aus localStorage einblenden
+  (function loadSaved() {
+    let saved = [];
+    try { saved = JSON.parse(localStorage.getItem('proplytic-bewertungen') || '[]'); } catch (_) {}
+    if (!saved.length) return;
+
+    const tbody = document.querySelector('#history-table tbody');
+    const fmt = (v) => v != null ? new Intl.NumberFormat('de-DE').format(Math.round(v)) + ' €' : '—';
+    const fmtDate = (iso) => {
+      const d = new Date(iso);
+      return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })
+        + ' · ' + d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' Uhr';
+    };
+
+    saved.forEach(entry => {
+      const tr = document.createElement('tr');
+      tr.dataset.status = 'abgeschlossen';
+      tr.dataset.savedId = entry.id;
+      tr.innerHTML = `
+        <td class="td-strong td-nowrap">${entry.adresse}</td>
+        <td class="td-muted">Ertragswertverfahren</td>
+        <td class="td-muted td-nowrap">${fmtDate(entry.created_at)}</td>
+        <td class="td-num td-strong">${fmt(entry.wert)}</td>
+        <td><span class="badge badge-success-subtle badge-dot">Abgeschlossen</span></td>
+        <td>
+          <div style="display:flex;gap:var(--space-2);justify-content:flex-end;">
+            <button class="btn btn-ghost btn-sm" data-action="open">Öffnen</button>
+            <button class="btn btn-ghost btn-sm" data-action="delete">Löschen</button>
+          </div>
+        </td>`;
+      tbody.insertBefore(tr, tbody.firstChild);
+      rows.unshift(tr);
+    });
+
+    bindRowActions(tbody);
+    applyFilters();
+  })();
 </script>
 
 </body>
