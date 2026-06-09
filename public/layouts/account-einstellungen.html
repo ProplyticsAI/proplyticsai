@@ -343,11 +343,12 @@
   });
   document.getElementById('logout-cancel').addEventListener('click', closeLogoutModal);
   document.getElementById('logout-close').addEventListener('click', closeLogoutModal);
-  // Demo-Flow: echtes Session-Ende folgt mit Backend-Anbindung
-  document.getElementById('logout-confirm').addEventListener('click', () => {
+  document.getElementById('logout-confirm').addEventListener('click', async () => {
+    try { await window.ProplyticAuth.logout(); } catch (_) {}
     window.location.href = './login.html';
   });
 </script>
+<script type="module" src="../components/auth.js"></script>
 
 </body>
 </html>

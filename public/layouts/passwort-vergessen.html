@@ -63,27 +63,43 @@
 
 </div>
 
+<script type="module" src="../components/auth.js"></script>
 <script>
   const requestCard = document.getElementById('request-card');
   const confirmCard = document.getElementById('confirm-card');
   const form  = document.getElementById('reset-request-form');
   const email = document.getElementById('reset-email');
   const error = document.getElementById('reset-email-error');
+  const submitBtn = form.querySelector('.auth-submit');
 
-  form.addEventListener('submit', (e) => {
+  async function requestRecovery(addr) {
+    await window.ProplyticAuth.ready;
+    const mod = await import('https://esm.sh/@netlify/identity@1');
+    // GoTrue-Recovery: löst die Passwort-Reset-Mail aus
+    if (mod.requestPasswordRecovery) return mod.requestPasswordRecovery(addr);
+    if (mod.recover) return mod.recover(addr);
+    throw new Error('recovery unsupported');
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
     email.classList.toggle('input-error', !valid);
     error.hidden = valid;
     if (!valid) return;
 
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Wird gesendet …';
+    try { await requestRecovery(email.value.trim()); } catch (_) { /* Adresse nicht offenlegen */ }
+    // Aus Datenschutzgründen immer dieselbe Bestätigung zeigen
     document.getElementById('confirm-email').textContent = email.value.trim();
     requestCard.hidden = true;
     confirmCard.hidden = false;
   });
 
-  document.getElementById('resend-link').addEventListener('click', (e) => {
+  document.getElementById('resend-link').addEventListener('click', async (e) => {
     e.preventDefault();
+    try { await requestRecovery(document.getElementById('confirm-email').textContent); } catch (_) {}
     e.target.textContent = 'Link erneut gesendet ✓';
   });
 </script>

@@ -71,19 +71,35 @@
 
 </div>
 
+<script type="module" src="../components/auth.js"></script>
 <script>
   const form = document.getElementById('register-form');
+  const submitBtn = form.querySelector('.auth-submit');
 
-  function setError(input, errorEl, valid, focusFirst) {
+  function setError(input, errorEl, valid) {
     input.classList.toggle('input-error', !valid);
     errorEl.hidden = valid;
     return valid;
   }
 
-  form.addEventListener('submit', (e) => {
+  function showFormError(msg) {
+    let box = document.getElementById('reg-form-error');
+    if (!box) {
+      box = document.createElement('p');
+      box.id = 'reg-form-error';
+      box.className = 'form-error-msg';
+      box.style.marginTop = 'var(--space-3)';
+      form.appendChild(box);
+    }
+    box.textContent = msg;
+    box.hidden = false;
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const name     = document.getElementById('reg-name');
+    const company  = document.getElementById('reg-company');
     const email    = document.getElementById('reg-email');
     const password = document.getElementById('reg-password');
     const terms    = document.getElementById('reg-terms');
@@ -91,13 +107,35 @@
     const nameValid     = setError(name, document.getElementById('reg-name-error'), name.value.trim().length > 1);
     const emailValid    = setError(email, document.getElementById('reg-email-error'), /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()));
     const passwordValid = setError(password, document.getElementById('reg-password-error'), password.value.length >= 8);
-
-    const termsValid = terms.checked;
+    const termsValid    = terms.checked;
     document.getElementById('reg-terms-error').hidden = termsValid;
 
-    if (nameValid && emailValid && passwordValid && termsValid) {
-      // Demo-Flow: löst nach Backend-Anbindung den E-Mail-Verifizierungs-Flow aus
-      window.location.href = './e-mail-verifizierung.html?email=' + encodeURIComponent(email.value.trim());
+    if (!(nameValid && emailValid && passwordValid && termsValid)) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Konto wird erstellt …';
+    try {
+      const user = await window.ProplyticAuth.signup(
+        email.value.trim(), password.value, name.value.trim(), company.value.trim());
+      // users-Tabelle spiegeln (best effort, blockiert den Flow nicht)
+      try {
+        await fetch('/api/auth/sync', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email.value.trim(), name: name.value.trim(), company: company.value.trim() }),
+        });
+      } catch (_) {}
+
+      if (user && user.emailVerified) {
+        window.location.href = './dashboard.html';
+      } else {
+        window.location.href = './e-mail-verifizierung.html?email=' + encodeURIComponent(email.value.trim());
+      }
+    } catch (err) {
+      showFormError(err && err.status === 403
+        ? 'Registrierungen sind derzeit nicht möglich.'
+        : (err && err.message) || 'Registrierung fehlgeschlagen. Bitte später erneut versuchen.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Konto erstellen';
     }
   });
 </script>
