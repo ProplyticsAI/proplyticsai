@@ -1,0 +1,13 @@
+# Netlify-Konfiguration für proplytic.ai (Next.js)
+#
+# Das @netlify/next-Runtime wird automatisch erkannt und installiert. Es wandelt
+# Next.js-API-Routen (pages/api/*) in Netlify Functions um. Dateien in public/
+# (inkl. der statischen HTML-Layouts unter public/layouts/) werden weiterhin am
+# Root ausgeliefert. So funktionieren sowohl die Layouts als auch /api/bewertungen.
+
+[build]
+  command = "next build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"

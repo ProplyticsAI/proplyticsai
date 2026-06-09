@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise — Proplytic.ai für Ihr Team</title>
+  <meta name="description" content="Proplytic.ai Enterprise: Team-Verwaltung, SSO, dedizierter Support und individuelle Onboarding-Pakete für professionelle Immobilienteams.">
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="../components/button.css">
+  <link rel="stylesheet" href="../components/input.css">
+  <link rel="stylesheet" href="./marketing.css">
+  <style>
+    /* ── Feature Grid ──────────────────────── */
+    .feature-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5);
+    }
+    @media (max-width: 900px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 580px) { .feature-grid { grid-template-columns: 1fr; } }
+
+    .feature-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-6);
+      box-shadow: var(--shadow-sm);
+    }
+    .feature-card-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: var(--radius-md);
+      background: var(--color-primary-muted); color: var(--color-primary);
+      margin-bottom: var(--space-4);
+    }
+    .feature-card-title {
+      font-weight: var(--font-semibold); font-size: var(--text-base);
+      margin: 0 0 var(--space-2);
+    }
+    .feature-card-desc {
+      font-size: var(--text-sm); color: var(--color-muted); margin: 0;
+      line-height: var(--leading-relaxed);
+    }
+
+    /* ── Social Proof Band ─────────────────── */
+    .quotes-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);
+    }
+    @media (max-width: 800px) { .quotes-grid { grid-template-columns: 1fr; } }
+
+    .quote-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-6); position: relative;
+    }
+    .quote-mark {
+      font-family: var(--font-serif); font-size: 48px; line-height: 1;
+      color: var(--color-primary); opacity: 0.4; position: absolute; top: 12px; left: 20px;
+      pointer-events: none; user-select: none;
+    }
+    .quote-text {
+      font-size: var(--text-sm); line-height: var(--leading-relaxed);
+      color: var(--color-foreground); margin: var(--space-6) 0 var(--space-5);
+      font-style: italic;
+    }
+    .quote-source {
+      font-size: var(--text-xs); font-weight: var(--font-semibold);
+      color: var(--color-muted); text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+    }
+
+    /* ── Contact Section ───────────────────── */
+    .enterprise-contact-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-10);
+      max-width: 1080px; margin: 0 auto;
+    }
+    @media (max-width: 820px) { .enterprise-contact-layout { grid-template-columns: 1fr; } }
+
+    .contact-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-8); box-shadow: var(--shadow-sm);
+    }
+    .contact-card-title {
+      font-family: var(--font-serif); font-weight: 500; font-size: var(--text-xl);
+      margin: 0 0 var(--space-5);
+    }
+
+    .enterprise-form { display: flex; flex-direction: column; gap: var(--space-4); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+
+    .enterprise-form-submit { width: 100%; margin-top: var(--space-2); }
+
+    .contact-success {
+      display: none; text-align: center; padding: var(--space-8) var(--space-4);
+    }
+    .contact-success.is-visible { display: block; }
+    .enterprise-form.is-hidden { display: none; }
+    .contact-success-icon {
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto var(--space-4); width: 48px; height: 48px; border-radius: 50%;
+      background-color: var(--color-primary-muted); color: var(--color-primary);
+    }
+    .contact-success-title { font-size: var(--text-lg); font-weight: var(--font-semibold); margin: 0 0 var(--space-2); }
+    .contact-success-desc { color: var(--color-muted); margin: 0; font-size: var(--text-sm); }
+
+    /* ── Sales card ────────────────────────── */
+    .sales-card {
+      background: var(--color-surface); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-8); box-shadow: var(--shadow-sm);
+      display: flex; flex-direction: column; gap: var(--space-6);
+    }
+    .sales-avatar-placeholder {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--color-secondary); display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: var(--text-xl); font-weight: var(--font-semibold);
+      font-family: var(--font-serif); flex-shrink: 0;
+    }
+    .sales-identity { display: flex; align-items: center; gap: var(--space-4); }
+    .sales-name { font-weight: var(--font-semibold); font-size: var(--text-base); margin: 0 0 2px; }
+    .sales-role { font-size: var(--text-sm); color: var(--color-muted); margin: 0; }
+
+    .sales-info-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-4); }
+    .sales-info-item { display: flex; gap: var(--space-3); align-items: flex-start; }
+    .sales-info-icon {
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      width: 36px; height: 36px; border-radius: var(--radius-md);
+      background-color: var(--color-primary-muted); color: var(--color-primary);
+    }
+    .sales-info-label { font-size: var(--text-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: var(--tracking-wide); margin: 0 0 2px; }
+    .sales-info-value { margin: 0; font-size: var(--text-sm); font-weight: var(--font-medium); }
+    .sales-info-value a { text-decoration: none; color: inherit; }
+    .sales-info-value a:hover { color: var(--color-primary); }
+
+    .sales-promise {
+      background: var(--color-background); border-radius: var(--radius-md);
+      padding: var(--space-4) var(--space-5);
+    }
+    .sales-promise p { margin: 0; font-size: var(--text-sm); color: var(--color-muted); line-height: var(--leading-relaxed); }
+    .sales-promise strong { color: var(--color-foreground); }
+
+    /* ── CTA Band ──────────────────────────── */
+    .cta-secondary-band {
+      background: var(--color-secondary); color: #fff;
+      border-radius: var(--radius-lg); padding: var(--space-10) var(--space-8);
+      text-align: center; max-width: 860px; margin: 0 auto;
+    }
+    .cta-secondary-band h2 {
+      font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: 500;
+      margin: 0 0 var(--space-3); color: #fff;
+    }
+    .cta-secondary-band p { color: rgba(255,255,255,0.72); margin: 0 0 var(--space-6); font-size: var(--text-base); }
+    .cta-secondary-band .btn-outline {
+      border-color: rgba(255,255,255,0.5); color: #fff;
+    }
+    .cta-secondary-band .btn-outline:hover {
+      background: rgba(255,255,255,0.1); border-color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="marketing-page">
+
+  <header class="marketing-header">
+    <a class="marketing-logo" href="./landing.html">
+      <span class="wordmark wordmark-dark">proplytic<span class="wordmark-dot">.ai</span></span>
+    </a>
+    <nav class="marketing-nav">
+      <div class="marketing-nav-links">
+        <a href="./features.html">Funktionen</a>
+        <a href="./preise.html">Preise</a>
+        <a href="./ueber-uns.html">Über uns</a>
+        <a href="./kontakt.html">Kontakt</a>
+        <a href="./faq.html">FAQ</a>
+      </div>
+      <div class="marketing-nav-actions">
+        <a href="./login.html" class="btn btn-outline">Anmelden</a>
+        <a href="./registrieren.html" class="btn btn-primary">Kostenlos starten</a>
+      </div>
+      <button class="marketing-nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" id="nav-toggle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ── Hero ────────────────────────────────────── -->
+  <section class="hero">
+    <span class="hero-eyebrow">Enterprise</span>
+    <h1 class="hero-title">Proplytic.ai im Maßstab <em>Ihres Teams</em></h1>
+    <p class="hero-sub">
+      Ob fünf Analysten oder hundert Standorte: Der Enterprise-Plan gibt Ihrem Team die Kontrolle,
+      die Sicherheit und den Support, den professionelle Immobilienarbeit verlangt —
+      ohne Kompromisse bei Genauigkeit oder Nachvollziehbarkeit.
+    </p>
+    <div class="hero-actions">
+      <a href="#kontakt" class="btn btn-primary btn-lg">Jetzt Demo anfragen</a>
+      <a href="./preise.html" class="btn btn-outline btn-lg">Alle Pläne vergleichen</a>
+    </div>
+  </section>
+
+  <!-- ── Feature Grid ─────────────────────────────── -->
+  <section class="section">
+    <div class="section-inner">
+      <p class="section-eyebrow">Enterprise-Features</p>
+      <h2 class="section-title">Alles, was professionelle Teams brauchen</h2>
+      <p class="section-sub">Von der Nutzerverwaltung bis zum individuellen Onboarding — der Enterprise-Plan ist auf den Einsatz in Unternehmen ausgelegt.</p>
+
+      <div class="feature-grid">
+
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3 20c0-4 2.686-6 6-6s6 2 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="17" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M17 14c2 0 4.5 1 4.5 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="feature-card-title">Team-Verwaltung</h3>
+          <p class="feature-card-desc">Bis zu 100 Nutzerlizenzen, granulare Rollenvergabe (Admin, Mitglied, Leser) und zentrale Lizenzverwaltung über ein Admin-Dashboard.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg>
+          </div>
+          <h3 class="feature-card-title">SSO / SAML 2.0</h3>
+          <p class="feature-card-desc">Nahtlose Integration in Ihre bestehende Identity-Provider-Infrastruktur — unterstützt Microsoft Entra ID, Okta und weitere SAML-2.0-kompatible Systeme.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 10h16M4 14h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="18" cy="17" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M20.5 19.5l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <h3 class="feature-card-title">API-Zugang</h3>
+          <p class="feature-card-desc">Vollständiger REST-API-Zugang für die Integration in bestehende Workflows, Portfoliomanagement-Systeme oder benutzerdefinierte Reporting-Umgebungen.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.5 7.5H22l-6.5 4.5 2.5 7.5L12 17l-6 4.5 2.5-7.5L3 9.5h7.5L12 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="feature-card-title">SLA-Garantie</h3>
+          <p class="feature-card-desc">Vertraglich zugesicherte Verfügbarkeit von 99,9 % — inklusive definierter Reaktionszeiten und monatlichem Uptime-Reporting für Ihr Compliance-Team.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </div>
+          <h3 class="feature-card-title">Dedizierter Support</h3>
+          <p class="feature-card-desc">Direkter Zugang zu einem persönlichen Ansprechpartner im Proplytic-Team — per E-Mail oder Telefon, mit garantierter Antwortzeit am selben Werktag.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4v8l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <h3 class="feature-card-title">Individuelles Onboarding</h3>
+          <p class="feature-card-desc">Geführtes Einrichtungs- und Schulungspaket für Ihr Team — von der Datenmigration über Konfiguration bis zu Workshop-Formaten für Ihre Analysten.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Social Proof ──────────────────────────────── -->
+  <section class="section section-alt">
+    <div class="section-inner">
+      <p class="section-eyebrow">Kundenstimmen</p>
+      <h2 class="section-title">Was Enterprise-Kunden sagen</h2>
+
+      <div class="quotes-grid">
+
+        <div class="quote-card">
+          <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+          <p class="quote-text">
+            Proplytic.ai hat unsere Bewertungsprozesse grundlegend verändert. Was früher Tage gedauert hat,
+            geht jetzt in Stunden — nachvollziehbar und intern vergleichbar.
+          </p>
+          <p class="quote-source">Investmentgesellschaft, Frankfurt am Main</p>
+        </div>
+
+        <div class="quote-card">
+          <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+          <p class="quote-text">
+            Die Team-Rollenverwaltung und der API-Zugang waren für uns ausschlaggebend.
+            Wir konnten Proplytic.ai direkt in unsere bestehende Reporting-Infrastruktur einbinden.
+          </p>
+          <p class="quote-source">Immobilienberatung, München</p>
+        </div>
+
+        <div class="quote-card">
+          <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+          <p class="quote-text">
+            Der dedizierte Support und das strukturierte Onboarding haben dafür gesorgt,
+            dass unser Team vom ersten Tag an produktiv arbeiten konnte — ohne lange Einarbeitungszeit.
+          </p>
+          <p class="quote-source">Family Office, Hamburg</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact Section ───────────────────────────── -->
+  <section class="section" id="kontakt">
+    <div class="section-inner">
+      <p class="section-eyebrow">Kontakt</p>
+      <h2 class="section-title">Demo anfragen</h2>
+      <p class="section-sub">Füllen Sie das Formular aus — wir melden uns innerhalb eines Werktags für ein persönliches Gespräch.</p>
+
+      <div class="enterprise-contact-layout">
+
+        <!-- Form -->
+        <div class="contact-card">
+          <h3 class="contact-card-title">Anfrage senden</h3>
+
+          <form class="enterprise-form" id="enterprise-form" novalidate>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label form-label-required" for="ent-name">Name</label>
+                <input class="input" id="ent-name" name="name" type="text" placeholder="Vorname Nachname" autocomplete="name" required>
+                <span class="form-error-msg" id="ent-name-error" hidden>Bitte geben Sie Ihren Namen ein.</span>
+              </div>
+              <div class="form-field">
+                <label class="form-label form-label-required" for="ent-company">Unternehmen</label>
+                <input class="input" id="ent-company" name="company" type="text" placeholder="Muster GmbH" autocomplete="organization" required>
+                <span class="form-error-msg" id="ent-company-error" hidden>Bitte geben Sie Ihr Unternehmen ein.</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label form-label-required" for="ent-email">E-Mail-Adresse</label>
+                <input class="input" id="ent-email" name="email" type="email" placeholder="name@unternehmen.de" autocomplete="email" required>
+                <span class="form-error-msg" id="ent-email-error" hidden>Bitte geben Sie eine gültige E-Mail-Adresse ein.</span>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="ent-phone">Telefon (optional)</label>
+                <input class="input" id="ent-phone" name="phone" type="tel" placeholder="+49 (0)69 …" autocomplete="tel">
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label form-label-required" for="ent-users">Anzahl Nutzer</label>
+              <select class="input" id="ent-users" name="users" required>
+                <option value="">Bitte wählen…</option>
+                <option value="5-10">5 – 10 Nutzer</option>
+                <option value="11-25">11 – 25 Nutzer</option>
+                <option value="26-100">26 – 100 Nutzer</option>
+                <option value="100+">Mehr als 100 Nutzer</option>
+              </select>
+              <span class="form-error-msg" id="ent-users-error" hidden>Bitte wählen Sie eine Nutzerzahl.</span>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="ent-message">Nachricht (optional)</label>
+              <textarea class="input" id="ent-message" name="message" rows="4" placeholder="Was möchten Sie besprechen? Gibt es besondere Anforderungen?"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary enterprise-form-submit">Demo anfragen</button>
+          </form>
+
+          <div class="contact-success" id="enterprise-success">
+            <div class="contact-success-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <p class="contact-success-title">Vielen Dank für Ihre Anfrage!</p>
+            <p class="contact-success-desc">Wir haben Ihre Demo-Anfrage erhalten und melden uns innerhalb eines Werktags persönlich bei Ihnen.</p>
+          </div>
+        </div>
+
+        <!-- Sales contact -->
+        <div class="sales-card">
+          <div class="sales-identity">
+            <div class="sales-avatar-placeholder">V</div>
+            <div>
+              <p class="sales-name">Vertriebsteam</p>
+              <p class="sales-role">Enterprise &amp; Partnerships</p>
+            </div>
+          </div>
+
+          <ul class="sales-info-list">
+            <li class="sales-info-item">
+              <span class="sales-info-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              </span>
+              <div>
+                <p class="sales-info-label">E-Mail</p>
+                <p class="sales-info-value"><a href="mailto:enterprise@proplytic.ai">enterprise@proplytic.ai</a></p>
+              </div>
+            </li>
+            <li class="sales-info-item">
+              <span class="sales-info-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 4h3l1.5 4-2 1.5a12 12 0 0 0 5 5l1.5-2 4 1.5v3a1 1 0 0 1-1 1C10 18 6 14 5 5a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              </span>
+              <div>
+                <p class="sales-info-label">Telefon</p>
+                <p class="sales-info-value">+49 (0)69 123 456</p>
+              </div>
+            </li>
+            <li class="sales-info-item">
+              <span class="sales-info-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.5"/></svg>
+              </span>
+              <div>
+                <p class="sales-info-label">Antwortzeit</p>
+                <p class="sales-info-value">Werktags innerhalb von 24 Stunden</p>
+              </div>
+            </li>
+          </ul>
+
+          <div class="sales-promise">
+            <p><strong>Kein Verkaufsgespräch ohne Vorbereitung.</strong> Wir nehmen uns Zeit, Ihre Anforderungen zu verstehen — bevor wir eine Empfehlung geben.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA Band ──────────────────────────────────── -->
+  <section class="section section-alt">
+    <div class="cta-secondary-band">
+      <h2>Noch nicht bereit für Enterprise?</h2>
+      <p>Unser Pro-Plan bietet professionelle Bewertungs-Tools für Einzelpersonen und kleine Teams — ohne Vertrag, monatlich kündbar.</p>
+      <div class="hero-actions">
+        <a href="./preise.html" class="btn btn-primary btn-lg">Pro-Plan ansehen</a>
+        <a href="./registrieren.html" class="btn btn-outline btn-lg">Kostenlos starten</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="marketing-footer">
+    <div class="marketing-footer-inner">
+      <div>
+        <a class="marketing-logo" href="./landing.html">
+          <span class="wordmark wordmark-dark">proplytic<span class="wordmark-dot">.ai</span></span>
+        </a>
+        <p class="footer-brand-desc">Präzise Immobilien-KI für Bewertung, Vergleich und Risikoanalyse — von der ersten Einschätzung bis zum exportierfertigen Gutachten.</p>
+      </div>
+      <div>
+        <p class="footer-col-title">Produkt</p>
+        <ul class="footer-links">
+          <li><a href="./features.html">Funktionen</a></li>
+          <li><a href="./preise.html">Preise</a></li>
+          <li><a href="./registrieren.html">Kostenlos starten</a></li>
+          <li><a href="./login.html">Anmelden</a></li>
+          <li><a href="./status.html">Systemstatus</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Unternehmen</p>
+        <ul class="footer-links">
+          <li><a href="./ueber-uns.html">Über uns</a></li>
+          <li><a href="./kontakt.html">Kontakt</a></li>
+          <li><a href="./enterprise.html">Enterprise</a></li>
+          <li><a href="./faq.html">FAQ / Hilfe</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Rechtliches</p>
+        <ul class="footer-links">
+          <li><a href="./impressum.html">Impressum</a></li>
+          <li><a href="./datenschutz.html">Datenschutz</a></li>
+          <li><a href="./agb.html">AGB</a></li>
+          <li><a href="./widerruf.html">Widerrufsbelehrung</a></li>
+          <li><a href="./cookie-richtlinie.html">Cookie-Richtlinie</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="marketing-footer-bottom">
+      <span>© 2026 Proplytic.ai — Alle Rechte vorbehalten</span>
+      <span>Bewertungen sind unverbindliche Einschätzungen und ersetzen kein Verkehrswertgutachten nach § 194 BauGB.</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // ── Mobile nav ──────────────────────────────────
+  const navToggle = document.getElementById('nav-toggle');
+  const navLinks  = document.querySelector('.marketing-nav-links');
+
+  navToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+
+  // ── Enterprise form ─────────────────────────────
+  function setError(input, errorEl, valid) {
+    input.classList.toggle('input-error', !valid);
+    errorEl.hidden = valid;
+    return valid;
+  }
+
+  const form    = document.getElementById('enterprise-form');
+  const success = document.getElementById('enterprise-success');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name    = document.getElementById('ent-name');
+    const company = document.getElementById('ent-company');
+    const email   = document.getElementById('ent-email');
+    const users   = document.getElementById('ent-users');
+
+    const nameValid    = setError(name,    document.getElementById('ent-name-error'),    name.value.trim().length > 1);
+    const companyValid = setError(company, document.getElementById('ent-company-error'), company.value.trim().length > 1);
+    const emailValid   = setError(email,   document.getElementById('ent-email-error'),   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()));
+    const usersValid   = setError(users,   document.getElementById('ent-users-error'),   users.value !== '');
+
+    if (!(nameValid && companyValid && emailValid && usersValid)) return;
+
+    // Demo: show success state
+    form.classList.add('is-hidden');
+    success.classList.add('is-visible');
+  });
+</script>
+
+</body>
+</html>
