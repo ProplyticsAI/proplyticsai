@@ -958,6 +958,52 @@ const btnAnalyse = document.getElementById('btn-analyse');
 const btnExp     = document.getElementById('btn-export');
 const btnSave    = document.getElementById('btn-save');
 
+/* ── Bewertung speichern ──────────────────
+   POST /api/bewertungen, ID in localStorage
+──────────────────────────────────────── */
+function showToast(msg, isError = false) {
+  const el = document.createElement('div');
+  el.textContent = msg;
+  Object.assign(el.style, {
+    position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999,
+    padding: '12px 18px', borderRadius: '8px', fontSize: '13.5px',
+    fontFamily: 'var(--font-sans)', lineHeight: '1.4',
+    background: isError ? 'var(--color-error)' : 'var(--color-secondary)',
+    color: '#fff', boxShadow: 'var(--shadow-lg)',
+    transition: 'opacity .3s', opacity: '1',
+  });
+  document.body.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3200);
+}
+
+btnSave.addEventListener('click', async () => {
+  const adresse = document.getElementById('r-address')?.textContent?.trim() || 'Unbekannte Adresse';
+  const wertText = document.getElementById('r-value')?.textContent?.trim() || '';
+  const wert = parseFloat(wertText.replace(/[^0-9,]/g, '').replace(',', '.')) || null;
+  const mc = typeof procState !== 'undefined' ? procState.lastMonteCarlo : null;
+
+  btnSave.disabled = true;
+  try {
+    const res = await fetch('/api/bewertungen', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adresse, wert, methode: 'ertragswert', monte_carlo: mc }),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    // Persist ID locally for Verlauf-Seite
+    try {
+      const saved = JSON.parse(localStorage.getItem('proplytic-bewertungen') || '[]');
+      saved.unshift(data);
+      localStorage.setItem('proplytic-bewertungen', JSON.stringify(saved.slice(0, 50)));
+    } catch (_) {}
+    showToast('Gespeichert ✓');
+  } catch (e) {
+    showToast('Fehler beim Speichern', true);
+    btnSave.removeAttribute('disabled');
+  }
+});
+
 const stEmpty     = document.getElementById('state-empty');
 const stSkel      = document.getElementById('state-skeleton');
 const stResult    = document.getElementById('state-result');
