@@ -216,7 +216,10 @@
 </div>
 
 <script src="../components/chart.js"></script>
+<script src="../components/auth.js"></script>
 <script>
+  ProplyticAuth.requireAuth();
+
   // p10/p90 = Monte-Carlo-Risikoverteilung (10./90. Perzentil) je Objekt —
   // bis zur Backend-Anbindung (s. docs/db-schema-bewertungen-persistenz.md)
   // als objektspezifische Demo-Bandbreite hinterlegt, analog zu den übrigen
@@ -356,7 +359,7 @@
   // Echte gespeicherte Bewertungen laden und in die Auswahl einblenden
   (async function loadSavedObjects() {
     try {
-      const res = await fetch('/api/bewertungen');
+      const res = await ProplyticAuth.fetchWithAuth('/api/bewertungen');
       if (!res.ok) return;
       const list = await res.json();
       if (!Array.isArray(list) || !list.length) return;

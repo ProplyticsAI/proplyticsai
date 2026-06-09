@@ -1,10 +1,11 @@
 import { db } from "../../../db/index.js";
 import { bewertung } from "../../../db/schema.js";
 import { and, eq } from "drizzle-orm";
-import { getUserId } from "../../../lib/requireUser.js";
+import { requireUserId } from "../../../lib/requireUser.js";
 
 export default async function handler(req, res) {
-  const userId = getUserId(req);
+  const userId = requireUserId(req, res);
+  if (!userId) return;
   const { id } = req.query;
   const scope = and(eq(bewertung.id, id), eq(bewertung.userId, userId));
 

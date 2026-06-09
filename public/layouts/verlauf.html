@@ -281,6 +281,7 @@
   </div>
 </div>
 
+<script src="../components/auth.js"></script>
 <script>
   const filterTabs = document.querySelectorAll('[data-tabs="history-filter"] [data-tab]');
   const procedureFilter = document.getElementById('history-procedure-filter');
@@ -336,7 +337,7 @@
         if (action === 'export') window.location.href = './bewertung-pdf.html';
         if (action === 'delete') {
           if (id) {
-            try { await fetch(`/api/bewertungen/${id}`, { method: 'DELETE' }); } catch (_) {}
+            try { await ProplyticAuth.fetchWithAuth(`/api/bewertungen/${id}`, { method: 'DELETE' }); } catch (_) {}
             try {
               const saved = JSON.parse(localStorage.getItem('proplytic-bewertungen') || '[]');
               localStorage.setItem('proplytic-bewertungen', JSON.stringify(saved.filter(e => e.id !== id)));
@@ -355,6 +356,8 @@
   const STATUS_LABEL = { abgeschlossen: 'Abgeschlossen', entwurf: 'Entwurf', archiviert: 'Archiviert' };
   const STATUS_BADGE = { abgeschlossen: 'badge-success-subtle', entwurf: 'badge-warning-subtle', archiviert: 'badge-neutral-subtle' };
 
+  ProplyticAuth.requireAuth();
+
   // Gespeicherte Bewertungen laden — primär aus der API, Fallback localStorage
   (async function loadSaved() {
     const tbody = document.querySelector('#history-table tbody');
@@ -367,7 +370,7 @@
 
     let entries = [];
     try {
-      const res = await fetch('/api/bewertungen');
+      const res = await ProplyticAuth.fetchWithAuth('/api/bewertungen');
       if (res.ok) {
         entries = (await res.json()).map(e => ({
           id: e.id,
