@@ -231,8 +231,8 @@
   ];
   const MAX_SELECTION = 4;
 
-  const eur = (n) => n.toLocaleString('de-DE') + ' €';
-  const eurM = (n) => (n / 1e6).toLocaleString('de-DE', { maximumFractionDigits: 1 }) + ' Mio. €';
+  const eur = (n) => (n == null || isNaN(n)) ? '—' : n.toLocaleString('de-DE') + ' €';
+  const eurM = (n) => (n == null || isNaN(n)) ? '—' : (n / 1e6).toLocaleString('de-DE', { maximumFractionDigits: 1 }) + ' Mio. €';
 
   let selected = [];
 
@@ -313,21 +313,21 @@
       row('Standort',            objs.map(o => o.ort)),
       row('Objektart',           objs.map(o => o.art)),
       row('Kaufpreis',           objs.map(o => o.preis), { higherIsBetter: false, formatter: eur }),
-      row('Fläche',              objs.map(o => o.flaeche), { formatter: (v) => v.toLocaleString('de-DE') + ' m²' }),
-      row('Preis / m²',          objs.map(o => Math.round(o.preis / o.flaeche)), { higherIsBetter: false, formatter: eur }),
-      row('Nettomietrendite',    objs.map(o => o.rendite), { higherIsBetter: true, formatter: (v) => v.toFixed(1).replace('.', ',') + ' %' }),
-      row('Risiko-Spanne (P10–P90)', objs.map(o => (o.p90 - o.p10) / o.preis), {
+      row('Fläche',              objs.map(o => o.flaeche), { formatter: (v) => v == null ? '—' : v.toLocaleString('de-DE') + ' m²' }),
+      row('Preis / m²',          objs.map(o => (o.preis && o.flaeche) ? Math.round(o.preis / o.flaeche) : null), { higherIsBetter: false, formatter: eur }),
+      row('Nettomietrendite',    objs.map(o => o.rendite), { higherIsBetter: true, formatter: (v) => v == null ? '—' : v.toFixed(1).replace('.', ',') + ' %' }),
+      row('Risiko-Spanne (P10–P90)', objs.map(o => (o.p10 != null && o.p90 != null && o.preis) ? (o.p90 - o.p10) / o.preis : null), {
         higherIsBetter: false,
-        formatter: (v, i) => `${eurM(objs[i].p10)} – ${eurM(objs[i].p90)} <span class="compare-risk-pct">± ${(v / 2 * 100).toFixed(1).replace('.', ',')} %</span>`,
+        formatter: (v, i) => (v == null) ? '—' : `${eurM(objs[i].p10)} – ${eurM(objs[i].p90)} <span class="compare-risk-pct">± ${(v / 2 * 100).toFixed(1).replace('.', ',')} %</span>`,
       }),
-      row('Faktor',              objs.map(o => o.faktor), { higherIsBetter: false, formatter: (v) => v.toFixed(1).replace('.', ',') + '×' }),
-      row('Baujahr',             objs.map(o => o.baujahr)),
-      row('Status',              objs.map(o => `<span class="badge badge-${o.statusVariant}-subtle badge-dot">${o.status}</span>`)),
+      row('Faktor',              objs.map(o => o.faktor), { higherIsBetter: false, formatter: (v) => v == null ? '—' : v.toFixed(1).replace('.', ',') + '×' }),
+      row('Baujahr',             objs.map(o => o.baujahr ?? '—')),
+      row('Status',              objs.map(o => o.status ? `<span class="badge badge-${o.statusVariant || 'neutral'}-subtle badge-dot">${o.status}</span>` : '—')),
     ].join('');
 
     thead.querySelectorAll('[data-remove]').forEach(btn => {
       btn.addEventListener('click', () => {
-        selected = selected.filter(id => id !== Number(btn.dataset.remove));
+        selected = selected.filter(id => String(id) !== String(btn.dataset.remove));
         if (selected.length < 2) { showPicker(); } else { renderComparison(); }
       });
     });
@@ -352,6 +352,38 @@
 
   startBtn.addEventListener('click', showResult);
   document.getElementById('edit-selection-btn').addEventListener('click', showPicker);
+
+  // Echte gespeicherte Bewertungen laden und in die Auswahl einblenden
+  (async function loadSavedObjects() {
+    try {
+      const res = await fetch('/api/bewertungen');
+      if (!res.ok) return;
+      const list = await res.json();
+      if (!Array.isArray(list) || !list.length) return;
+      const mapped = list.map(e => {
+        const k = e.ergebnis?.kennzahlen || {};
+        const preis = e.ergebnis?.ergebnis ?? e.monteCarlo?.mean ?? null;
+        return {
+          id: e.id,
+          name: e.objektName,
+          ort: e.ort || '—',
+          art: e.verfahren === 'sachwert' ? 'Sachwert' : 'Ertragswert',
+          flaeche: k.flaeche ?? null,
+          preis,
+          rendite: k.rendite ?? null,
+          faktor: k.faktor ?? null,
+          baujahr: k.baujahr ?? null,
+          status: 'Gespeichert',
+          statusVariant: 'success',
+          p10: e.monteCarlo?.percentiles?.p10 ?? null,
+          p90: e.monteCarlo?.percentiles?.p90 ?? null,
+        };
+      });
+      OBJECTS.unshift(...mapped);
+      if (!resultSection.hidden) return; // laufenden Vergleich nicht stören
+      renderPicker();
+    } catch (_) { /* offline → nur Demo-Objekte */ }
+  })();
 
   if (selected.length >= 2) { showResult(); } else { showPicker(); }
 </script>

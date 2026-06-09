@@ -323,18 +323,20 @@
   procedureFilter.addEventListener('change', applyFilters);
   searchInput.addEventListener('input', applyFilters);
 
-  // Demo-Flow: Aktionen (Öffnen/Export/Löschen)
+  // Aktionen (Öffnen/Export/Löschen) — Löschen schlägt auf die echte API durch
   function bindRowActions(container) {
     container.querySelectorAll('[data-action]').forEach(btn => {
-      btn.addEventListener('click', () => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', async () => {
         const action = btn.dataset.action;
-        if (action === 'open') window.location.href = './bewertung.html';
+        const row = btn.closest('tr');
+        const id = row.dataset.savedId;
+        if (action === 'open') window.location.href = id ? `./bewertung.html?id=${id}` : './bewertung.html';
         if (action === 'export') window.location.href = './bewertung-pdf.html';
         if (action === 'delete') {
-          const row = btn.closest('tr');
-          // Remove from localStorage if it's a saved entry
-          const id = row.dataset.savedId;
           if (id) {
+            try { await fetch(`/api/bewertungen/${id}`, { method: 'DELETE' }); } catch (_) {}
             try {
               const saved = JSON.parse(localStorage.getItem('proplytic-bewertungen') || '[]');
               localStorage.setItem('proplytic-bewertungen', JSON.stringify(saved.filter(e => e.id !== id)));
@@ -349,12 +351,12 @@
   }
   bindRowActions(document.getElementById('history-table'));
 
-  // Gespeicherte Bewertungen aus localStorage einblenden
-  (function loadSaved() {
-    let saved = [];
-    try { saved = JSON.parse(localStorage.getItem('proplytic-bewertungen') || '[]'); } catch (_) {}
-    if (!saved.length) return;
+  const VERFAHREN_LABEL = { ertragswert: 'Ertragswertverfahren', sachwert: 'Sachwertverfahren', vergleichswert: 'Vergleichswertverfahren' };
+  const STATUS_LABEL = { abgeschlossen: 'Abgeschlossen', entwurf: 'Entwurf', archiviert: 'Archiviert' };
+  const STATUS_BADGE = { abgeschlossen: 'badge-success-subtle', entwurf: 'badge-warning-subtle', archiviert: 'badge-neutral-subtle' };
 
+  // Gespeicherte Bewertungen laden — primär aus der API, Fallback localStorage
+  (async function loadSaved() {
     const tbody = document.querySelector('#history-table tbody');
     const fmt = (v) => v != null ? new Intl.NumberFormat('de-DE').format(Math.round(v)) + ' €' : '—';
     const fmtDate = (iso) => {
@@ -363,16 +365,41 @@
         + ' · ' + d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' Uhr';
     };
 
-    saved.forEach(entry => {
+    let entries = [];
+    try {
+      const res = await fetch('/api/bewertungen');
+      if (res.ok) {
+        entries = (await res.json()).map(e => ({
+          id: e.id,
+          adresse: e.objektName + (e.ort ? ' · ' + e.ort : ''),
+          verfahren: e.verfahren,
+          status: e.status,
+          wert: e.monteCarlo?.mean ?? null,
+          created_at: e.updatedAt || e.createdAt,
+        }));
+      }
+    } catch (_) {}
+
+    // Fallback: lokal gespeicherte IDs, falls API (noch) nicht erreichbar
+    if (!entries.length) {
+      try {
+        const saved = JSON.parse(localStorage.getItem('proplytic-bewertungen') || '[]');
+        entries = saved.map(e => ({ id: e.id, adresse: e.adresse, verfahren: 'ertragswert', status: 'abgeschlossen', wert: e.wert, created_at: e.created_at }));
+      } catch (_) {}
+    }
+    if (!entries.length) return;
+
+    entries.forEach(entry => {
       const tr = document.createElement('tr');
-      tr.dataset.status = 'abgeschlossen';
+      tr.dataset.status = entry.status || 'abgeschlossen';
       tr.dataset.savedId = entry.id;
+      const badgeClass = STATUS_BADGE[entry.status] || 'badge-success-subtle';
       tr.innerHTML = `
         <td class="td-strong td-nowrap">${entry.adresse}</td>
-        <td class="td-muted">Ertragswertverfahren</td>
+        <td class="td-muted">${VERFAHREN_LABEL[entry.verfahren] || 'Ertragswertverfahren'}</td>
         <td class="td-muted td-nowrap">${fmtDate(entry.created_at)}</td>
         <td class="td-num td-strong">${fmt(entry.wert)}</td>
-        <td><span class="badge badge-success-subtle badge-dot">Abgeschlossen</span></td>
+        <td><span class="badge ${badgeClass} badge-dot">${STATUS_LABEL[entry.status] || 'Abgeschlossen'}</span></td>
         <td>
           <div style="display:flex;gap:var(--space-2);justify-content:flex-end;">
             <button class="btn btn-ghost btn-sm" data-action="open">Öffnen</button>

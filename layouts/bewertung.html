@@ -978,23 +978,30 @@ function showToast(msg, isError = false) {
 
 btnSave.addEventListener('click', async () => {
   const adresse = document.getElementById('r-address')?.textContent?.trim() || 'Unbekannte Adresse';
-  const wertText = document.getElementById('r-value')?.textContent?.trim() || '';
-  const wert = parseFloat(wertText.replace(/[^0-9,]/g, '').replace(',', '.')) || null;
-  const mc = typeof procState !== 'undefined' ? procState.lastMonteCarlo : null;
+  // Adresse in Objektname + Ort aufteilen (erstes Komma trennt)
+  const komma = adresse.indexOf(',');
+  const objektName = komma > -1 ? adresse.slice(0, komma).trim() : adresse;
+  const ort = komma > -1 ? adresse.slice(komma + 1).trim() : null;
+
+  const proc = typeof procState !== 'undefined' ? procState : null;
+  const verfahren = (proc && proc.verfahren) || 'ertragswert';
+  const ergebnis = (proc && proc.lastCalc) || null;
+  const inputs = (proc && proc.lastInputs) || null;
+  const monteCarlo = (proc && proc.lastMonteCarlo) || null;
 
   btnSave.disabled = true;
   try {
     const res = await fetch('/api/bewertungen', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ adresse, wert, methode: 'ertragswert', monte_carlo: mc }),
+      body: JSON.stringify({ objektName, ort, verfahren, status: 'abgeschlossen', inputs, ergebnis, monteCarlo }),
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    // Persist ID locally for Verlauf-Seite
+    // ID lokal spiegeln (Offline-Fallback für die Verlauf-Seite)
     try {
       const saved = JSON.parse(localStorage.getItem('proplytic-bewertungen') || '[]');
-      saved.unshift(data);
+      saved.unshift({ id: data.id, adresse, wert: monteCarlo?.mean ?? null, created_at: data.createdAt || new Date().toISOString() });
       localStorage.setItem('proplytic-bewertungen', JSON.stringify(saved.slice(0, 50)));
     } catch (_) {}
     showToast('Gespeichert ✓');
