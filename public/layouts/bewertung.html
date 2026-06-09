@@ -1185,12 +1185,13 @@ async function runAnalysis(mode) {
 
   setResultStates(false, true, false);
 
-  // Try live API (3 s timeout — silently fall back to demo on failure)
+  // ML-Service über die serverseitige Proxy-Route (5 s Timeout) — bei Fehler
+  // still auf die JS-Engine / Demo-Daten zurückfallen.
   let apiData = null;
   try {
     const ctrl = new AbortController();
-    const tid  = setTimeout(() => ctrl.abort(), 3000);
-    const res  = await fetch('http://localhost:8000/predict', {
+    const tid  = setTimeout(() => ctrl.abort(), 5000);
+    const res  = await fetch('/api/predict', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify(collectApiPayload(mode)),
@@ -1198,7 +1199,7 @@ async function runAnalysis(mode) {
     });
     clearTimeout(tid);
     if (res.ok) apiData = await res.json();
-  } catch (_) { /* API not running — use demo data */ }
+  } catch (_) { /* ML-Service nicht erreichbar — Demo-/JS-Daten verwenden */ }
 
   // Minimum UX delay
   await new Promise(r => setTimeout(r, mode === 'quick' ? 900 : 1200));
