@@ -1,34 +1,40 @@
-const members = global._teamMembers ?? (global._teamMembers = [
-  { id: 'mbr_001', name: 'Alex Klein', email: 'demo@proplytic.ai', role: 'owner', joined_at: '2026-01-01T00:00:00.000Z', avatar: null },
-  { id: 'mbr_002', name: 'Maria Hoffmann', email: 'maria@proplytic.ai', role: 'admin', joined_at: '2026-02-15T00:00:00.000Z', avatar: null },
-  { id: 'mbr_003', name: 'Tom Fischer', email: 'tom@proplytic.ai', role: 'member', joined_at: '2026-03-01T00:00:00.000Z', avatar: null },
-  { id: 'mbr_004', name: 'Jana Berger', email: 'jana@proplytic.ai', role: 'member', joined_at: '2026-03-20T00:00:00.000Z', avatar: null },
-  { id: 'mbr_005', name: 'Lukas Werner', email: 'lukas@proplytic.ai', role: 'member', joined_at: '2026-04-05T00:00:00.000Z', avatar: null },
-  { id: 'mbr_006', name: 'Sophie Müller', email: 'sophie@proplytic.ai', role: 'viewer', joined_at: '2026-05-10T00:00:00.000Z', avatar: null },
-]);
+import { db } from "../../../db/index.js";
+import { teamMember } from "../../../db/schema.js";
+import { eq, asc } from "drizzle-orm";
+import { generateId } from "../../../lib/ids.js";
+import { getUserId } from "../../../lib/requireUser.js";
 
-export default function handler(req, res) {
-  if (req.method === 'GET') {
-    return res.status(200).json(members);
+export default async function handler(req, res) {
+  const ownerId = getUserId(req);
+
+  if (req.method === "GET") {
+    const rows = await db
+      .select()
+      .from(teamMember)
+      .where(eq(teamMember.ownerId, ownerId))
+      .orderBy(asc(teamMember.createdAt));
+    return res.status(200).json(rows);
   }
 
-  if (req.method === 'POST') {
-    const { email, role } = req.body ?? {};
+  if (req.method === "POST") {
+    const { email, role, name } = req.body ?? {};
     if (!email || !role) {
-      return res.status(400).json({ error: 'email und role erforderlich' });
+      return res.status(400).json({ error: "email und role erforderlich" });
     }
-    const member = {
-      id: 'mbr_' + Date.now().toString(36),
-      name: email.split('@')[0],
-      email,
-      role,
-      joined_at: new Date().toISOString(),
-      avatar: null,
-    };
-    members.push(member);
+    const [member] = await db
+      .insert(teamMember)
+      .values({
+        id: generateId("mbr"),
+        ownerId,
+        name: name || email.split("@")[0],
+        email,
+        role,
+        status: "aktiv",
+      })
+      .returning();
     return res.status(201).json(member);
   }
 
-  res.setHeader('Allow', ['GET', 'POST']);
+  res.setHeader("Allow", ["GET", "POST"]);
   res.status(405).end();
 }

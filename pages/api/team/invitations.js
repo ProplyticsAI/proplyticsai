@@ -1,33 +1,43 @@
-const invitations = global._teamInvitations ?? (global._teamInvitations = [
-  { id: 'inv_t001', email: 'kai@example.de', role: 'member', invited_at: '2026-06-05T10:00:00.000Z', expires_at: '2026-06-19T10:00:00.000Z', status: 'pending' },
-  { id: 'inv_t002', email: 'anna@example.de', role: 'viewer', invited_at: '2026-06-07T14:30:00.000Z', expires_at: '2026-06-21T14:30:00.000Z', status: 'pending' },
-]);
+import { db } from "../../../db/index.js";
+import { teamInvitation } from "../../../db/schema.js";
+import { eq, asc } from "drizzle-orm";
+import { generateId } from "../../../lib/ids.js";
+import { getUserId } from "../../../lib/requireUser.js";
 
-export default function handler(req, res) {
-  if (req.method === 'GET') {
-    return res.status(200).json(invitations);
+export default async function handler(req, res) {
+  const ownerId = getUserId(req);
+
+  if (req.method === "GET") {
+    const rows = await db
+      .select()
+      .from(teamInvitation)
+      .where(eq(teamInvitation.ownerId, ownerId))
+      .orderBy(asc(teamInvitation.createdAt));
+    return res.status(200).json(rows);
   }
 
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     const { email, role } = req.body ?? {};
     if (!email || !role) {
-      return res.status(400).json({ error: 'email und role erforderlich' });
+      return res.status(400).json({ error: "email und role erforderlich" });
     }
-    const now = new Date();
-    const expires = new Date(now);
-    expires.setDate(expires.getDate() + 14);
-    const invitation = {
-      id: 'inv_t' + Date.now().toString(36),
-      email,
-      role,
-      invited_at: now.toISOString(),
-      expires_at: expires.toISOString(),
-      status: 'pending',
-    };
-    invitations.push(invitation);
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 14);
+    const [invitation] = await db
+      .insert(teamInvitation)
+      .values({
+        id: generateId("inv"),
+        ownerId,
+        email,
+        role,
+        status: "ausstehend",
+        expiresAt,
+      })
+      .returning();
+    // Versand der Einladungs-Mail folgt über Identity-Invite (Phase 3-Ausbau)
     return res.status(201).json(invitation);
   }
 
-  res.setHeader('Allow', ['GET', 'POST']);
+  res.setHeader("Allow", ["GET", "POST"]);
   res.status(405).end();
 }

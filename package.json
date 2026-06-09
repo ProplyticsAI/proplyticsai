@@ -4,21 +4,29 @@
   "description": "proplytic.ai — KI-gestützte Immobilienbewertung",
   "private": true,
   "scripts": {
-    "dev":            "next dev",
-    "build":          "next build",
-    "start":          "next start",
-    "design:build":   "node scripts/build.js",
-    "design:tokens":  "node scripts/export-tokens.js",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "design:build": "node scripts/build.js",
+    "design:tokens": "node scripts/export-tokens.js",
     "design:catalog": "node scripts/catalog.js",
-    "design:all":     "node scripts/build.js && node scripts/export-tokens.js && node scripts/catalog.js",
-    "sync:public":    "cp -r layouts components tokens brand public/"
+    "design:all": "node scripts/build.js && node scripts/export-tokens.js && node scripts/catalog.js",
+    "sync:public": "cp -r layouts components tokens brand public/",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "netlify database migrations apply"
   },
   "dependencies": {
+    "@netlify/database": "^1.0.0",
+    "@netlify/identity": "^1.2.0",
+    "drizzle-orm": "^1.0.0-beta.22",
     "next": "14.2.3",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^1.0.0-beta.22"
   }
 }

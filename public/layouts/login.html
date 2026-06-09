@@ -85,8 +85,10 @@
 
 </div>
 
+<script type="module" src="../components/auth.js"></script>
 <script>
   const form = document.getElementById('login-form');
+  const submitBtn = form.querySelector('.auth-submit');
 
   function validateField(input, errorEl, validator) {
     const valid = validator(input.value.trim());
@@ -95,7 +97,20 @@
     return valid;
   }
 
-  form.addEventListener('submit', (e) => {
+  function showFormError(msg) {
+    let box = document.getElementById('login-form-error');
+    if (!box) {
+      box = document.createElement('p');
+      box.id = 'login-form-error';
+      box.className = 'form-error-msg';
+      box.style.marginTop = 'var(--space-3)';
+      form.appendChild(box);
+    }
+    box.textContent = msg;
+    box.hidden = false;
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('login-email');
     const password = document.getElementById('login-password');
@@ -104,16 +119,36 @@
       v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
     const passwordValid = validateField(password, document.getElementById('login-password-error'),
       v => v.length > 0);
+    if (!emailValid || !passwordValid) return;
 
-    if (emailValid && passwordValid) {
-      // Demo-Flow: echte Authentifizierung folgt mit Backend-Anbindung
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Anmelden …';
+    try {
+      await window.ProplyticAuth.login(email.value.trim(), password.value);
       window.location.href = './dashboard.html';
+    } catch (err) {
+      showFormError(err && err.status === 401
+        ? 'E-Mail oder Passwort ist falsch.'
+        : 'Anmeldung fehlgeschlagen. Bitte später erneut versuchen.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Anmelden';
     }
   });
 
-  ['sso-google', 'sso-microsoft'].forEach(id => {
-    document.getElementById(id).addEventListener('click', () => {
-      alert('Single Sign-On ist Teil des Enterprise-Funktionsumfangs und wird mit der Backend-Anbindung aktiviert.');
+  // OAuth (Google/Microsoft) via Netlify Identity — Provider müssen im
+  // Netlify-Dashboard aktiviert sein.
+  const ssoMap = { 'sso-google': 'google', 'sso-microsoft': 'bitbucket' };
+  Object.keys(ssoMap).forEach(id => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.addEventListener('click', async () => {
+      await window.ProplyticAuth.ready;
+      try {
+        const mod = await import('https://esm.sh/@netlify/identity@1');
+        mod.oauthLogin(ssoMap[id]);
+      } catch {
+        alert('Single Sign-On wird nach Aktivierung des Providers im Netlify-Dashboard verfügbar.');
+      }
     });
   });
 </script>

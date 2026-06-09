@@ -75,23 +75,40 @@
 
 </div>
 
+<script type="module" src="../components/auth.js"></script>
 <script>
   const resetCard   = document.getElementById('reset-card');
   const doneCard    = document.getElementById('done-card');
   const invalidCard = document.getElementById('invalid-card');
 
-  // Demo-Flow: Token-Prüfung folgt mit Backend-Anbindung — fehlt der Token, wird der "ungültiger Link"-Zustand demonstriert
-  const token = new URLSearchParams(window.location.search).get('token');
-  if (!token) {
-    resetCard.hidden = true;
-    invalidCard.hidden = false;
-  }
+  // Netlify Identity hängt den Recovery-Token an den URL-Hash (#recovery_token=…).
+  // handleCallback() verarbeitet ihn und meldet den Nutzer temporär an.
+  let recoveryOk = false;
+  (async () => {
+    const result = await window.ProplyticAuth.handleCallback();
+    recoveryOk = !!(result && result.type === 'recovery');
+    // Fallback: klassischer ?token=-Parameter (z. B. eigener Mailflow)
+    const legacyToken = new URLSearchParams(window.location.search).get('token');
+    if (!recoveryOk && !legacyToken && !location.hash.includes('recovery_token')) {
+      resetCard.hidden = true;
+      invalidCard.hidden = false;
+    }
+  })();
 
   const form            = document.getElementById('reset-form');
   const newPassword     = document.getElementById('new-password');
   const confirmPassword = document.getElementById('confirm-password');
+  const submitBtn       = form.querySelector('.auth-submit');
 
-  form.addEventListener('submit', (e) => {
+  async function setNewPassword(pw) {
+    await window.ProplyticAuth.ready;
+    const mod = await import('https://esm.sh/@netlify/identity@1');
+    if (mod.updateUser) return mod.updateUser({ password: pw });
+    if (mod.update) return mod.update({ password: pw });
+    throw new Error('update unsupported');
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const passwordValid = newPassword.value.length >= 8;
@@ -101,10 +118,20 @@
     const matchValid = confirmPassword.value.length > 0 && confirmPassword.value === newPassword.value;
     confirmPassword.classList.toggle('input-error', !matchValid);
     document.getElementById('confirm-password-error').hidden = matchValid;
+    if (!(passwordValid && matchValid)) return;
 
-    if (passwordValid && matchValid) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Wird gespeichert …';
+    try {
+      await setNewPassword(newPassword.value);
       resetCard.hidden = true;
       doneCard.hidden = false;
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Passwort speichern';
+      document.getElementById('confirm-password-error').textContent =
+        'Speichern fehlgeschlagen — der Link ist evtl. abgelaufen.';
+      document.getElementById('confirm-password-error').hidden = false;
     }
   });
 </script>
