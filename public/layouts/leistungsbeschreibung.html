@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leistungsbeschreibung — Proplytic.ai</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <link rel="stylesheet" href="./legal.css">
+</head>
+<body>
+
+<div class="legal-page">
+
+  <header class="legal-header">
+    <a class="legal-logo" href="./landing.html">
+      <span class="wordmark wordmark-dark">proplytic<span class="wordmark-dot">.ai</span></span>
+    </a>
+    <a class="legal-back-link" href="./landing.html">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M9.5 3.5L5 8l4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Zur Startseite
+    </a>
+  </header>
+
+  <p class="legal-eyebrow">Rechtliches</p>
+  <h1 class="legal-title">Leistungsbeschreibung</h1>
+  <p class="legal-updated">Stand: Juni 2026 · gilt ergänzend zu den AGB</p>
+
+  <div class="legal-content">
+
+    <h2>1. Gegenstand der Leistung</h2>
+    <p>
+      Proplytic.ai ist eine webbasierte Plattform zur KI-gestützten Immobilienbewertung und -analyse.
+      Proplytic stellt dem Kunden die Plattform als Software-as-a-Service (SaaS) zur Verfügung; eine
+      Installation beim Kunden ist nicht erforderlich. Die Leistung umfasst den nachfolgend beschriebenen
+      Funktionsumfang gemäß dem jeweils gebuchten Plan (Starter, Pro oder Enterprise).
+    </p>
+    <p>
+      Die Plattform ersetzt <strong>kein Verkehrswertgutachten gemäß § 194 BauGB</strong> und stellt keine
+      rechtlich verbindliche Wertermittlung im Sinne der Immobilienwertermittlungsverordnung (ImmoWertV) dar.
+      Die Ergebnisse dienen der Entscheidungsunterstützung und sind nicht für die Vorlage bei Gerichten,
+      Behörden oder Kreditinstituten als Wertgutachten geeignet.
+    </p>
+
+    <h2>2. Bewertungsengine</h2>
+    <p>Die Bewertungsengine berechnet Immobilienwerte nach folgenden Verfahren:</p>
+    <ul>
+      <li><strong>Ertragswertverfahren</strong> gemäß §§ 27–34 ImmoWertV 2021: Berechnung auf Basis von Bodenrichtwert, Jahresrohertrag, Bewirtschaftungskosten, Liegenschaftszins und Restnutzungsdauer.</li>
+      <li><strong>Sachwertverfahren</strong> gemäß §§ 35–39 ImmoWertV 2021: Ermittlung aus Bodenwert, Herstellungskosten und Alterswertminderung.</li>
+      <li><strong>Vergleichswertverfahren</strong> (Pro/Enterprise): Statistische Ableitung aus Vergleichstransaktionen; Datenbasis und Qualität hängen von der Verfügbarkeit regionaler Marktdaten ab.</li>
+      <li><strong>KI-Schnellanalyse</strong>: Maschinell gelernte Schätzung auf Basis strukturierter Eingaben; keine Offenlegungspflicht des Modells.</li>
+    </ul>
+    <p>
+      Die Eingaben (Bodenrichtwert, Miete, Liegenschaftszins etc.) werden vom Nutzer selbst festgelegt oder
+      aus hinterlegten Marktdaten vorgeschlagen. Proplytic übernimmt keine Gewähr für die Aktualität oder
+      Vollständigkeit der Vorschlagswerte.
+    </p>
+
+    <h2>3. Monte-Carlo-Risikosimulation</h2>
+    <p>
+      Im Pro- und Enterprise-Plan steht eine probabilistische Risikoanalyse auf Basis der Monte-Carlo-Methode
+      zur Verfügung:
+    </p>
+    <ul>
+      <li>2.000 Simulationsläufe mit lognormal verteilten Eingangsgrößen (Bodenrichtwert, Miete, Zins, Baukostenindex)</li>
+      <li>Ausgabe als Verteilungshistogramm (P10 / P50 / P90-Perzentile) und Sensitivitätsanalyse</li>
+      <li>Korrelation zwischen Bodenrichtwert und Jahresmiete (Lagegüte-Faktor, ρ = 0,5)</li>
+    </ul>
+    <p>
+      Die Simulation modelliert Marktrisiken auf Basis statistischer Annahmen; sie stellt keine Prognose
+      tatsächlicher Wertentwicklungen dar. Vergangene Simulationsergebnisse lassen keine Schlüsse auf
+      zukünftige Marktwerte zu.
+    </p>
+
+    <h2>4. Vergleichsfunktion</h2>
+    <p>
+      Die Vergleichsfunktion erlaubt den strukturierten Gegenüberstellung von bis zu 4 Objekten. Verglichen
+      werden Kennzahlen wie Bruttomietrendite, Wert je m², Risiko-Spanne (P10–P90) und weitere bewertungsrelevante
+      Parameter. Die Funktion steht ab dem Pro-Plan zur Verfügung.
+    </p>
+
+    <h2>5. Portfolio-Verwaltung</h2>
+    <p>
+      Nutzer können bewertete Objekte als Portfolio speichern, filtern und sortieren. Die Datenhaltung
+      erfolgt serverseitig; gespeicherte Bewertungen sind auf Nutzerkonto-Ebene persistent. Im Starter-Plan
+      sind bis zu 10 Objekte speicherbar; im Pro-Plan ist die Anzahl unbegrenzt.
+    </p>
+
+    <h2>6. PDF-Export / Bewertungsdossier</h2>
+    <p>
+      Alle Pläne beinhalten den Export eines formatierten Bewertungsdossiers als PDF. Das Dossier umfasst:
+      Objektkennzahlen, Bewertungsmethodik, Ergebnisdarstellung, Risikosimulation (falls durchgeführt) und
+      den gesetzlichen Disclaimer. Das PDF ist zur internen Dokumentation geeignet; als bankfertiges
+      Gutachten nach BelWertV ist es nicht zugelassen.
+    </p>
+
+    <h2>7. Team-Verwaltung und Rollen (Enterprise)</h2>
+    <p>
+      Im Enterprise-Plan steht eine mandantenfähige Nutzerverwaltung zur Verfügung:
+    </p>
+    <ul>
+      <li><strong>Admin</strong>: vollständiger Zugriff inkl. Nutzerverwaltung, Billing, alle Bewertungen des Accounts</li>
+      <li><strong>Mitglied</strong>: eigene Bewertungen + freigegebene Portfolio-Daten; kein Billing-Zugriff</li>
+      <li><strong>Leser</strong>: Lesezugriff auf freigegebene Bewertungen; keine eigenen Bewertungen</li>
+    </ul>
+    <p>Nutzerlizenzen werden pro Seat abgerechnet; der Enterprise-Vertrag legt die maximale Sitzanzahl fest.</p>
+
+    <h2>8. API-Zugang (Enterprise)</h2>
+    <p>
+      Enterprise-Kunden erhalten auf Anfrage Zugang zur REST-API von Proplytic.ai. Die API ermöglicht die
+      programmatische Erstellung, Abfrage und den Export von Bewertungen. Rate-Limits, Endpunkte und
+      Authentifizierungsverfahren (OAuth2 / API-Key) werden im Enterprise-Vertrag spezifiziert.
+    </p>
+
+    <h2>9. Verfügbarkeit und Wartung</h2>
+    <p>
+      Proplytic strebt eine Verfügbarkeit der Plattform von 99,0 % im Monatsdurchschnitt an (exkl. geplanter
+      Wartungsfenster). Wartungsfenster werden über die Statusseite (<a href="./status.html">status.proplytic.ai</a>)
+      mindestens 24 Stunden im Voraus angekündigt. Im Starter-Plan besteht kein SLA-Anspruch. Enterprise-Kunden
+      erhalten ein individuelles SLA gemäß Enterprise-Vertrag.
+    </p>
+
+    <h2>10. Datenverarbeitung und Datenschutz</h2>
+    <p>
+      Die Verarbeitung personenbezogener Daten im Rahmen der Plattformnutzung ist in der
+      <a href="./datenschutz.html">Datenschutzerklärung</a> beschrieben. Für Enterprise-Kunden, die die
+      Verarbeitung personenbezogener Daten ihrer eigenen Kunden über die Plattform durchführen, steht ein
+      Auftragsverarbeitungsvertrag (AVV) auf Anfrage zur Verfügung.
+    </p>
+
+    <h2>11. Änderungen der Leistungsbeschreibung</h2>
+    <p>
+      Proplytic kann den Funktionsumfang der Plattform jederzeit erweitern. Einschränkungen des
+      Funktionsumfangs, die den Vertragszweck wesentlich beeinträchtigen, werden dem Kunden mindestens
+      30 Tage im Voraus per E-Mail angekündigt. Der Kunde ist in diesem Fall zur außerordentlichen
+      Kündigung berechtigt.
+    </p>
+
+  </div>
+
+  <nav class="legal-nav">
+    <a href="./agb.html">AGB</a>
+    <a href="./datenschutz.html">Datenschutz</a>
+    <a href="./impressum.html">Impressum</a>
+    <a href="./widerruf.html">Widerruf</a>
+    <a href="./cookie-richtlinie.html">Cookies</a>
+  </nav>
+
+</div>
+
+</body>
+</html>

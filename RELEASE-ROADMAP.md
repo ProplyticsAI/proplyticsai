@@ -19,6 +19,8 @@ Zentrale Checkliste für den Release. Status-Legende:
 
 ## Auth & Account
 
+Auth-Mock-Backend: `pages/api/auth/` (register, login, logout, session, me) — in-memory Store, `global._users`, Demo-User `demo@proplytic.ai` / `demo1234`.
+
 | Seite | Status | Notiz |
 |---|---|---|
 | Login | 🔧 | `layouts/login.html` — E-Mail/Passwort-Form (Client-Validierung), „Angemeldet bleiben", Link zu Passwort-Reset, Google-/Microsoft-SSO-Buttons (Enterprise-Hinweis); Demo-Flow leitet auf `dashboard.html` weiter, echte Authentifizierung folgt mit Backend-Anbindung |
@@ -28,7 +30,7 @@ Zentrale Checkliste für den Release. Status-Legende:
 | E-Mail-Verifizierung | 🔧 | `layouts/e-mail-verifizierung.html` — Wartezustand mit Resend-Option + Demo-Bestätigungsbutton, der den verifizierten Zustand zeigt |
 | Onboarding / Welcome-Flow | 🔧 | `layouts/willkommen.html` — 3-stufiger Einrichtungs-Flow (Begrüßung → Nutzungsart wählen → Abschluss mit Direktlink zur ersten Bewertung), inkl. „Überspringen"-Option; Auswahl wird mit Backend-Anbindung im Nutzerprofil gespeichert |
 | Profil / Account-Einstellungen | 🔧 | `layouts/account-einstellungen.html` — Tab-Layout (Profil, Sicherheit inkl. Passwort-Änderung & 2FA-Hinweis, Benachrichtigungen, Konto inkl. Logout & Konto-löschen) im App-Layout (Sidebar/Header wie Dashboard) |
-| Team-/Nutzerverwaltung (Rollen & Einladungen) | ⬜ | Enterprise |
+| Team-/Nutzerverwaltung (Rollen & Einladungen) | 🔧 | `layouts/team.html` — Tab-Layout (Mitglieder/Einladungen/Rollen), Einladungs-Modal, Lizenzen-Fortschrittsbalken; Backend-Mock: `pages/api/team/members.js` + `invitations.js` |
 | 2FA / SSO | ⬜ | Enterprise — Hinweis-Karte bereits in `account-einstellungen.html` (§ Sicherheit) verankert |
 
 ## Kernprodukt
@@ -47,10 +49,10 @@ Zentrale Checkliste für den Release. Status-Legende:
 
 | Seite | Status | Notiz |
 |---|---|---|
-| Preise / Pläne | ⬜ | |
-| Checkout | ⬜ | |
-| Abo-/Rechnungsverwaltung | ⬜ | |
-| Enterprise-Sales-Kontakt | ⬜ | |
+| Preise / Pläne | 🔧 | `layouts/preise.html` — 3 Pläne (Starter/Pro/Enterprise), monatlich/jährlich Toggle, Preisvergleichstabelle, FAQ; Backend: `pages/api/billing/plans.js` |
+| Checkout | 🔧 | `layouts/checkout.html` — Zahlungsformular, Bestellzusammenfassung, Demo-Flow; Backend: `pages/api/billing/subscribe.js` |
+| Abo-/Rechnungsverwaltung | 🔧 | `layouts/abonnement.html` — aktueller Plan, Rechnungshistorie, Zahlungsmethode; Backend: `pages/api/billing/subscription.js` + `invoices.js` |
+| Enterprise-Sales-Kontakt | 🔧 | `layouts/enterprise.html` — Feature-Grid, Social-Proof, Kontaktformular |
 
 ## Public / Marketing
 
@@ -73,7 +75,7 @@ Zentrale Checkliste für den Release. Status-Legende:
 | Cookie-Consent + Cookie-Richtlinie | 🔧 | `layouts/cookie-richtlinie.html` (Policy-Seite) + `components/cookie-consent.{js,css}` (granularer Consent-Banner: Notwendig/Funktional/Analyse, persistiert in localStorage, über „Cookie-Einstellungen" erneut öffenbar) — getestet via Playwright. **Skript-Gating ergänzt:** `loadOnConsent(cat, loader)` und deklaratives `<script type="text/plain" data-cookie-category="…" data-src="…">`-Gating (via `gateScripts()`, läuft automatisch im `init()`); lädt Analytics-/funktionale Skripte erst nach Einwilligung und reagiert auf spätere Zustimmung. Konkrete Cookie-Tabelle/Anbieter noch zu ergänzen |
 | AVV / DPA (Auftragsverarbeitung) | ⬜ | Enterprise/B2B |
 | SLA | ⬜ | Enterprise |
-| Leistungsbeschreibung | ⬜ | |
+| Leistungsbeschreibung | ✅ | `layouts/leistungsbeschreibung.html` — vollständige Leistungsbeschreibung inkl. Bewertungsengine, Monte-Carlo, PDF-Export, Team-Verwaltung, API, Verfügbarkeit; Disclaimer verankert |
 | Bewertungs-Disclaimer | 🔧 | Disclaimer-Text in `bewertung.html`-Ergebnisrendering und nun zusätzlich in den AGB (`agb.html` § 7) verankert („ersetzt kein Verkehrswertgutachten nach § 194 BauGB"); eigenständige Datenquellen-Hinweis-Seite (Gutachterausschuss/Bodenrichtwerte) noch offen |
 
 ## System / Operativ
