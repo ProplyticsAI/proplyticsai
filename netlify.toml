@@ -11,3 +11,42 @@
 
 [build.environment]
   NODE_VERSION = "18"
+
+# Die alten Marketing-/App-Seiten (pages/index.jsx, login.jsx, register.jsx,
+# dashboard.jsx, valuations.jsx, comparison.jsx, analyse.jsx) wurden entfernt.
+# Die "echten" URLs leiten auf die vollständige, neue Plattform unter
+# /layouts/*.html weiter (Theme-Overhaul + Backend-Anbindung aus PRs #11-17).
+[[redirects]]
+  from = "/"
+  to = "/layouts/landing.html"
+  status = 301
+
+[[redirects]]
+  from = "/login"
+  to = "/layouts/login.html"
+  status = 301
+
+[[redirects]]
+  from = "/register"
+  to = "/layouts/registrieren.html"
+  status = 301
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/layouts/dashboard.html"
+  status = 301
+
+[[redirects]]
+  from = "/valuations"
+  to = "/layouts/verlauf.html"
+  status = 301
+
+[[redirects]]
+  from = "/comparison"
+  to = "/layouts/vergleich.html"
+  status = 301
+
+[[redirects]]
+  from = "/analyse"
+  to = "/layouts/bewertung.html"
+  status = 301
