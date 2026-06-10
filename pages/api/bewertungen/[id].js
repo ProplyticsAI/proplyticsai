@@ -4,7 +4,7 @@ import { and, eq } from "drizzle-orm";
 import { requireUserId } from "../../../lib/requireUser.js";
 
 export default async function handler(req, res) {
-  const userId = requireUserId(req, res);
+  const userId = await requireUserId(req, res);
   if (!userId) return;
   const { id } = req.query;
   const scope = and(eq(bewertung.id, id), eq(bewertung.userId, userId));

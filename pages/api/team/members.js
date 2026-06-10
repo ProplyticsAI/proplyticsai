@@ -5,7 +5,7 @@ import { generateId } from "../../../lib/ids.js";
 import { requireUserId } from "../../../lib/requireUser.js";
 
 export default async function handler(req, res) {
-  const ownerId = requireUserId(req, res);
+  const ownerId = await requireUserId(req, res);
   if (!ownerId) return;
 
   if (req.method === "GET") {

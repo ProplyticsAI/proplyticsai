@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     return res.status(405).end();
   }
 
-  const userId = requireUserId(req, res);
+  const userId = await requireUserId(req, res);
   if (!userId) return;
   const { ids } = req.body ?? {};
   if (!Array.isArray(ids) || ids.length === 0) {

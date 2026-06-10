@@ -119,7 +119,7 @@
         email.value.trim(), password.value, name.value.trim(), company.value.trim());
       // users-Tabelle spiegeln (best effort, blockiert den Flow nicht)
       try {
-        await fetch('/api/auth/sync', {
+        await window.ProplyticAuth.fetchWithAuth('/api/auth/sync', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: email.value.trim(), name: name.value.trim(), company: company.value.trim() }),
         });
