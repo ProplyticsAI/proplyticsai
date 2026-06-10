@@ -1,7 +1,7 @@
 import { db } from "../../../db/index.js";
 import { bewertung } from "../../../db/schema.js";
 import { and, eq, inArray } from "drizzle-orm";
-import { getUserId } from "../../../lib/requireUser.js";
+import { requireUserId } from "../../../lib/requireUser.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -9,7 +9,8 @@ export default async function handler(req, res) {
     return res.status(405).end();
   }
 
-  const userId = getUserId(req);
+  const userId = await requireUserId(req, res);
+  if (!userId) return;
   const { ids } = req.body ?? {};
   if (!Array.isArray(ids) || ids.length === 0) {
     return res.status(400).json({ error: "ids (Array) erforderlich" });

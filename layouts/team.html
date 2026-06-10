@@ -685,8 +685,11 @@
 <!-- ── Toast Container ───────────────────────────── -->
 <div class="toast-container" id="toast-container" aria-live="polite"></div>
 
+<script src="../components/auth.js"></script>
 <script>
-  // ── Toast ───────────────────────────────────────
+  ProplyticAuth.requireAuth();
+
+    // ── Toast ───────────────────────────────────────
   function showToast(message, type = '') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');

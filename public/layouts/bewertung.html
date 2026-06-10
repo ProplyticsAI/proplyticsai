@@ -929,7 +929,10 @@
 <script src="../components/chart.js"></script>
 <script src="../components/valuation-procedures.js"></script>
 <script src="../components/monte-carlo.js"></script>
+<script src="../components/auth.js"></script>
 <script>
+ProplyticAuth.requireAuth();
+
 /* ─────────────────────────────────────
    State
 ───────────────────────────────────── */
@@ -991,7 +994,7 @@ btnSave.addEventListener('click', async () => {
 
   btnSave.disabled = true;
   try {
-    const res = await fetch('/api/bewertungen', {
+    const res = await ProplyticAuth.fetchWithAuth('/api/bewertungen', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ objektName, ort, verfahren, status: 'abgeschlossen', inputs, ergebnis, monteCarlo }),

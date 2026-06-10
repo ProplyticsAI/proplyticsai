@@ -1,7 +1,7 @@
 import { db } from "../../../db/index.js";
 import { users } from "../../../db/schema.js";
 import { eq } from "drizzle-orm";
-import { getUserId } from "../../../lib/requireUser.js";
+import { requireUserId } from "../../../lib/requireUser.js";
 
 // Spiegelt den (über Netlify Identity authentifizierten) Nutzer in die
 // users-Tabelle. Idempotent — beim ersten Login/Registrieren aufgerufen.
@@ -11,7 +11,9 @@ export default async function handler(req, res) {
     return res.status(405).end();
   }
 
-  const userId = getUserId(req);
+  const userId = await requireUserId(req, res);
+  if (!userId) return;
+
   const { email, name, company } = req.body ?? {};
   if (!email) return res.status(400).json({ error: "email erforderlich" });
 

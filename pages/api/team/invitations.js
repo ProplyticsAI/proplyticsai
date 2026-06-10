@@ -2,10 +2,11 @@ import { db } from "../../../db/index.js";
 import { teamInvitation } from "../../../db/schema.js";
 import { eq, asc } from "drizzle-orm";
 import { generateId } from "../../../lib/ids.js";
-import { getUserId } from "../../../lib/requireUser.js";
+import { requireUserId } from "../../../lib/requireUser.js";
 
 export default async function handler(req, res) {
-  const ownerId = getUserId(req);
+  const ownerId = await requireUserId(req, res);
+  if (!ownerId) return;
 
   if (req.method === "GET") {
     const rows = await db
