@@ -133,6 +133,10 @@ const ValuationProcedures = (() => {
         { label: 'Vervielfältiger',       wert: v.toFixed(2) },
         { label: 'Bewirtschaftungskosten', wert: eur(bewirtschaftungskosten) + ' / Jahr' },
       ],
+      breakdown: [
+        { label: 'Bodenwert',    wert: bodenwert },
+        { label: 'Gebäudewert',  wert: gebaeudeertragswert },
+      ],
       schritte: [
         {
           gruppe: 'Bodenwert',
@@ -235,6 +239,11 @@ const ValuationProcedures = (() => {
         { label: 'Alterswertminderung',     wert: (alterswertminderungQuote * 100).toFixed(0) + ' %' },
         { label: 'Sachwertfaktor',          wert: sachwertfaktor.toFixed(2) },
       ],
+      breakdown: [
+        { label: 'Bodenwert',      wert: bodenwert },
+        { label: 'Gebäudewert',    wert: gebaeudesachwert },
+        { label: 'Außenanlagen',   wert: aussenanlagenwert },
+      ],
       schritte: [
         {
           gruppe: 'Bodenwert',
@@ -293,3 +302,10 @@ const ValuationProcedures = (() => {
     SACHWERTFAKTOR,
   };
 })();
+
+// UMD-kompatibler Export: ermöglicht `import` als ES-/CommonJS-Modul
+// (z. B. in Next.js), ohne das globale `<script>`-Verhalten in den
+// statischen HTML-Layouts zu beeinträchtigen (dort ist `module` undefiniert).
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = ValuationProcedures;
+}
