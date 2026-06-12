@@ -1,7 +1,9 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import t from '../components/brand';
-import { Cap, Btn, Card, ContourBg, BuildingArt } from '../components/primitives';
+import { Cap, Btn, ContourBg } from '../components/primitives';
 import { SectionTag, MarketingNav, SiteFooter } from '../components/layout';
 import ValuationCard from '../components/valuation-card';
 import Icon from '../components/icons';
@@ -21,7 +23,11 @@ const steps = [
   ['03', 'fileText', 'Ergebnis erhalten', 'Marktwert, Rendite und ein herunterladbarer Bericht in Sekunden.'],
 ];
 
-const stats = [['15.000+', 'Bewertungen'], ['4,8/5', 'Zufriedenheit'], ['60 Sek.', 'Pro Analyse'], ['5.000+', 'Investoren']];
+const pfade = [
+  ['fileText', 'Excel-Import', 'Ein oder mehrere Objekte aus einer Liste hochladen und gesammelt bewerten.', null],
+  ['zap', 'Schnellanalyse', 'In drei Schritten zur ersten belastbaren Bewertung.', '/analyse'],
+  ['sliders', 'Detailanalyse', 'Sieben Schritte für das ausführliche Gutachten.', null],
+];
 
 const trust = [
   ['shield', 'DSGVO-konform', 'Volle Einhaltung europäischer Datenschutzstandards.'],
@@ -30,6 +36,14 @@ const trust = [
 ];
 
 export default function LandingPage() {
+  const router = useRouter();
+  const [adresse, setAdresse] = useState('');
+
+  function bewertungStarten() {
+    const a = adresse.trim();
+    router.push(a ? `/analyse?adresse=${encodeURIComponent(a)}` : '/analyse');
+  }
+
   return (
     <>
       <Head>
@@ -40,63 +54,93 @@ export default function LandingPage() {
         <MarketingNav t={t} />
 
         {/* HERO */}
-        <div style={{ position: 'relative', padding: '76px 56px 84px', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', padding: '64px 56px 72px', overflow: 'hidden' }}>
           <ContourBg t={t} />
-          <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: 56, alignItems: 'center', maxWidth: 1320, margin: '0 auto' }}>
+          <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 56, alignItems: 'center', maxWidth: 1320, margin: '0 auto' }}>
+            {/* left: address input + analysis paths */}
             <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, padding: '6px 13px', borderRadius: 999, border: `1px solid ${t.line}`, background: t.surface, marginBottom: 26 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, padding: '6px 13px', borderRadius: 999, border: `1px solid ${t.line}`, background: t.surface, marginBottom: 24 }}>
                 <span style={{ width: 6, height: 6, borderRadius: 3, background: t.accent }} />
                 <Cap t={t} color={t.muted}>Jetzt bewerten nach ImmoWertV 2024</Cap>
               </div>
-              <h1 style={{ fontFamily: t.display, fontWeight: 500, fontSize: 64, lineHeight: 1.04, letterSpacing: '-0.025em', margin: 0, color: t.ink }}>
+              <h1 style={{ fontFamily: t.display, fontWeight: 500, fontSize: 54, lineHeight: 1.06, letterSpacing: '-0.025em', margin: 0, color: t.ink }}>
                 Immobilien­bewertung,<span style={{ color: t.highlight }}> neu gedacht.</span>
               </h1>
-              <p style={{ fontFamily: t.sans, fontSize: 18.5, lineHeight: 1.6, color: t.muted, margin: '22px 0 0', maxWidth: 480 }}>
+              <p style={{ fontFamily: t.sans, fontSize: 17.5, lineHeight: 1.6, color: t.muted, margin: '18px 0 0', maxWidth: 480 }}>
                 Konforme, prüfsichere Bewertungen — KI-gestützt und in sechzig Sekunden geliefert. Von der Adresse zum bankfertigen Bericht.
               </p>
-              <div style={{ display: 'flex', gap: 10, marginTop: 32, padding: 8, background: t.surface, border: `1px solid ${t.lineStrong}`, borderRadius: t.radiusLg, maxWidth: 520 }}>
+              <div style={{ display: 'flex', gap: 10, marginTop: 28, padding: 8, background: t.surface, border: `1px solid ${t.lineStrong}`, borderRadius: t.radiusLg, maxWidth: 560 }}>
                 <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 10, padding: '0 14px' }}>
                   <Icon name="mapPin" size={19} color={t.faint} />
-                  <span style={{ fontFamily: t.sans, fontSize: 15.5, color: t.faint }}>Objektadresse eingeben…</span>
+                  <input
+                    value={adresse}
+                    onChange={(e) => setAdresse(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') bewertungStarten(); }}
+                    placeholder="Objektadresse eingeben…"
+                    style={{ flex: 1, minWidth: 0, border: 0, outline: 0, background: 'transparent', fontFamily: t.sans, fontSize: 15.5, color: t.ink }}
+                  />
                 </div>
-                <Link href="/analyse">
-                  <Btn t={t} variant="primary" iconRight="arrowRight">Immobilie bewerten</Btn>
-                </Link>
+                <Btn t={t} variant="primary" iconRight="arrowRight" onClick={bewertungStarten}>Immobilie bewerten</Btn>
               </div>
-              <div style={{ display: 'flex', gap: 22, marginTop: 26 }}>
-                {[['zap', 'Ergebnis in 60 Sek.'], ['shield', 'ImmoWertV 2024'], ['clock', '24/7 verfügbar']].map(([ic, l]) => (
-                  <div key={l} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <Icon name={ic} size={16} color={t.accent} />
-                    <span style={{ fontFamily: t.sans, fontSize: 13.5, fontWeight: 500, color: t.muted }}>{l}</span>
-                  </div>
-                ))}
+              {/* drei Analyse-Pfade */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginTop: 26, maxWidth: 640 }}>
+                {pfade.map(([ic, ti, d, href]) => {
+                  const inner = (
+                    <div style={{
+                      height: '100%', padding: '16px 16px 14px', background: t.surface, border: `1px solid ${href ? t.lineStrong : t.line}`,
+                      borderRadius: t.radiusLg, display: 'flex', flexDirection: 'column', gap: 8,
+                      cursor: href ? 'pointer' : 'default', opacity: href ? 1 : 0.75,
+                    }}>
+                      <div style={{ width: 34, height: 34, borderRadius: t.radius, display: 'grid', placeItems: 'center', background: t.accentSoft, color: t.accent }}>
+                        <Icon name={ic} size={17} />
+                      </div>
+                      <div style={{ fontFamily: t.sans, fontWeight: 600, fontSize: 14.5, color: t.ink }}>{ti}</div>
+                      <div style={{ fontFamily: t.sans, fontSize: 12.5, lineHeight: 1.5, color: t.muted, flex: 1 }}>{d}</div>
+                      {href ? (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontFamily: t.sans, fontSize: 12.5, fontWeight: 600, color: t.highlight }}>
+                          Starten <Icon name="arrowRight" size={12} stroke={2.2} />
+                        </span>
+                      ) : (
+                        <Cap t={t} color={t.faint} style={{ fontSize: 10 }}>Bald verfügbar</Cap>
+                      )}
+                    </div>
+                  );
+                  return href
+                    ? <Link key={ti} href={href} style={{ textDecoration: 'none' }}>{inner}</Link>
+                    : <div key={ti}>{inner}</div>;
+                })}
               </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative' }}>
-              <div style={{ position: 'relative', width: 560, height: 470 }}>
-                <BuildingArt t={t} maxWidth={560} style={{ position: 'absolute', top: 0, right: -24 }} />
-                <div style={{ position: 'absolute', top: 18, right: -8 }}>
-                  <Card t={t} pad={13} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ width: 8, height: 8, borderRadius: 4, background: t.highlight }} />
-                    <span style={{ fontFamily: t.mono, fontSize: 12, color: t.ink }}>Analysiert in 0:54</span>
-                  </Card>
-                </div>
-                <div style={{ position: 'absolute', left: -28, bottom: 6 }}>
-                  <ValuationCard t={t} w={352} />
-                </div>
-              </div>
+            {/* right: example valuation + minimal explanation */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+              <ValuationCard t={t} w={420} />
+              <p style={{ fontFamily: t.sans, fontSize: 13.5, lineHeight: 1.6, color: t.muted, maxWidth: 380, textAlign: 'center', margin: 0 }}>
+                Beispielbewertung: Marktwert-Spanne, Rendite und Kennzahlen — erstellt in rund sechzig Sekunden.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* SOCIAL PROOF */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', borderTop: `1px solid ${t.line}`, borderBottom: `1px solid ${t.line}` }}>
-          {stats.map(([v, l], i) => (
-            <div key={l} style={{ padding: '34px 40px', borderLeft: i ? `1px solid ${t.line}` : 'none' }}>
-              <div style={{ fontFamily: t.mono, fontWeight: 600, fontSize: 34, letterSpacing: '-0.02em', color: t.ink }}>{v}</div>
-              <Cap t={t} color={t.muted} style={{ marginTop: 6, display: 'block' }}>{l}</Cap>
+        {/* ROADMAP: eigene Bewertungs-KI */}
+        <div style={{ borderTop: `1px solid ${t.line}`, borderBottom: `1px solid ${t.line}`, background: t.surface }}>
+          <div style={{ maxWidth: 1320, margin: '0 auto', padding: '44px 56px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 48 }}>
+            <div style={{ maxWidth: 760 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, padding: '5px 12px', borderRadius: 999, background: t.accentSoft, marginBottom: 14 }}>
+                <span style={{ width: 6, height: 6, borderRadius: 3, background: t.accent }} />
+                <Cap t={t} color={t.accent}>In Entwicklung</Cap>
+              </div>
+              <h3 style={{ fontFamily: t.display, fontWeight: 500, fontSize: 28, letterSpacing: '-0.02em', margin: '0 0 10px', color: t.ink }}>
+                proplytic.ai ML — unsere eigene Bewertungs-KI
+              </h3>
+              <p style={{ fontFamily: t.sans, fontSize: 15, lineHeight: 1.65, color: t.muted, margin: 0 }}>
+                Wir trainieren derzeit ein eigenes, spezialisiertes Machine-Learning-Modell mit unseren Bewertungsdaten.
+                Es verarbeitet ausschließlich die wertbestimmenden Kennzahlen einer Immobilie — für schnellere und noch präzisere Marktwerte.
+              </p>
             </div>
-          ))}
+            <div style={{ width: 72, height: 72, borderRadius: t.radiusLg, display: 'grid', placeItems: 'center', background: t.accentSoft, color: t.accent, flexShrink: 0 }}>
+              <Icon name="sparkles" size={34} />
+            </div>
+          </div>
         </div>
 
         {/* FEATURES */}
