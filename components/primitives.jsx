@@ -211,12 +211,12 @@ export function Donut({ t, segments, size = 132, thickness = 16 }) {
 }
 
 // ─── MINI RADAR CHART
-export function MiniRadar({ t, series, w = 280, h = 240 }) {
+export function MiniRadar({ t, series, w = 280, h = 240, labels: labelsProp }) {
   const cx = w / 2, cy = h / 2 + 6, R = Math.min(w, h) / 2 - 34;
   const axes = series[0].vals.length;
   const ang = (i) => -Math.PI / 2 + (i * 2 * Math.PI) / axes;
   const pt = (i, r) => [cx + Math.cos(ang(i)) * R * r, cy + Math.sin(ang(i)) * R * r];
-  const labels = ['Rendite', 'Faktor', '€/m²', 'Cashflow', 'Eigenkap.'];
+  const labels = labelsProp || ['Rendite', 'Faktor', '€/m²', 'Cashflow', 'Eigenkap.'];
   return (
     <svg width={w} height={h} style={{ display: 'block', overflow: 'visible' }}>
       {[0.33, 0.66, 1].map((g, i) => (

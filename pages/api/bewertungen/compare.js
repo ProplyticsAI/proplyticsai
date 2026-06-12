@@ -23,6 +23,7 @@ export default async function handler(req, res) {
       objektName: bewertung.objektName,
       ort: bewertung.ort,
       verfahren: bewertung.verfahren,
+      inputs: bewertung.inputs,
       ergebnis: bewertung.ergebnis,
       monteCarlo: bewertung.monteCarlo,
     })
@@ -39,6 +40,15 @@ export default async function handler(req, res) {
       objektName: r.objektName,
       ort: r.ort,
       verfahren: r.verfahren,
+      inputs: r.inputs
+        ? {
+            gebaeudetyp: r.inputs.gebaeudetyp,
+            baujahr: r.inputs.baujahr,
+            flaeche: r.inputs.flaeche,
+            grundstuecksflaeche: r.inputs.grundstuecksflaeche,
+            jahresnettokaltmiete: r.inputs.jahresnettokaltmiete,
+          }
+        : null,
       kennzahlen: r.ergebnis?.kennzahlen ?? null,
       ergebnis: r.ergebnis?.ergebnis ?? null,
       monteCarlo: r.monteCarlo

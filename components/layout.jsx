@@ -2,6 +2,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Logo, Cap, Btn, Avatar, ContourBg, BuildingArt } from './primitives';
 import Icon from './icons';
+import { useAuth } from '../lib/useAuth';
+
+function initialsFor(user) {
+  const name = user?.user_metadata?.full_name || user?.email || '';
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '–';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+}
 
 // ─── SECTION TAG
 export function SectionTag({ t, num, children }) {
@@ -128,6 +137,13 @@ export function AuthFrame({ t, children }) {
 // ─── APP SHELL (sidebar + topbar)
 export function AppShell({ t, active, title, action, children }) {
   const router = useRouter();
+  const { user, logout } = useAuth();
+
+  async function handleLogout() {
+    await logout();
+    router.push('/login');
+  }
+
   const nav = [
     ['Portfolio', [['grid', 'Dashboard', '/dashboard'], ['fileText', 'Bewertungen', '/valuations'], ['compare', 'Vergleich', '/comparison']]],
     ['Werkzeuge', [['building2', 'Neue Bewertung', '/analyse'], ['ruler', 'Grundrisse', '#'], ['zap', 'Energieausweis', '#'], ['user', 'Mietlisten', '#'], ['wrench', 'Sanierung', '#']]],
@@ -164,11 +180,22 @@ export function AppShell({ t, active, title, action, children }) {
           ))}
         </div>
         <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: 11, padding: '10px 8px', borderTop: `1px solid ${t.line}` }}>
-          <Avatar t={t} initials="AK" size={32} />
-          <div style={{ flex: 1 }}>
-            <div style={{ fontFamily: t.sans, fontSize: 13, fontWeight: 600, color: t.ink }}>Alex Kessler</div>
-            <div style={{ fontFamily: t.sans, fontSize: 11.5, color: t.faint }}>Kostenlos-Tarif</div>
+          <Avatar t={t} initials={initialsFor(user)} size={32} />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontFamily: t.sans, fontSize: 13, fontWeight: 600, color: t.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {user?.user_metadata?.full_name || user?.email || 'Nicht angemeldet'}
+            </div>
+            <div style={{ fontFamily: t.sans, fontSize: 11.5, color: t.faint }}>{user ? 'Angemeldet' : 'Gast'}</div>
           </div>
+          {user && (
+            <button
+              onClick={handleLogout}
+              aria-label="Abmelden"
+              style={{ display: 'grid', placeItems: 'center', width: 30, height: 30, borderRadius: t.radius, border: `1px solid ${t.line}`, background: 'transparent', color: t.faint, cursor: 'pointer', flexShrink: 0 }}
+            >
+              <Icon name="logOut" size={14} stroke={2} />
+            </button>
+          )}
         </div>
       </div>
       {/* main */}

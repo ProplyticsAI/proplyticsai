@@ -38,6 +38,7 @@ const ICONS = {
   bell: 'M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6 M10 20a2 2 0 0 0 4 0',
   filter: 'M4 5h16l-6 7v6l-4 2v-8z',
   eye: 'M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+  logOut: 'M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9',
 };
 
 export default function Icon({ name, size = 18, stroke = 1.7, color = 'currentColor', fill = 'none', style }) {

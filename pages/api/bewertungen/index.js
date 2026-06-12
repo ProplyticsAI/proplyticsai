@@ -22,6 +22,8 @@ export default async function handler(req, res) {
         ort: bewertung.ort,
         verfahren: bewertung.verfahren,
         status: bewertung.status,
+        inputs: bewertung.inputs,
+        ergebnis: bewertung.ergebnis,
         monteCarlo: bewertung.monteCarlo,
         createdAt: bewertung.createdAt,
         updatedAt: bewertung.updatedAt,
@@ -30,9 +32,19 @@ export default async function handler(req, res) {
       .where(and(...filters))
       .orderBy(desc(bewertung.updatedAt));
 
-    // Liste schlank halten: nur Perzentile + mean aus monteCarlo durchreichen
+    // Liste schlank halten: aus inputs/ergebnis/monteCarlo nur die für
+    // Übersichten (Dashboard, Bewertungsliste) benötigten Felder durchreichen
     const list = rows.map((r) => ({
       ...r,
+      inputs: r.inputs
+        ? {
+            gebaeudetyp: r.inputs.gebaeudetyp,
+            baujahr: r.inputs.baujahr,
+            flaeche: r.inputs.flaeche,
+            jahresnettokaltmiete: r.inputs.jahresnettokaltmiete,
+          }
+        : null,
+      ergebnis: r.ergebnis ? { ergebnis: r.ergebnis.ergebnis } : null,
       monteCarlo: r.monteCarlo
         ? { mean: r.monteCarlo.mean, percentiles: r.monteCarlo.percentiles }
         : null,
