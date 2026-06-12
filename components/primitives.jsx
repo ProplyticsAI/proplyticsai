@@ -41,20 +41,15 @@ export function BuildingArt({ t, width = '100%', maxWidth = 560, style }) {
   );
 }
 
-// ─── LOGO
-export function Logo({ t, size = 30, showText = true, color }) {
+// ─── LOGO (reine Text-Wortmarke, keine Logo-Grafik)
+export function Logo({ t, size = 30, color }) {
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: size * 0.36 }}>
-      <BuildingTile t={t} size={Math.round(size * 1.04)} />
-      {showText && (
-        <span style={{
-          fontFamily: t.display, fontWeight: 600, fontSize: size * 0.76,
-          letterSpacing: '-0.02em', lineHeight: 1,
-        }}>
-          <span style={{ color: color || t.ink }}>proplytic</span>
-          <span style={{ color: t.highlight }}>.ai</span>
-        </span>
-      )}
+    <span style={{
+      fontFamily: t.display, fontWeight: 600, fontSize: size * 0.82,
+      letterSpacing: '-0.02em', lineHeight: 1, display: 'inline-flex', alignItems: 'baseline',
+    }}>
+      <span style={{ color: color || t.ink }}>proplytic</span>
+      <span style={{ color: t.highlight }}>.ai</span>
     </span>
   );
 }
