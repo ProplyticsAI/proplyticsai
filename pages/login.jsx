@@ -6,7 +6,7 @@ import t from '../components/brand';
 import { Mark, Cap, Btn } from '../components/primitives';
 import { AuthFrame } from '../components/layout';
 import Icon from '../components/icons';
-import { useAuth } from '../lib/useAuth';
+import { useAuth, consumeAuthCallbackError } from '../lib/useAuth';
 
 function Input({ label, type = 'text', value, onChange, placeholder, icon, action, onKeyDown }) {
   return (
@@ -46,6 +46,13 @@ export default function LoginPage() {
   useEffect(() => {
     if (ready && user) router.replace('/dashboard');
   }, [ready, user, router]);
+
+  useEffect(() => {
+    if (!ready) return;
+    if (consumeAuthCallbackError()) {
+      setError('Der Bestätigungs- oder Wiederherstellungslink ist ungültig oder abgelaufen. Bitte fordern Sie einen neuen an — per erneuter Registrierung oder über „Vergessen?".');
+    }
+  }, [ready]);
 
   async function submit() {
     if (!email || !password) { setError('Bitte E-Mail und Passwort eingeben.'); return; }
