@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth, consumeAuthRedirect } from '../lib/useAuth';
+import { useAuth, consumeAuthRedirect, hasAuthCallbackError } from '../lib/useAuth';
 
 // Netlify-Identity-Links (E-Mail-Bestätigung, OAuth, Passwort-Recovery)
 // leiten auf die Startseite mit einem Token im URL-Hash. Dieser Handler
@@ -12,6 +12,10 @@ function AuthCallbackRedirect() {
 
   useEffect(() => {
     if (!ready) return;
+    if (hasAuthCallbackError()) {
+      if (router.pathname !== '/login') router.replace('/login');
+      return;
+    }
     if (recovery) {
       if (router.pathname !== '/reset-password') router.replace('/reset-password');
       return;
