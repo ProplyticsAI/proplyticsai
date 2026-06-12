@@ -25,7 +25,11 @@ export function SectionTag({ t, num, children }) {
 
 // ─── MARKETING NAV
 export function MarketingNav({ t }) {
-  const links = ['Funktionen', 'So funktioniert\'s', 'Sicherheit', 'Preise'];
+  const links = [
+    ['Funktionen', 'funktionen'],
+    ['So funktioniert\'s', 'ablauf'],
+    ['Sicherheit', 'sicherheit'],
+  ];
   return (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -34,16 +38,24 @@ export function MarketingNav({ t }) {
       background: t.glass || 'rgba(240,245,249,0.80)',
       backdropFilter: 'blur(14px)',
     }}>
-      <Link href="/"><Logo t={t} size={30} /></Link>
+      <Link href="/" style={{ textDecoration: 'none' }}><Logo t={t} size={30} /></Link>
       <div style={{ display: 'flex', alignItems: 'center', gap: 34 }}>
-        {links.map((l) => (
-          <span key={l} style={{ fontFamily: t.sans, fontSize: 14.5, fontWeight: 500, color: t.muted, cursor: 'pointer' }}>{l}</span>
+        {links.map(([l, id]) => (
+          <a
+            key={l}
+            href={`#${id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            style={{ fontFamily: t.sans, fontSize: 14.5, fontWeight: 500, color: t.muted, cursor: 'pointer', textDecoration: 'none' }}
+          >{l}</a>
         ))}
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-        <Link href="/login" style={{ fontFamily: t.sans, fontSize: 14.5, fontWeight: 500, color: t.ink }}>Anmelden</Link>
-        <Link href="/analyse">
-          <Btn t={t} variant="primary" size="sm" iconRight="arrowRight">Immobilie bewerten</Btn>
+        <Link href="/login" style={{ fontFamily: t.sans, fontSize: 14.5, fontWeight: 500, color: t.ink, textDecoration: 'none' }}>Anmelden</Link>
+        <Link href="/register">
+          <Btn t={t} variant="primary" size="sm">Konto erstellen</Btn>
         </Link>
       </div>
     </div>

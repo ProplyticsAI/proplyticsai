@@ -60,7 +60,7 @@ export default function LandingPage() {
                   <span style={{ fontFamily: t.sans, fontSize: 15.5, color: t.faint }}>Objektadresse eingeben…</span>
                 </div>
                 <Link href="/analyse">
-                  <Btn t={t} variant="primary" iconRight="arrowRight">Bewerten</Btn>
+                  <Btn t={t} variant="primary" iconRight="arrowRight">Immobilie bewerten</Btn>
                 </Link>
               </div>
               <div style={{ display: 'flex', gap: 22, marginTop: 26 }}>
@@ -100,7 +100,7 @@ export default function LandingPage() {
         </div>
 
         {/* FEATURES */}
-        <div style={{ padding: '80px 56px', maxWidth: 1320, margin: '0 auto' }}>
+        <div id="funktionen" style={{ padding: '80px 56px', maxWidth: 1320, margin: '0 auto', scrollMarginTop: 80 }}>
           <SectionTag t={t} num="01">Funktionen</SectionTag>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 44 }}>
             <h2 style={{ fontFamily: t.display, fontWeight: 500, fontSize: 42, letterSpacing: '-0.02em', margin: 0, maxWidth: 540, lineHeight: 1.1 }}>
@@ -129,7 +129,7 @@ export default function LandingPage() {
         </div>
 
         {/* HOW IT WORKS */}
-        <div style={{ padding: '20px 56px 80px', maxWidth: 1320, margin: '0 auto' }}>
+        <div id="ablauf" style={{ padding: '20px 56px 80px', maxWidth: 1320, margin: '0 auto', scrollMarginTop: 80 }}>
           <SectionTag t={t} num="02">Ablauf</SectionTag>
           <h2 style={{ fontFamily: t.display, fontWeight: 500, fontSize: 42, letterSpacing: '-0.02em', margin: '0 0 44px', lineHeight: 1.1 }}>
             Drei Schritte zu einer belastbaren Zahl
@@ -180,7 +180,7 @@ export default function LandingPage() {
         </div>
 
         {/* TRUST */}
-        <div style={{ padding: '80px 56px', maxWidth: 1320, margin: '0 auto' }}>
+        <div id="sicherheit" style={{ padding: '80px 56px', maxWidth: 1320, margin: '0 auto', scrollMarginTop: 80 }}>
           <div style={{ textAlign: 'center', marginBottom: 48 }}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
               <SectionTag t={t} num="04">Vertrauen</SectionTag>
