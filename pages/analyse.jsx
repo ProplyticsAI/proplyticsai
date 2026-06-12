@@ -86,6 +86,20 @@ export default function AnalysePage() {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
 
+  // Adresse aus der Landing-Page-Eingabe übernehmen ("Straße 1, Stadt" →
+  // Objektname + Ort), sofern keine bestehende Bewertung geladen wird.
+  useEffect(() => {
+    if (!router.isReady || id) return;
+    const adresse = router.query.adresse;
+    if (typeof adresse !== 'string' || !adresse.trim()) return;
+    const idx = adresse.lastIndexOf(',');
+    setForm((f) => ({
+      ...f,
+      objektName: f.objektName || (idx > 0 ? adresse.slice(0, idx).trim() : adresse.trim()),
+      ort: f.ort || (idx > 0 ? adresse.slice(idx + 1).trim() : ''),
+    }));
+  }, [router.isReady, router.query.adresse, id]);
+
   useEffect(() => {
     if (!ready || !user || !id) return;
     let active = true;
