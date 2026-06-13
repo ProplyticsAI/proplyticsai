@@ -1,17 +1,27 @@
+import { useId } from 'react';
 import Icon from './icons';
 
-// ─── MARK (vector logo glyph)
-export function Mark({ t, size = 32 }) {
-  const u = size / 32;
-  const r = 1.6 * u;
-  const soft = 'rgba(46,65,80,.26)';
+// ─── MARK (interwoven rounded-square glyph)
+export function Mark({ t, size = 32, bg }) {
+  const id = useId();
+  const ul = `${id}-ul`;
+  const lr = `${id}-lr`;
+  const gap = bg || t.surface;
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" style={{ display: 'block', flexShrink: 0 }}>
-      <rect x="3" y="20" width="6" height="9" rx={r / u} fill={soft} />
-      <rect x="11.5" y="14" width="6" height="15" rx={r / u} fill={soft} />
-      <path d="M23 11.5 L26 8.2 L29 11.5 V27.4 a1.6 1.6 0 0 1 -1.6 1.6 H24.6 a1.6 1.6 0 0 1 -1.6 -1.6 Z"
-        fill={t.accent} />
-      <rect x="26.1" y="13.4" width="1.5" height="13.2" rx="0.7" fill={t.highlight} />
+      <defs>
+        <clipPath id={ul}><circle cx="11.4" cy="11.4" r="4.5" /></clipPath>
+        <clipPath id={lr}><circle cx="20.6" cy="20.6" r="4.5" /></clipPath>
+      </defs>
+      <rect x="13.25" y="5.75" width="13" height="13" rx="4" transform="rotate(45 19.75 12.25)" stroke={t.ink} strokeWidth="3.5" />
+      <g clipPath={`url(#${lr})`}>
+        <rect x="5.75" y="13.25" width="13" height="13" rx="4" transform="rotate(45 12.25 19.75)" stroke={gap} strokeWidth="5.75" />
+      </g>
+      <rect x="5.75" y="13.25" width="13" height="13" rx="4" transform="rotate(45 12.25 19.75)" stroke={t.highlight} strokeWidth="3.5" />
+      <g clipPath={`url(#${ul})`}>
+        <rect x="13.25" y="5.75" width="13" height="13" rx="4" transform="rotate(45 19.75 12.25)" stroke={gap} strokeWidth="5.75" />
+        <rect x="13.25" y="5.75" width="13" height="13" rx="4" transform="rotate(45 19.75 12.25)" stroke={t.ink} strokeWidth="3.5" />
+      </g>
     </svg>
   );
 }
@@ -41,15 +51,18 @@ export function BuildingArt({ t, width = '100%', maxWidth = 560, style }) {
   );
 }
 
-// ─── LOGO (reine Text-Wortmarke, keine Logo-Grafik)
-export function Logo({ t, size = 30, color }) {
+// ─── LOGO (Mark + Wortmarke)
+export function Logo({ t, size = 30, color, bg }) {
   return (
-    <span style={{
-      fontFamily: t.display, fontWeight: 600, fontSize: size * 0.82,
-      letterSpacing: '-0.02em', lineHeight: 1, display: 'inline-flex', alignItems: 'baseline',
-    }}>
-      <span style={{ color: color || t.ink }}>proplytic</span>
-      <span style={{ color: t.highlight }}>.ai</span>
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: size * 0.24 }}>
+      <Mark t={t} size={size} bg={bg} />
+      <span style={{
+        fontFamily: t.display, fontWeight: 600, fontSize: size * 0.82,
+        letterSpacing: '-0.02em', lineHeight: 1, display: 'inline-flex', alignItems: 'baseline',
+      }}>
+        <span style={{ color: color || t.ink }}>proplytic</span>
+        <span style={{ color: t.highlight }}>.ai</span>
+      </span>
     </span>
   );
 }
